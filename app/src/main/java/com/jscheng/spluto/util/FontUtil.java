@@ -8,13 +8,7 @@ import android.graphics.Paint;
 public class FontUtil {
 
     public static int getFontSize(int fontLevel) {
-        int fontSize = fontLevel + 12;
-        if (fontSize > 16) {
-            return 16;
-        }
-        if (fontSize < 12){
-            return 12;
-        }
+        int fontSize = 50;
         return fontSize;
     }
 

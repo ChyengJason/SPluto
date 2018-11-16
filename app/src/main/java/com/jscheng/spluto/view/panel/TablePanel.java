@@ -1,6 +1,8 @@
 package com.jscheng.spluto.view.panel;
 
 
+import android.graphics.Canvas;
+
 import com.jscheng.spluto.view.Panel;
 
 /**
@@ -9,6 +11,11 @@ import com.jscheng.spluto.view.Panel;
 public class TablePanel extends Panel {
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
+
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
 
     }
 }

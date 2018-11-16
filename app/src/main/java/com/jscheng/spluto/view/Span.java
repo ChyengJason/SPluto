@@ -1,5 +1,7 @@
 package com.jscheng.spluto.view;
 
+import android.graphics.Canvas;
+
 /**
  * Created by chengjunsen on 2018/11/15.
  */
@@ -61,4 +63,8 @@ public abstract class Span {
     }
 
     public abstract void measure(int defaultWidth, int defaultHeight);
+
+    public abstract void draw(Canvas canvas);
+
+    public abstract void draw(Canvas canvas, int x, int y, int start, int end);
 }

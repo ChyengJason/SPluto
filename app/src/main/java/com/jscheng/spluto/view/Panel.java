@@ -1,5 +1,7 @@
 package com.jscheng.spluto.view;
 
+import android.graphics.Canvas;
+
 /**
  * Created by chengjunsen on 2018/11/15.
  */
@@ -33,4 +35,6 @@ public abstract class Panel {
     }
 
     public abstract void measure(int maxWidth, int maxHeight);
+
+    public abstract void draw(Canvas canvas);
 }

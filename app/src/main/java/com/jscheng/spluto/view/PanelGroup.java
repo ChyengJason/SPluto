@@ -1,5 +1,7 @@
 package com.jscheng.spluto.view;
 
+import android.graphics.Canvas;
+
 import com.jscheng.spluto.core.parser.Analyzer;
 
 import java.util.ArrayList;
@@ -38,5 +40,11 @@ public class PanelGroup {
 
     public int getWidth() {
         return width;
+    }
+
+    public void draw(Canvas canvas) {
+        for (Panel panel : mPanels) {
+           panel.draw(canvas);
+        }
     }
 }

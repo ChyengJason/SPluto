@@ -1,4 +1,6 @@
 package com.jscheng.spluto.view.span;
+import android.graphics.Canvas;
+
 import com.jscheng.spluto.view.Span;
 
 /**
@@ -31,6 +33,16 @@ public class ImageSpan extends Span {
 
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
+
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+
+    }
+
+    @Override
+    public void draw(Canvas canvas, int x, int y, int start, int end) {
 
     }
 }

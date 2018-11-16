@@ -1,5 +1,7 @@
 package com.jscheng.spluto.view.panel;
 
+import android.graphics.Canvas;
+
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.Span;
 
@@ -35,6 +37,13 @@ public class TextPanel extends Panel {
         width = defaultWidth;
         setWidth(width);
         setHeight(height);
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        for (Span span: mSpans) {
+            span.draw(canvas);
+        }
     }
 
     private int measureLineNum(int maxWidth, int width) {

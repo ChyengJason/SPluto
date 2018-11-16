@@ -1,6 +1,7 @@
 package com.jscheng.spluto;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -52,8 +53,20 @@ public class MarkDownView extends View {
         int height = MeasureSpec.getSize(heightMeasureSpec);
         mPanelGroup.measure(width, height);
         width = Math.max(width, mPanelGroup.getWidth());
-        height = Math.max(height, mPanelGroup.getHeight());
+        //height = Math.max(height, mPanelGroup.getHeight());
+        height = 3000;
         Log.d(TAG, "MarkDownView onMeasure: " + width + "x" + height);
         setMeasuredDimension(width, height);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        mPanelGroup.draw(canvas);
     }
 }
