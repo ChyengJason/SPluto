@@ -7,11 +7,6 @@ import android.graphics.Paint;
  */
 public class FontUtil {
 
-    public static int getFontSize(int fontLevel) {
-        int fontSize = 50;
-        return fontSize;
-    }
-
     public static double getFontWidth(Paint paint, String text) {
         return paint.measureText(text);
     }

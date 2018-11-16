@@ -1,6 +1,7 @@
 package com.jscheng.spluto.view.span;
 
 import android.graphics.Canvas;
+import android.text.TextPaint;
 
 import com.jscheng.spluto.view.Span;
 
@@ -10,10 +11,12 @@ import com.jscheng.spluto.view.Span;
 public class LinkSpan extends Span {
     private String url;
     private String descripe;
+    private TextPaint paint;
 
     public LinkSpan(String url, String descripe) {
         this.url = url;
         this.descripe = descripe;
+        this.paint = new TextPaint();
     }
 
     public void setUrl(String url) {
@@ -34,8 +37,9 @@ public class LinkSpan extends Span {
 
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
-
+        loadPaint();
     }
+
 
     @Override
     public void draw(Canvas canvas) {
@@ -45,5 +49,8 @@ public class LinkSpan extends Span {
     @Override
     public void draw(Canvas canvas, int x, int y, int start, int end) {
 
+    }
+
+    private void loadPaint() {
     }
 }

@@ -1,4 +1,5 @@
 package com.jscheng.spluto.view.span;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.jscheng.spluto.view.Span;
@@ -9,6 +10,7 @@ import com.jscheng.spluto.view.Span;
 public class ImageSpan extends Span {
     private String url;
     private String descripe;
+    private Bitmap bitmap;
 
     public ImageSpan(String url, String descripe) {
         this.url = url;
@@ -33,7 +35,7 @@ public class ImageSpan extends Span {
 
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
-
+        loadBitmap();
     }
 
     @Override
@@ -43,6 +45,10 @@ public class ImageSpan extends Span {
 
     @Override
     public void draw(Canvas canvas, int x, int y, int start, int end) {
+
+    }
+
+    private void loadBitmap() {
 
     }
 }

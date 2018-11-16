@@ -1,4 +1,4 @@
-package util;
+package com.jscheng.spluto.util;
 
 import java.util.ArrayList;
 import java.util.List;

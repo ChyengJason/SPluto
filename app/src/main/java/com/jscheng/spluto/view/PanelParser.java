@@ -1,5 +1,7 @@
 package com.jscheng.spluto.view;
 
+import android.util.Log;
+
 import com.jscheng.spluto.core.bean.*;
 import com.jscheng.spluto.core.parser.*;
 import com.jscheng.spluto.view.panel.*;
@@ -13,9 +15,12 @@ import java.util.List;
  * Created by chengjunsen on 2018/11/15.
  */
 public class PanelParser {
-
+    private static final String TAG = "CJS";
     public static List<Panel> parser(String source) {
         List<Block> blocks = Analyzer.analyze(source);
+        for (Block block: blocks) {
+            Log.d(TAG, "parser: " + block);
+        }
         return parser(blocks);
     }
 

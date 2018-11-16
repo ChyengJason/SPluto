@@ -6,21 +6,23 @@ import android.graphics.Paint;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Log;
 
 import com.jscheng.spluto.util.FontUtil;
 import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.resource.FontResouce;
 
 /**
  * Created by chengjunsen on 2018/11/15.
  */
 public class TextSpan extends Span {
+    private static final String TAG = "CJS";
     private String value;
     private TextPaint paint;
 
     public TextSpan(String value) {
         this.paint = new TextPaint();
         this.value = value;
-        initPaint();
     }
 
     public void setValue(String value) {
@@ -32,15 +34,26 @@ public class TextSpan extends Span {
     }
 
     private void initPaint() {
-        int fontSize = FontUtil.getFontSize(getFontLevel());
-        //paint.setLetterSpacing(2);
+        int fontSize = FontResouce.getFontSize(getFontLevel());
+        Log.d(TAG, "textSpan: fontLevel: " + getFontLevel() + " fontsize: " + fontSize);
         paint.setTextSize(fontSize);
+        paint.setLetterSpacing(0.0f);
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.FILL);
+        if (isBold() || getFontLevel() > 0) {
+            paint.setFakeBoldText(true);
+        }
+        if (isItalic()) {
+            paint.setTextSkewX(-1);
+        }
+        if (isStrike()) {
+            paint.setStrikeThruText(true);
+        }
     }
 
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
+        initPaint();
         double width = FontUtil.getFontWidth(paint, getValue());
         double height = FontUtil.getFontHeight(paint);
         this.setWidth((int)Math.ceil(width));

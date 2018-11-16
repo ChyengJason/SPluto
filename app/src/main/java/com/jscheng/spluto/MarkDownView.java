@@ -10,6 +10,8 @@ import android.view.View;
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.PanelGroup;
 import com.jscheng.spluto.view.PanelParser;
+import com.jscheng.spluto.view.resource.FontResouce;
+import com.jscheng.spluto.view.resource.PaddingResouce;
 
 import java.util.List;
 
@@ -21,27 +23,29 @@ public class MarkDownView extends View {
     private PanelGroup mPanelGroup;
     public MarkDownView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public MarkDownView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     public MarkDownView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
         this.mPanelGroup = new PanelGroup();
+        FontResouce.register(context);
+        PaddingResouce.register(context);
     }
 
     public void setMarkDownSource(String content) {
         List<Panel> panels = PanelParser.parser(content);
         mPanelGroup.setPanels(panels);
-        invalidate();
+        postInvalidate();
     }
 
     @Override

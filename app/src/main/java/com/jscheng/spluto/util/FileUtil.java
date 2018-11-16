@@ -1,4 +1,4 @@
-package util;
+package com.jscheng.spluto.util;
 
 import java.io.*;
 

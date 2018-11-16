@@ -1,9 +1,6 @@
 package com.jscheng.spluto.view;
 
 import android.graphics.Canvas;
-
-import com.jscheng.spluto.core.parser.Analyzer;
-
 import java.util.ArrayList;
 import java.util.List;
 
