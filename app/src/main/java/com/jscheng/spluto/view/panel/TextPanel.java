@@ -22,7 +22,26 @@ public class TextPanel extends Panel {
     }
 
     @Override
-    public void measure(int maxWidth, int maxHeight) {
+    public void measure(int defaultWidth, int defaultHeight) {
+        int width = 0;
+        int height = 0;
+        for (Span span : mSpans) {
+            span.measure(defaultWidth, defaultHeight);
+            width += span.getWidth();
+            height = Math.max(height, span.getHeight());
+        }
+        int lineNum = measureLineNum(defaultWidth, width);
+        height = height * lineNum;
+        width = defaultWidth;
+        setWidth(width);
+        setHeight(height);
+    }
 
+    private int measureLineNum(int maxWidth, int width) {
+        int num = maxWidth / width;
+        if (maxWidth % width != 0) {
+            num += 1;
+        }
+        return num;
     }
 }

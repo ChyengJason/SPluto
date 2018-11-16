@@ -60,5 +60,5 @@ public abstract class Span {
         this.height = height;
     }
 
-    public abstract void measure(int maxWidth, int maxHeight);
+    public abstract void measure(int defaultWidth, int defaultHeight);
 }

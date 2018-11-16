@@ -1,5 +1,7 @@
 package com.jscheng.spluto.view;
 
+import com.jscheng.spluto.core.parser.Analyzer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +10,6 @@ import java.util.List;
  */
 public class PanelGroup {
     private List<Panel> mPanels;
-    private int windowHeight;
-    private int windowWidth;
     private int height;
     private int width;
 
@@ -22,18 +22,21 @@ public class PanelGroup {
         this.mPanels.addAll(panels);
     }
 
-    public void setWindowSize(int windowWidth, int windowHeight) {
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
-    }
-
-    public void measure() {
+    public void measure(int windowWidth, int windowHeight) {
         width = windowWidth;
         height = 0;
         for (Panel panel : mPanels) {
             panel.measure(width, 0);
             height += panel.getHeight();
         }
-        System.out.println("width: " + width + " height: " + height);
+        System.out.println("PanelGroup measure width: " + width + " height: " + height);
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 }

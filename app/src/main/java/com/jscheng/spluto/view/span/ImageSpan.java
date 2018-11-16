@@ -30,7 +30,7 @@ public class ImageSpan extends Span {
     }
 
     @Override
-    public void measure(int maxWidth, int maxHeight) {
+    public void measure(int defaultWidth, int defaultHeight) {
 
     }
 }

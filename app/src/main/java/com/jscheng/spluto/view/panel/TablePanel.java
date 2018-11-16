@@ -8,7 +8,7 @@ import com.jscheng.spluto.view.Panel;
  */
 public class TablePanel extends Panel {
     @Override
-    public void measure(int maxWidth, int maxHeight) {
+    public void measure(int defaultWidth, int defaultHeight) {
 
     }
 }

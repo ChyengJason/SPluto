@@ -5,7 +5,7 @@ package com.jscheng.spluto.view.panel;
  */
 public class TodoListPanel extends ListPanel {
     @Override
-    public void measure(int maxWidth, int maxHeight) {
+    public void measure(int defaultWidth, int defaultHeight) {
 
     }
 }

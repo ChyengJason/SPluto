@@ -14,6 +14,11 @@ import java.util.List;
  */
 public class PanelParser {
 
+    public static List<Panel> parser(String source) {
+        List<Block> blocks = Analyzer.analyze(source);
+        return parser(blocks);
+    }
+
     public static List<Panel> parser(List<Block> blocks) {
         List<Panel> panels = new ArrayList<>();
         for (Block block : blocks) {
