@@ -44,4 +44,12 @@ public class PanelGroup {
            panel.draw(canvas);
         }
     }
+
+    public void layout(int left, int top, int right, int bottom) {
+        int y = top;
+        for (Panel panel : mPanels) {
+            panel.layout(left, y, right, bottom);
+            y = panel.getY() + panel.getHeight();
+        }
+    }
 }

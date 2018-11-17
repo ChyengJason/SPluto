@@ -26,6 +26,11 @@ public class CodeSpan extends Span {
     }
 
     @Override
+    public String getText() {
+        return value;
+    }
+
+    @Override
     public void measure(int defaultWidth, int defaultHeight) {
         loadPaint();
     }

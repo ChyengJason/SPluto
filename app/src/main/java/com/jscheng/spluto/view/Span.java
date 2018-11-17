@@ -62,6 +62,8 @@ public abstract class Span {
         this.height = height;
     }
 
+    public abstract String getText();
+
     public abstract void measure(int defaultWidth, int defaultHeight);
 
     public abstract void draw(Canvas canvas);

@@ -52,6 +52,11 @@ public class TextSpan extends Span {
     }
 
     @Override
+    public String getText() {
+        return value;
+    }
+
+    @Override
     public void measure(int defaultWidth, int defaultHeight) {
         initPaint();
         double width = FontUtil.getFontWidth(paint, getValue());

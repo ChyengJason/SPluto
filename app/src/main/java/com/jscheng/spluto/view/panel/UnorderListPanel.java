@@ -19,4 +19,9 @@ public class UnorderListPanel extends ListPanel {
     public void draw(Canvas canvas) {
 
     }
+
+    @Override
+    public void layout(int left, int top, int right, int bottom) {
+
+    }
 }

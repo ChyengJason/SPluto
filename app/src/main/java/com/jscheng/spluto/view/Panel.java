@@ -9,6 +9,7 @@ public abstract class Panel {
     private int level;
     private int width;
     private int height;
+    private int x, y;
 
     public int getLevel() {
         return level;
@@ -34,7 +35,26 @@ public abstract class Panel {
         this.height = height;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public abstract void measure(int maxWidth, int maxHeight);
 
     public abstract void draw(Canvas canvas);
+
+    public abstract void layout(int left, int top, int right, int bottom);
+
 }

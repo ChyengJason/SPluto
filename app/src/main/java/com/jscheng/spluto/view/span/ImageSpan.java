@@ -34,6 +34,11 @@ public class ImageSpan extends Span {
     }
 
     @Override
+    public String getText() {
+        return descripe;
+    }
+
+    @Override
     public void measure(int defaultWidth, int defaultHeight) {
         loadBitmap();
     }
