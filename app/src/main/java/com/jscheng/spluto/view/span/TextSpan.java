@@ -21,8 +21,8 @@ public class TextSpan extends Span {
     private TextPaint paint;
 
     public TextSpan(String value) {
-        this.paint = new TextPaint();
         this.value = value;
+        this.paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
     }
 
     public void setValue(String value) {
@@ -44,7 +44,7 @@ public class TextSpan extends Span {
             paint.setFakeBoldText(true);
         }
         if (isItalic()) {
-            paint.setTextSkewX(-1);
+            paint.setTextSkewX(-0.3f);
         }
         if (isStrike()) {
             paint.setStrikeThruText(true);

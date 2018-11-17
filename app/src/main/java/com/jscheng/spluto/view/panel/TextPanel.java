@@ -33,21 +33,24 @@ public class TextPanel extends Panel {
         int height = 0;
         for (Span span : mSpans) {
             span.measure(defaultWidth, defaultHeight);
-            width += span.getWidth();
-            height = Math.max(height, span.getHeight());
+            //width += span.getWidth();
+            //height = Math.max(height, span.getHeight());
+            height += span.getHeight();
         }
-        mLineNum = measureLineNum(defaultWidth, width);
-        height = height * mLineNum;
+        //mLineNum = measureLineNum(defaultWidth, width);
+        //height = height * mLineNum;
         width = defaultWidth;
         this.setWidth(width);
         this.setHeight(height);
-        Log.e(TAG, "measure: " + width + "x" + height + " linenum: " + mLineNum);
+        //Log.e(TAG, "measure: " + width + "x" + height + " linenum: " + mLineNum);
     }
 
     @Override
     public void draw(Canvas canvas) {
+        int top = 0;
         for (Span span: mSpans) {
-            span.draw(canvas, getX(), getY(), 0, span.getText().length());
+            span.draw(canvas, getX(), top + getY(), 0, span.getText().length());
+            top += span.getHeight();
         }
     }
 

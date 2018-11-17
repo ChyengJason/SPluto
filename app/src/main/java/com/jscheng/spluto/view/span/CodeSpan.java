@@ -1,6 +1,7 @@
 package com.jscheng.spluto.view.span;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.text.TextPaint;
 
 import com.jscheng.spluto.view.Span;
@@ -14,7 +15,7 @@ public class CodeSpan extends Span {
 
     public CodeSpan(String value) {
         this.value = value;
-        this.paint = new TextPaint();
+        this.paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
     }
 
     public void setValue(String value) {

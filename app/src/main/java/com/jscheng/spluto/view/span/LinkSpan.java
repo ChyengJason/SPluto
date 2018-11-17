@@ -21,7 +21,7 @@ public class LinkSpan extends Span {
     public LinkSpan(String url, String descripe) {
         this.url = url;
         this.descripe = descripe;
-        this.paint = new TextPaint();
+        this.paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
     }
 
     public void setUrl(String url) {
