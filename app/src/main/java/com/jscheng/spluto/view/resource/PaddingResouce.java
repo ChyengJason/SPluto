@@ -9,13 +9,15 @@ public class PaddingResouce {
     private static final int RIGHT_PADDING_DP = 15;
     private static final int TOP_PADDING_DP = 15;
     private static final int BOTTOM_PADDING_DP = 15;
-    private static final int LINE_SPACING_DP = 5;
+    private static final int PANNEL_SPACING_DP = 3;
+    private static final int LINE_SPACING_DP = 6;
 
     private static int LEFT_PADDING_PX;
     private static int RIGHT_PADDING_PX;
     private static int TOP_PADDING_PX;
     private static int BOTTOM_PADDING_PX;
     private static int LINE_SPACING_PX;
+    private static int PANNEL_SPACING_PX;
 
     public static void register(Context context) {
         LEFT_PADDING_PX = DipUtil.dp2px(context, LEFT_PADDING_DP);
@@ -23,6 +25,7 @@ public class PaddingResouce {
         TOP_PADDING_PX = DipUtil.dp2px(context, TOP_PADDING_DP);
         BOTTOM_PADDING_PX = DipUtil.dp2px(context, BOTTOM_PADDING_DP);
         LINE_SPACING_PX =  DipUtil.dp2px(context, LINE_SPACING_DP);
+        PANNEL_SPACING_PX = DipUtil.dp2px(context, PANNEL_SPACING_DP);
     }
 
     public static int getLeftPaddingPx() {
@@ -43,5 +46,9 @@ public class PaddingResouce {
 
     public static float getLineSpacingPx() {
         return LINE_SPACING_PX;
+    }
+
+    public static float getPannelSpacingPx() {
+        return PANNEL_SPACING_PX;
     }
 }

@@ -33,9 +33,6 @@ public class PanelGroup {
             Panel panel = mPanels.get(i);
             panel.measure(width, 0);
             height += panel.getHeight();
-            if (i != mPanels.size() - 1) {
-                height += PaddingResouce.getLineSpacingPx();
-            }
         }
         height += PaddingResouce.getBottomPaddingPx();
         System.out.println("PanelGroup measure width: " + width + " height: " + height);
@@ -65,7 +62,7 @@ public class PanelGroup {
         for (int i = 0; i < mPanels.size(); i++) {
             Panel panel = mPanels.get(i);
             panel.layout(xBegin, lastYEnd, xEnd, lastYEnd + panel.getHeight());
-            lastYEnd += panel.getHeight() + PaddingResouce.getLineSpacingPx();
+            lastYEnd += panel.getHeight();
         }
     }
 }

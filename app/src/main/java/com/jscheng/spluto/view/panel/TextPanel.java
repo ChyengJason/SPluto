@@ -43,14 +43,16 @@ public class TextPanel extends Panel {
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
         mStaticLayout = new StaticLayout(mSpanBuilder, mTextPaint, defaultWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f, PaddingResouce.getLineSpacingPx(), false);
-        setWidth(defaultWidth);
-        setHeight(mStaticLayout.getHeight());
+        int width = defaultWidth;
+        int height = (int)(mStaticLayout.getHeight() + 2 * PaddingResouce.getPannelSpacingPx());
+        setWidth(width);
+        setHeight(height);
     }
 
     @Override
     public void draw(Canvas canvas) {
         canvas.save();
-        canvas.translate(getX(), getY());
+        canvas.translate(getX(), getY() + PaddingResouce.getPannelSpacingPx());
         mStaticLayout.draw(canvas);
         canvas.restore();
     }

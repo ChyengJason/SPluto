@@ -10,6 +10,7 @@ import android.view.View;
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.PanelGroup;
 import com.jscheng.spluto.view.PanelParser;
+import com.jscheng.spluto.view.resource.BitmapResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 
@@ -40,6 +41,7 @@ public class MarkDownView extends View {
         this.mPanelGroup = new PanelGroup();
         FontResouce.register(context);
         PaddingResouce.register(context);
+        BitmapResource.register(context);
     }
 
     public void setMarkDownSource(String content) {
@@ -57,8 +59,7 @@ public class MarkDownView extends View {
         int height = MeasureSpec.getSize(heightMeasureSpec);
         mPanelGroup.measure(width, height);
         width = Math.max(width, mPanelGroup.getWidth());
-        //height = Math.max(height, mPanelGroup.getHeight());
-        height = 3000;
+        height = Math.max(height, mPanelGroup.getHeight());
         Log.d(TAG, "MarkDownView onMeasure: " + width + "x" + height);
         setMeasuredDimension(width, height);
     }

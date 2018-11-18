@@ -64,5 +64,4 @@ public abstract class Span {
     public abstract String getText();
 
     public abstract void setSpannable(SpannableStringBuilder spanBuilder);
-
 }
