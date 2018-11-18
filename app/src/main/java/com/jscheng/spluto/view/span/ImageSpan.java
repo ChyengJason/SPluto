@@ -11,7 +11,6 @@ import com.jscheng.spluto.view.Span;
 public class ImageSpan extends Span {
     private String url;
     private String descripe;
-    private Bitmap bitmap;
 
     public ImageSpan(String url, String descripe) {
         this.url = url;
@@ -41,10 +40,6 @@ public class ImageSpan extends Span {
 
     @Override
     public void setSpannable(SpannableStringBuilder spanBuilder) {
-
-    }
-
-    private void loadBitmap() {
 
     }
 }

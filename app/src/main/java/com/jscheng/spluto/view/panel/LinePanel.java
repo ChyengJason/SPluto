@@ -1,5 +1,6 @@
 package com.jscheng.spluto.view.panel;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.Layout;
@@ -12,6 +13,7 @@ import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.Span;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
+import com.jscheng.spluto.view.span.ImageSpan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +34,9 @@ public class LinePanel extends Panel {
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
     }
 
-    public void setSpans(List<Span> spans) {
-        mSpans.clear();
-        for (Span span: spans) {
-            span.setSpannable(mSpanBuilder);
-            mSpans.add(span);
-        }
+    public void addSpan(Span span) {
+        mSpans.add(span);
+        span.setSpannable(mSpanBuilder);
     }
 
     @Override
@@ -62,5 +61,4 @@ public class LinePanel extends Panel {
         setX(left);
         setY(top);
     }
-
 }
