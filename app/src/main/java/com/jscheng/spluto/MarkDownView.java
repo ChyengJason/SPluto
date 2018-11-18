@@ -59,7 +59,8 @@ public class MarkDownView extends View {
         int height = MeasureSpec.getSize(heightMeasureSpec);
         mPanelGroup.measure(width, height);
         width = Math.max(width, mPanelGroup.getWidth());
-        height = Math.max(height, mPanelGroup.getHeight());
+        height = mPanelGroup.getHeight();
+        //height = Math.max(height, mPanelGroup.getHeight());
         Log.d(TAG, "MarkDownView onMeasure: " + width + "x" + height);
         setMeasuredDimension(width, height);
     }

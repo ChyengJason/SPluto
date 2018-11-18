@@ -4,14 +4,12 @@ import android.util.Log;
 
 import com.jscheng.spluto.core.bean.*;
 import com.jscheng.spluto.core.parser.*;
-import com.jscheng.spluto.util.RegUtil;
 import com.jscheng.spluto.view.panel.*;
 import com.jscheng.spluto.view.span.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Created by chengjunsen on 2018/11/15.
@@ -114,7 +112,7 @@ public class PanelParser {
     }
 
     private static List<Panel> parserImpl(HeadLineBlock block, int level) {
-        TextPanel panel = new TextPanel();
+        LinePanel panel = new LinePanel();
         int fontLevel = block.getFontLevel();
         panel.setLevel(level);
         panel.setSpans(parserSpansImpl(block, fontLevel));
@@ -129,7 +127,7 @@ public class PanelParser {
     }
 
     private static List<Panel> parserImpl(CommonTextBlock block, int level) {
-        TextPanel panel = new TextPanel();
+        LinePanel panel = new LinePanel();
         panel.setLevel(level);
         panel.setSpans(parserSpansImpl(block));
         return Arrays.asList((Panel) panel);

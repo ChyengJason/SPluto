@@ -13,6 +13,7 @@ import java.util.List;
  * Created by chengjunsen on 2018/11/16.
  */
 public class PanelGroup {
+    private static final String TAG = "CJS";
     private List<Panel> mPanels;
     private int height;
     private int width;
@@ -35,10 +36,11 @@ public class PanelGroup {
             height += panel.getHeight();
         }
         height += PaddingResouce.getBottomPaddingPx();
-        System.out.println("PanelGroup measure width: " + width + " height: " + height);
+        Log.e(TAG, "PanelGroup measure width: " + width + " height: " + height);
     }
 
     public int getHeight() {
+        Log.e(TAG, "PanelGroup measure width: " + width + " height: " + height);
         return height;
     }
 

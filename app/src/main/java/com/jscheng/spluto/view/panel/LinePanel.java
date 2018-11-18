@@ -19,14 +19,14 @@ import java.util.List;
 /**
  * Created by chengjunsen on 2018/11/15.
  */
-public class TextPanel extends Panel {
+public class LinePanel extends Panel {
     private static final String TAG = "CJS";
     private List<Span> mSpans;
     private StaticLayout mStaticLayout;
     private SpannableStringBuilder mSpanBuilder;
     private TextPaint mTextPaint;
 
-    public TextPanel() {
+    public LinePanel() {
         mSpans = new ArrayList<>();
         mSpanBuilder = new SpannableStringBuilder();
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
