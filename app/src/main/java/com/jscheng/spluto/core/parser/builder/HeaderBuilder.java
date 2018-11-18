@@ -27,7 +27,7 @@ public class HeaderBuilder implements BlockBuilder {
 		HeadLineBlock block = new HeadLineBlock();
 		List<ValuePart> list = Analyzer.analyzeLineText(content);
 		block.setValueParts(list);
-		block.setLevel(level + 1);
+		block.setFontLevel(level + 1);
 		return block;
 	}
 

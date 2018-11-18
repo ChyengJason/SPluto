@@ -2,6 +2,7 @@ package com.jscheng.spluto.view.span;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 
 import com.jscheng.spluto.view.Span;
@@ -11,11 +12,9 @@ import com.jscheng.spluto.view.Span;
  */
 public class CodeSpan extends Span {
     private String value;
-    private TextPaint paint;
 
     public CodeSpan(String value) {
         this.value = value;
-        this.paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
     }
 
     public void setValue(String value) {
@@ -32,21 +31,7 @@ public class CodeSpan extends Span {
     }
 
     @Override
-    public void measure(int defaultWidth, int defaultHeight) {
-        loadPaint();
-    }
-
-    private void loadPaint() {
-
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-
-    }
-
-    @Override
-    public void draw(Canvas canvas, int x, int y, int start, int end) {
+    public void setSpannable(SpannableStringBuilder spanBuilder) {
 
     }
 }

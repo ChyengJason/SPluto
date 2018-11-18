@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
-    private static String content = "## **fdsaf**\n" + "你会放大沙发的撒娇\nfdsafda\n" + "### _fdsafda_\n";
+    private static String content = "#fd会放大沙发沙发的发的的撒的撒onisa你会f \n你会放大沙发沙发的发的的撒的撒onin娇\nhaofdsfdsaonin\n  "+" ## fdasfsd";
     private MarkDownView mMarkView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

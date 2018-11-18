@@ -9,7 +9,7 @@ import java.util.List;
  * Created by chengjunsen on 2018/11/2.
  */
 public class HeadLineBlock extends Block {
-    private int level;
+    private int fontLevel;
     private List<ValuePart> valueParts;
 
 	public HeadLineBlock() {
@@ -17,12 +17,12 @@ public class HeadLineBlock extends Block {
         this.valueParts = new ArrayList<>();
 	}
 
-	public int getLevel() {
-		return level;
+	public int getFontLevel() {
+		return fontLevel;
 	}
 
-	public void setLevel(int level) {
-		this.level = level;
+	public void setFontLevel(int level) {
+		this.fontLevel = level;
 	}
 
 	public List<ValuePart> getValueParts() {

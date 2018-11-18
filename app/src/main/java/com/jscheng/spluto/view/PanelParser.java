@@ -4,12 +4,14 @@ import android.util.Log;
 
 import com.jscheng.spluto.core.bean.*;
 import com.jscheng.spluto.core.parser.*;
+import com.jscheng.spluto.util.RegUtil;
 import com.jscheng.spluto.view.panel.*;
 import com.jscheng.spluto.view.span.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by chengjunsen on 2018/11/15.
@@ -113,7 +115,7 @@ public class PanelParser {
 
     private static List<Panel> parserImpl(HeadLineBlock block, int level) {
         TextPanel panel = new TextPanel();
-        int fontLevel = block.getLevel();
+        int fontLevel = block.getFontLevel();
         panel.setLevel(level);
         panel.setSpans(parserSpansImpl(block, fontLevel));
         return Arrays.asList((Panel)panel);
@@ -136,8 +138,7 @@ public class PanelParser {
     private static List<Span> parserSpansImpl(CommonTextBlock block) {
         List<Span> spans = new ArrayList<>();
         for (ValuePart part : block.getValueParts()) {
-            Span span = parserSpanImpl(part);
-            spans.add(span);
+            spans.add(parserSpanImpl(part, 0));
         }
         return spans;
     }
@@ -145,14 +146,12 @@ public class PanelParser {
     private static List<Span> parserSpansImpl(HeadLineBlock block, int fontLevel) {
         List<Span> spans = new ArrayList<>();
         for (ValuePart part : block.getValueParts()) {
-            Span span = parserSpanImpl(part);
-            span.setFontLevel(fontLevel);
-            spans.add(span);
+            spans.add(parserSpanImpl(part, fontLevel));
         }
         return spans;
     }
 
-    private static Span parserSpanImpl(ValuePart valuePart) {
+    private static Span parserSpanImpl(ValuePart valuePart, int fontLevel) {
         List<TextType> txtTypes = valuePart.getTypes();
         Span span = null;
         if (txtTypes.contains(TextType.IMG)) {
@@ -164,6 +163,7 @@ public class PanelParser {
         } else {
             span = new TextSpan(valuePart.getValue());
         }
+
         if (txtTypes.contains(TextType.BOLD_WORD)) {
             span.setBold(true);
         }
@@ -173,6 +173,7 @@ public class PanelParser {
         if (txtTypes.contains(TextType.STRIKE_WORD)) {
             span.setStrike(true);
         }
+        span.setFontLevel(fontLevel);
         return span;
     }
 }

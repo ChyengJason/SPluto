@@ -5,11 +5,11 @@ import android.content.Context;
 import com.jscheng.spluto.util.DipUtil;
 
 public class FontResouce {
-    private static final int FONT_DP_LEVEL_0 = 16;
-    private static final int FONT_DP_LEVEL_1 = 24;
-    private static final int FONT_DP_LEVEL_2 = 22;
+    private static final int FONT_DP_LEVEL_0 = 18;
+    private static final int FONT_DP_LEVEL_1 = 22;
+    private static final int FONT_DP_LEVEL_2 = 21;
     private static final int FONT_DP_LEVEL_3 = 20;
-    private static final int FONT_DP_LEVEL_4 = 28;
+    private static final int FONT_DP_LEVEL_4 = 19;
 
     private static int FONT_PX_LEVEL_0;
     private static int FONT_PX_LEVEL_1;

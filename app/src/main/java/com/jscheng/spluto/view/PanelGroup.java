@@ -1,6 +1,11 @@
 package com.jscheng.spluto.view;
 
 import android.graphics.Canvas;
+import android.util.Log;
+
+import com.jscheng.spluto.view.resource.FontResouce;
+import com.jscheng.spluto.view.resource.PaddingResouce;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +27,17 @@ public class PanelGroup {
     }
 
     public void measure(int windowWidth, int windowHeight) {
-        width = windowWidth;
-        height = 0;
-        for (Panel panel : mPanels) {
+        width = windowWidth - PaddingResouce.getLeftPaddingPx() - PaddingResouce.getRightPaddingPx();
+        height = PaddingResouce.getTopPaddingPx();
+        for (int i = 0; i < mPanels.size(); i++) {
+            Panel panel = mPanels.get(i);
             panel.measure(width, 0);
             height += panel.getHeight();
+            if (i != mPanels.size() - 1) {
+                height += PaddingResouce.getLineSpacingPx();
+            }
         }
+        height += PaddingResouce.getBottomPaddingPx();
         System.out.println("PanelGroup measure width: " + width + " height: " + height);
     }
 
@@ -46,10 +56,16 @@ public class PanelGroup {
     }
 
     public void layout(int left, int top, int right, int bottom) {
-        int y = top;
-        for (Panel panel : mPanels) {
-            panel.layout(left, y, right, bottom);
-            y = panel.getY() + panel.getHeight();
+        int yBegin = top + PaddingResouce.getTopPaddingPx();
+        int yEnd = bottom - PaddingResouce.getBottomPaddingPx();
+        int xBegin = left + PaddingResouce.getLeftPaddingPx();
+        int xEnd = right - PaddingResouce.getRightPaddingPx();
+
+        int lastYEnd = yBegin;
+        for (int i = 0; i < mPanels.size(); i++) {
+            Panel panel = mPanels.get(i);
+            panel.layout(xBegin, lastYEnd, xEnd, lastYEnd + panel.getHeight());
+            lastYEnd += panel.getHeight() + PaddingResouce.getLineSpacingPx();
         }
     }
 }

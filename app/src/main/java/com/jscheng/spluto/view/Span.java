@@ -1,17 +1,17 @@
 package com.jscheng.spluto.view;
 
 import android.graphics.Canvas;
+import android.text.SpannableStringBuilder;
 
 /**
  * Created by chengjunsen on 2018/11/15.
  */
 public abstract class Span {
+    private int begin, end;
     private boolean bold;
     private boolean italic;
     private boolean strike;
     private int fontLevel;
-    private int width;
-    private int height;
 
     public void setBold(boolean bold) {
         this.bold = bold;
@@ -45,28 +45,24 @@ public abstract class Span {
         return fontLevel;
     }
 
-
-    public int getWidth() {
-        return width;
+    public int getEnd() {
+        return end;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setEnd(int end) {
+        this.end = end;
     }
 
-    public int getHeight() {
-        return height;
+    public int getBegin() {
+        return begin;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setBegin(int begin) {
+        this.begin = begin;
     }
 
     public abstract String getText();
 
-    public abstract void measure(int defaultWidth, int defaultHeight);
+    public abstract void setSpannable(SpannableStringBuilder spanBuilder);
 
-    public abstract void draw(Canvas canvas);
-
-    public abstract void draw(Canvas canvas, int x, int y, int start, int end);
 }

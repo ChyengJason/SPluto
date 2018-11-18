@@ -3,6 +3,7 @@ package com.jscheng.spluto.view.span;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.util.Log;
 
@@ -46,18 +47,7 @@ public class LinkSpan extends Span {
     }
 
     @Override
-    public void measure(int defaultWidth, int defaultHeight) {
-        loadPaint();
-    }
-
-
-    @Override
-    public void draw(Canvas canvas) {
-
-    }
-
-    @Override
-    public void draw(Canvas canvas, int x, int y, int start, int end) {
+    public void setSpannable(SpannableStringBuilder spanBuilder) {
 
     }
 
