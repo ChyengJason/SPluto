@@ -1,6 +1,8 @@
 package com.jscheng.spluto.view.resource;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
 
 import com.jscheng.spluto.util.DipUtil;
 
@@ -48,5 +50,25 @@ public class FontResouce {
 
     public static int getImageFontSize() {
         return FONT_PX_IMAGE;
+    }
+
+    public static int getTextFontColor() {
+        return 0xFF353535;
+    }
+
+    public static int getLinkFontColor() {
+        return 0xFF0366D6;
+    }
+
+    public static int getImageFontColor() {
+        return 0xFF353535;
+    }
+
+    public static int getCodeFontColor() {
+        return 0xFF353535;
+    }
+
+    public static int getCodeBackgroudColor() {
+        return 0xFFF3F3F3;
     }
 }

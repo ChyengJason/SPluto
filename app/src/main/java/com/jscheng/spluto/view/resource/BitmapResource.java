@@ -23,7 +23,7 @@ public class BitmapResource {
         options.inJustDecodeBounds = false;
         options.inSampleSize = sampleSize;
         if ((context = mContext.get()) != null) {
-            bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher, options);
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.image_loading, options);
         }
         return bitmap;
     }
@@ -33,7 +33,7 @@ public class BitmapResource {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         if ((context = mContext.get()) != null) {
-            BitmapFactory.decodeResource(context.getResources() ,R.mipmap.ic_launcher, options);
+            BitmapFactory.decodeResource(context.getResources() ,R.mipmap.image_loading, options);
             int imageHeight = options.outHeight;
             int imageWidth = options.outWidth;
             String imageType = options.outMimeType;

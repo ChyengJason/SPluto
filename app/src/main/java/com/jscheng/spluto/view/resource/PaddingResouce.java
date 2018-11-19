@@ -9,8 +9,8 @@ public class PaddingResouce {
     private static final int RIGHT_PADDING_DP = 15;
     private static final int TOP_PADDING_DP = 15;
     private static final int BOTTOM_PADDING_DP = 15;
-    private static final int PANNEL_SPACING_DP = 3;
-    private static final int LINE_SPACING_DP = 6;
+    private static final int PANNEL_SPACING_DP = 4;
+    private static final int LINE_SPACING_DP = 8;
 
     private static int LEFT_PADDING_PX;
     private static int RIGHT_PADDING_PX;

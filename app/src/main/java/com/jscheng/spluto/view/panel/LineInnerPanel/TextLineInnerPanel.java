@@ -11,13 +11,16 @@ import android.text.Spanned;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 
 import com.jscheng.spluto.view.Span;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
+import com.jscheng.spluto.view.span.SpanType;
 
 public class TextLineInnerPanel extends LineInnerPanel {
     private StaticLayout mStaticLayout;
@@ -35,8 +38,19 @@ public class TextLineInnerPanel extends LineInnerPanel {
         int end = mSpanBuilder.length() + span.getText().length();
         mSpanBuilder.append(span.getText());
         int fontSize = FontResouce.getFontSize(span.getFontLevel());
-        mSpanBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         mSpanBuilder.setSpan(new AbsoluteSizeSpan(fontSize), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        if (span.getSpanType() == SpanType.SPAN_TEXT) {
+            mSpanBuilder.setSpan(new ForegroundColorSpan(FontResouce.getTextFontColor()), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        } else if (span.getSpanType() == SpanType.SPAN_CODE) {
+            mSpanBuilder.setSpan(new ForegroundColorSpan(FontResouce.getCodeFontColor()), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            mSpanBuilder.setSpan(new BackgroundColorSpan(FontResouce.getCodeBackgroudColor()), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        } else if (span.getSpanType() == SpanType.SPAN_IMAGE) {
+            mSpanBuilder.setSpan(new ForegroundColorSpan(FontResouce.getImageFontColor()), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        } else if (span.getSpanType() == SpanType.SPAN_LINK) {
+            mSpanBuilder.setSpan(new ForegroundColorSpan(FontResouce.getLinkFontColor()), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            mSpanBuilder.setSpan(new UnderlineSpan(), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        }
 
         if (span.isBold() || span.getFontLevel() > 0) {
             mSpanBuilder.setSpan(new StyleSpan(Typeface.BOLD), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
