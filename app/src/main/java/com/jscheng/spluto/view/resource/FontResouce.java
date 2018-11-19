@@ -65,7 +65,7 @@ public class FontResouce {
     }
 
     public static int getCodeFontColor() {
-        return 0xFF353535;
+        return 0xFF892526;
     }
 
     public static int getCodeBackgroudColor() {

@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Created by chengjunsen on 2018/11/15.
+ * 需要重构
  */
 public class PanelParser {
     private static final String TAG = "CJS";
@@ -54,8 +55,8 @@ public class PanelParser {
     private static List<Panel> parserImpl(ListBlock block, int level) {
         List<Panel> panels = new ArrayList<>();
         List<ListBlock> listBlocks = block.getListData();
-        for (ListBlock listBlock : listBlocks) {
-            panels.addAll(parserListData(listBlock, null, level, 0));
+        for (int i = 0; i< listBlocks.size(); i++) {
+            panels.addAll(parserListData(listBlocks.get(i), null, level, i + 1));
         }
         return panels;
     }
@@ -72,7 +73,7 @@ public class PanelParser {
 
         if (listBlocks != null) {
             for (int i = 0; i < listBlocks.size(); i++) {
-                panels.addAll(parserListData(listBlocks.get(i), listType,level+1, index));
+                panels.addAll(parserListData(listBlocks.get(i), listType,level + 1, i + 1));
             }
         }
         if (lineData != null) {
@@ -94,9 +95,13 @@ public class PanelParser {
         }
         if (panel != null) {
             if (block.getType() == BlockType.HEADLINE) {
-                panel.setSpans(parserSpansImpl((HeadLineBlock) block, 0));
+                for (Span span : parserHeadLineSpansImpl((HeadLineBlock) block, 0)) {
+                    panel.addSpan(span);
+                }
             } else if (block.getType() == BlockType.ROW) {
-                panel.setSpans(parserSpansImpl((CommonTextBlock) block));
+                for (Span span : parserCommonTextSpansImpl((CommonTextBlock) block)) {
+                    panel.addSpan(span);
+                }
             }
             panel.setLevel(level);
         }
@@ -115,7 +120,7 @@ public class PanelParser {
         LinePanel panel = new LinePanel();
         int fontLevel = block.getFontLevel();
         panel.setLevel(level);
-        for (Span span : parserSpansImpl(block, fontLevel)) {
+        for (Span span : parserHeadLineSpansImpl(block, fontLevel)) {
             panel.addSpan(span);
         }
         return Arrays.asList((Panel)panel);
@@ -131,13 +136,13 @@ public class PanelParser {
     private static List<Panel> parserImpl(CommonTextBlock block, int level) {
         LinePanel panel = new LinePanel();
         panel.setLevel(level);
-        for (Span span : parserSpansImpl(block)) {
+        for (Span span : parserCommonTextSpansImpl(block)) {
             panel.addSpan(span);
         }
         return Arrays.asList((Panel) panel);
     }
 
-    private static List<Span> parserSpansImpl(CommonTextBlock block) {
+    private static List<Span> parserCommonTextSpansImpl(CommonTextBlock block) {
         List<Span> spans = new ArrayList<>();
         for (ValuePart part : block.getValueParts()) {
             spans.add(parserSpanImpl(part, 0));
@@ -145,7 +150,7 @@ public class PanelParser {
         return spans;
     }
 
-    private static List<Span> parserSpansImpl(HeadLineBlock block, int fontLevel) {
+    private static List<Span> parserHeadLineSpansImpl(HeadLineBlock block, int fontLevel) {
         List<Span> spans = new ArrayList<>();
         for (ValuePart part : block.getValueParts()) {
             spans.add(parserSpanImpl(part, fontLevel));
