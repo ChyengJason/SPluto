@@ -2,7 +2,6 @@ package com.jscheng.spluto.view.panel.LineInnerPanel;
 
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.Layout;
@@ -18,6 +17,7 @@ import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 
 import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 import com.jscheng.spluto.view.span.SpanType;
@@ -38,29 +38,33 @@ public class TextLineInnerPanel extends LineInnerPanel {
         int end = mSpanBuilder.length() + span.getText().length();
         mSpanBuilder.append(span.getText());
         int fontSize = FontResouce.getFontSize(span.getFontLevel());
-        mSpanBuilder.setSpan(new AbsoluteSizeSpan(fontSize), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        setProperity(new AbsoluteSizeSpan(fontSize), begin, end);
+        setProperity(new BackgroundColorSpan(getBackGroundColor()), begin, end);
 
         if (span.getSpanType() == SpanType.SPAN_TEXT) {
-            mSpanBuilder.setSpan(new ForegroundColorSpan(FontResouce.getTextFontColor()), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            setProperity(new ForegroundColorSpan(ColorResource.getTextFontColor()), begin, end);
         } else if (span.getSpanType() == SpanType.SPAN_CODE) {
-            mSpanBuilder.setSpan(new ForegroundColorSpan(FontResouce.getCodeFontColor()), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            mSpanBuilder.setSpan(new BackgroundColorSpan(FontResouce.getCodeBackgroudColor()), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            setProperity(new ForegroundColorSpan(ColorResource.getCodeFontColor()), begin, end);
         } else if (span.getSpanType() == SpanType.SPAN_IMAGE) {
-            mSpanBuilder.setSpan(new ForegroundColorSpan(FontResouce.getImageFontColor()), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            setProperity(new ForegroundColorSpan(ColorResource.getImageFontColor()), begin, end);
         } else if (span.getSpanType() == SpanType.SPAN_LINK) {
-            mSpanBuilder.setSpan(new ForegroundColorSpan(FontResouce.getLinkFontColor()), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            mSpanBuilder.setSpan(new UnderlineSpan(), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            setProperity(new ForegroundColorSpan(ColorResource.getLinkFontColor()), begin, end);
+            setProperity(new UnderlineSpan(), begin, end);
         }
 
         if (span.isBold() || span.getFontLevel() > 0) {
-            mSpanBuilder.setSpan(new StyleSpan(Typeface.BOLD), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            setProperity(new StyleSpan(Typeface.BOLD), begin, end);
         }
         if (span.isItalic()) {
-            mSpanBuilder.setSpan(new StyleSpan(Typeface.ITALIC), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            setProperity(new StyleSpan(Typeface.ITALIC), begin, end);
         }
         if (span.isStrike()) {
-            mSpanBuilder.setSpan(new StrikethroughSpan(), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            setProperity(new StrikethroughSpan(), begin, end);
         }
+    }
+
+    private void setProperity(Object properitySpan, int begin, int end) {
+        mSpanBuilder.setSpan(properitySpan, begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
     }
 
     @Override

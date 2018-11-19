@@ -1,24 +1,14 @@
 package com.jscheng.spluto.view.panel;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.text.Layout;
-import android.text.SpannableStringBuilder;
-import android.text.StaticLayout;
-import android.text.TextPaint;
-import android.util.Log;
 
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.Span;
 import com.jscheng.spluto.view.panel.LineInnerPanel.LineInnerPanel;
 import com.jscheng.spluto.view.panel.LineInnerPanel.PictureLineInnerPanel;
 import com.jscheng.spluto.view.panel.LineInnerPanel.TextLineInnerPanel;
-import com.jscheng.spluto.view.resource.FontResouce;
-import com.jscheng.spluto.view.resource.PaddingResouce;
 import com.jscheng.spluto.view.span.ImageSpan;
 import com.jscheng.spluto.view.span.SpanType;
-
 import java.util.ArrayList;
 import java.util.List;
 

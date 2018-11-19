@@ -6,22 +6,31 @@ import com.jscheng.spluto.util.DipUtil;
 
 public class PaddingResouce {
     private static final int LEFT_PADDING_DP = 15;
-    private static final int RIGHT_PADDING_DP = 15;
-    private static final int TOP_PADDING_DP = 15;
-    private static final int BOTTOM_PADDING_DP = 15;
-    private static final int PANNEL_SPACING_DP = 4;
-    private static final int LINE_SPACING_DP = 8;
-    private static final int LIST_MIDDLE_SPACING_DP = 4;
-    private static final int CHECKBOX_TOP_PADDING_DP = 6;
-
     private static int LEFT_PADDING_PX;
+
+    private static final int RIGHT_PADDING_DP = 15;
     private static int RIGHT_PADDING_PX;
+
+    private static final int TOP_PADDING_DP = 15;
     private static int TOP_PADDING_PX;
+
+    private static final int BOTTOM_PADDING_DP = 15;
     private static int BOTTOM_PADDING_PX;
+
+    private static final int PANNEL_SPACING_DP = 4;
     private static int LINE_SPACING_PX;
+
+    private static final int LINE_SPACING_DP = 8;
     private static int PANNEL_SPACING_PX;
+
+    private static final int LIST_MIDDLE_SPACING_DP = 4;
     private static int LIST_MIDDLE_SPACING_PX;
+
+    private static final int CHECKBOX_TOP_PADDING_DP = 6;
     private static int CHECKBOX_TOP_PADDING_PX;
+
+    private static final int QUOTELIST_HEAD_WIDTH_DP = 4;
+    private static int QUOTELIST_HEAD_WIDTH_PX;
 
     public static void register(Context context) {
         LEFT_PADDING_PX = DipUtil.dp2px(context, LEFT_PADDING_DP);
@@ -32,6 +41,7 @@ public class PaddingResouce {
         PANNEL_SPACING_PX = DipUtil.dp2px(context, PANNEL_SPACING_DP);
         LIST_MIDDLE_SPACING_PX = DipUtil.dp2px(context, LIST_MIDDLE_SPACING_DP);
         CHECKBOX_TOP_PADDING_PX = DipUtil.dp2px(context, CHECKBOX_TOP_PADDING_DP);
+        QUOTELIST_HEAD_WIDTH_PX = DipUtil.dp2px(context, QUOTELIST_HEAD_WIDTH_DP);
     }
 
     public static int getLeftPaddingPx() {
@@ -64,5 +74,9 @@ public class PaddingResouce {
 
     public static Object getCheckBoxTopPaddingPx() {
         return CHECKBOX_TOP_PADDING_PX;
+    }
+
+    public static int getQuoteListHeadWidth() {
+        return QUOTELIST_HEAD_WIDTH_PX;
     }
 }

@@ -3,9 +3,9 @@ package com.jscheng.spluto.view.panel.LineInnerPanel;
 import android.graphics.Canvas;
 
 import com.jscheng.spluto.view.Panel;
+import com.jscheng.spluto.view.resource.ColorResource;
 
 public abstract class LineInnerPanel extends Panel{
-
     public enum LineInnerPanelType {
         // 图片
         PICTURE_INNER_PANEL,
@@ -13,18 +13,22 @@ public abstract class LineInnerPanel extends Panel{
         TEXT_INNER_PANEL
     }
     private LineInnerPanelType mPanelType;
+    private int mBackGroundColor;
 
     public LineInnerPanel(LineInnerPanelType mPanelType) {
         this.mPanelType = mPanelType;
+        mBackGroundColor = ColorResource.getDefaultBackgroundColor();
     }
 
     public LineInnerPanelType getmPanelType() {
         return mPanelType;
     }
 
-    public abstract void measure(int maxWidth, int maxHeight);
+    public int getBackGroundColor() {
+        return mBackGroundColor;
+    }
 
-    public abstract void draw(Canvas canvas);
-
-    public abstract void layout(int left, int top, int right, int bottom);
+    public void setBackGroundColor(int mBackGroundColor) {
+        this.mBackGroundColor = mBackGroundColor;
+    }
 }

@@ -34,33 +34,7 @@ public class TodoListPanel extends ListPanel {
     }
 
     @Override
-    public void measure(int defaultWidth, int defaultHeight) {
-        int width = (int)(defaultWidth - checkboxWidth - PaddingResouce.getListMiddleSpacingPx());
-        int height = 0;
-        for (int i = 0; i < mInnerPanels.size(); i++) {
-            LineInnerPanel innerPanel = mInnerPanels.get(i);
-            innerPanel.measure(width, defaultHeight);
-            height += innerPanel.getHeight();
-        }
-        setWidth(defaultWidth);
-        setHeight(height);
-    }
-
-    @Override
-    public void layout(int left, int top, int right, int bottom) {
-        int x = (int)(left + checkboxWidth + PaddingResouce.getListMiddleSpacingPx());
-        int y = top;
-        for (int i = 0; i < mInnerPanels.size(); i++) {
-            LineInnerPanel innerPanel = mInnerPanels.get(i);
-            innerPanel.layout(x, y, right, bottom);
-            y += innerPanel.getHeight();
-        }
-        setX(left);
-        setY(top);
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
+    protected void drawHead(Canvas canvas) {
         canvas.save();
         canvas.translate(getX(), getY());
         if (checkboxBitmap != null) {
@@ -71,9 +45,10 @@ public class TodoListPanel extends ListPanel {
             canvas.drawBitmap(checkboxBitmap, resRect, destrect, mHeadPaint);
         }
         canvas.restore();
-        for (int i = 0; i < mInnerPanels.size(); i++) {
-            LineInnerPanel innerPanel = mInnerPanels.get(i);
-            innerPanel.draw(canvas);
-        }
+    }
+
+    @Override
+    protected int getHeadWidth() {
+        return checkboxWidth;
     }
 }

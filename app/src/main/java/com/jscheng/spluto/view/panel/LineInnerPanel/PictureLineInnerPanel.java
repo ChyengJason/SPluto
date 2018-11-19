@@ -12,10 +12,12 @@ import android.text.Spanned;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.Size;
 import com.jscheng.spluto.view.resource.BitmapResource;
+import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 
@@ -45,8 +47,13 @@ public class PictureLineInnerPanel extends LineInnerPanel {
 
     private void initSpanBuilder() {
         mSpanBuilder.append(descripe);
-        mSpanBuilder.setSpan(new ForegroundColorSpan(FontResouce.getImageFontColor()), 0, descripe.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        mSpanBuilder.setSpan(new AbsoluteSizeSpan(FontResouce.getImageFontSize()), 0, descripe.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        setProperity(new ForegroundColorSpan(ColorResource.getImageFontColor()), 0, descripe.length());
+        setProperity(new AbsoluteSizeSpan(FontResouce.getImageFontSize()), 0, descripe.length());
+        setProperity(new BackgroundColorSpan(getBackGroundColor()), 0, descripe.length());
+    }
+
+    private void setProperity(Object properitySpan, int begin, int end) {
+        mSpanBuilder.setSpan(properitySpan, begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
     }
 
     @Override
