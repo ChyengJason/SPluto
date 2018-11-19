@@ -11,6 +11,8 @@ public class PaddingResouce {
     private static final int BOTTOM_PADDING_DP = 15;
     private static final int PANNEL_SPACING_DP = 4;
     private static final int LINE_SPACING_DP = 8;
+    private static final int LIST_MIDDLE_SPACING_DP = 4;
+    private static final int CHECKBOX_TOP_PADDING_DP = 6;
 
     private static int LEFT_PADDING_PX;
     private static int RIGHT_PADDING_PX;
@@ -18,6 +20,8 @@ public class PaddingResouce {
     private static int BOTTOM_PADDING_PX;
     private static int LINE_SPACING_PX;
     private static int PANNEL_SPACING_PX;
+    private static int LIST_MIDDLE_SPACING_PX;
+    private static int CHECKBOX_TOP_PADDING_PX;
 
     public static void register(Context context) {
         LEFT_PADDING_PX = DipUtil.dp2px(context, LEFT_PADDING_DP);
@@ -26,6 +30,8 @@ public class PaddingResouce {
         BOTTOM_PADDING_PX = DipUtil.dp2px(context, BOTTOM_PADDING_DP);
         LINE_SPACING_PX =  DipUtil.dp2px(context, LINE_SPACING_DP);
         PANNEL_SPACING_PX = DipUtil.dp2px(context, PANNEL_SPACING_DP);
+        LIST_MIDDLE_SPACING_PX = DipUtil.dp2px(context, LIST_MIDDLE_SPACING_DP);
+        CHECKBOX_TOP_PADDING_PX = DipUtil.dp2px(context, CHECKBOX_TOP_PADDING_DP);
     }
 
     public static int getLeftPaddingPx() {
@@ -50,5 +56,13 @@ public class PaddingResouce {
 
     public static float getPannelSpacingPx() {
         return PANNEL_SPACING_PX;
+    }
+
+    public static float getListMiddleSpacingPx() {
+        return LIST_MIDDLE_SPACING_PX;
+    }
+
+    public static Object getCheckBoxTopPaddingPx() {
+        return CHECKBOX_TOP_PADDING_PX;
     }
 }

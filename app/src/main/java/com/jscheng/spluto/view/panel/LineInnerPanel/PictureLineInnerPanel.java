@@ -54,7 +54,7 @@ public class PictureLineInnerPanel extends LineInnerPanel {
         mStaticLayout = new StaticLayout(mSpanBuilder, mTextPaint, maxWidth, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
         loadBitmapSize(maxWidth, maxHeight);
         int width = mStaticLayout.getWidth();
-        int height = (int)(imageHeight + mStaticLayout.getHeight() + 2 * PaddingResouce.getPannelSpacingPx());
+        int height = (int)(imageHeight + mStaticLayout.getHeight() + 3 * PaddingResouce.getPannelSpacingPx());
         setWidth(width);
         setHeight(height);
     }
@@ -71,7 +71,7 @@ public class PictureLineInnerPanel extends LineInnerPanel {
             Rect destrect = new Rect(left, 0, right, imageHeight);
             canvas.drawBitmap(bitmap, resRect, destrect, mImagePaint);
         }
-        canvas.translate(0, imageHeight);
+        canvas.translate(0, PaddingResouce.getPannelSpacingPx() + imageHeight);
         mStaticLayout.draw(canvas);
         canvas.restore();
     }

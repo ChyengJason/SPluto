@@ -89,7 +89,9 @@ public class PanelParser {
         } else if (listType == ListType.UNORDERED_LIST) {
             panel = new UnorderListPanel();
         } else if (listType == ListType.TODO_LIST) {
-            panel = new TodoListPanel();
+            panel = new TodoListPanel(true);
+        } else if (listType == ListType.UNTODO_LIST) {
+            panel = new TodoListPanel(false);
         } else if (listType == ListType.QUOTE) {
             panel = new QuotePanel();
         }
@@ -117,7 +119,7 @@ public class PanelParser {
     }
 
     private static List<Panel> parserImpl(HeadLineBlock block, int level) {
-        LinePanel panel = new LinePanel();
+        TextPanel panel = new TextPanel();
         int fontLevel = block.getFontLevel();
         panel.setLevel(level);
         for (Span span : parserHeadLineSpansImpl(block, fontLevel)) {
@@ -134,7 +136,7 @@ public class PanelParser {
     }
 
     private static List<Panel> parserImpl(CommonTextBlock block, int level) {
-        LinePanel panel = new LinePanel();
+        TextPanel panel = new TextPanel();
         panel.setLevel(level);
         for (Span span : parserCommonTextSpansImpl(block)) {
             panel.addSpan(span);

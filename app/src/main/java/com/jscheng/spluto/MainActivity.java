@@ -10,10 +10,12 @@ public class MainActivity extends AppCompatActivity {
             " ## fdasfsd\n" +
             "![描述](www.baidu.com) [阿比杜](www.baidu.com)" +
             "`fdasfdsafs` \n" +
-            "2. 你覅大黄蜂\n" +
+            "2. 你覅大黄蜂fdsafdsafdsafdsafdsa\n" +
             "3. 年__哈__佛导师了\n" +
             "* nihao \n" +
-            "* 你发大水\n";
+            "* 你发大水\n" +
+            "- [ ] 你发大水是否发生范德萨范德萨飞洒 的萨芬士大夫撒旦 士大夫撒\n" +
+            "- [x] 你覅大宋";
     private MarkDownView mMarkView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

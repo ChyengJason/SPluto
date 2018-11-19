@@ -172,6 +172,9 @@ public class ListBuilder implements BlockBuilder {
 		if (isTodoList(line)) {
 			return ListType.TODO_LIST;
 		}
+		if (isUnTodoList(line)) {
+		    return ListType.UNTODO_LIST;
+        }
 		if (isOrderedList(line)) {
 			return ListType.ORDERED_LIST;
 		}
@@ -191,20 +194,23 @@ public class ListBuilder implements BlockBuilder {
 		if (type == ListType.QUOTE) {
 			return line.indexOf(MDToken.QUOTE);
 		}
-		if (type == ListType.TODO_LIST) {
+		if (type == ListType.UNTODO_LIST) {
 			int i = line.indexOf(MDToken.TODO_LIST_UNCHECKED);
-			if (i == -1) {
-				i = line.indexOf(MDToken.TODO_LIST_CHECKED);
-			}
 			if (i != -1) {
-				return i + 3;
+				return i + 4;
 			}
 		}
+		if (type == ListType.TODO_LIST) {
+            int i = line.indexOf(MDToken.TODO_LIST_CHECKED);
+            if (i != -1) {
+                return i + 4;
+            }
+        }
 		return -1;
 	}
 
 	public static boolean isList(String str) {
-		return isTodoList(str) || isOrderedList(str) || isUnOrderedList(str) || isQuote(str);
+		return isUnTodoList(str) || isTodoList(str) || isOrderedList(str) || isUnOrderedList(str) || isQuote(str);
 	}
 
 	private static boolean isOrderedList(String str) {
@@ -222,7 +228,11 @@ public class ListBuilder implements BlockBuilder {
 	}
 	
 	private static boolean isTodoList(String str) {
-		return str.trim().startsWith(MDToken.TODO_LIST_UNCHECKED) || str.trim().startsWith(MDToken.TODO_LIST_CHECKED);
+		return str.trim().startsWith(MDToken.TODO_LIST_CHECKED);
+	}
+
+	private static boolean isUnTodoList(String str) {
+		return str.trim().startsWith(MDToken.TODO_LIST_UNCHECKED);
 	}
 
 	@Override

@@ -25,12 +25,12 @@ import java.util.List;
 /**
  * Created by chengjunsen on 2018/11/15.
  */
-public class LinePanel extends Panel {
+public class TextPanel extends Panel {
     private static final String TAG = "CJS";
     private List<Span> mSpans;
     private List<LineInnerPanel> mInnerPanels;
 
-    public LinePanel() {
+    public TextPanel() {
         mSpans = new ArrayList<>();
         mInnerPanels = new ArrayList<>();
     }
