@@ -1,6 +1,5 @@
 package com.jscheng.spluto.view.panel;
 import android.graphics.Canvas;
-import android.graphics.Color;
 
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.Span;
@@ -21,12 +20,14 @@ import java.util.List;
 public abstract class ListPanel extends Panel {
     protected List<Span> mSpans;
     protected List<LineInnerPanel> mInnerPanels;
-    protected int backgroudColor;
+    protected int mBackgroudColor;
+    protected int mFontColor;
 
     public ListPanel() {
         this.mSpans = new ArrayList<>();
         this.mInnerPanels = new ArrayList<>();
-        this.backgroudColor = ColorResource.getDefaultBackgroundColor();
+        this.mBackgroudColor = ColorResource.getDefaultBackgroundColor();
+        this.mFontColor = ColorResource.getTextFontColor();
     }
 
     public void addSpan(Span span) {
@@ -37,13 +38,13 @@ public abstract class ListPanel extends Panel {
                 mInnerPanels.add(new TextLineInnerPanel());
             }
             TextLineInnerPanel textInnerPanel = (TextLineInnerPanel) mInnerPanels.get(mInnerPanels.size() - 1);
-            textInnerPanel.setBackGroundColor(backgroudColor);
+            textInnerPanel.setBackGroundColor(mBackgroudColor);
+            textInnerPanel.setFontColor(mFontColor);
             textInnerPanel.setLevel(getLevel());
             textInnerPanel.addTextSpan(span);
         } else {
             ImageSpan imageSpan = (ImageSpan) span;
             PictureLineInnerPanel pictureInnerPanel = new PictureLineInnerPanel(imageSpan.getUrl(), imageSpan.getDescripe());
-            pictureInnerPanel.setBackGroundColor(backgroudColor);
             pictureInnerPanel.setLevel(getLevel());
             mInnerPanels.add(pictureInnerPanel);
         }
@@ -51,11 +52,11 @@ public abstract class ListPanel extends Panel {
 
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
-        int width = (int)(defaultWidth - getHeadWidth() - PaddingResouce.getListMiddleSpacingPx());
+        int width = defaultWidth - getHeadWidth() - PaddingResouce.getListMiddleSpacingPx();
         int height = 0;
         for (int i = 0; i < mInnerPanels.size(); i++) {
             LineInnerPanel innerPanel = mInnerPanels.get(i);
-            innerPanel.measure(defaultWidth, width);
+            innerPanel.measure(width, defaultHeight);
             height += innerPanel.getHeight();
         }
         setWidth(defaultWidth);
@@ -64,7 +65,7 @@ public abstract class ListPanel extends Panel {
 
     @Override
     public void layout(int left, int top, int right, int bottom) {
-        int x = (int)(left + getHeadWidth() + PaddingResouce.getListMiddleSpacingPx());
+        int x = left + getHeadWidth() + PaddingResouce.getListMiddleSpacingPx();
         int y = top;
         for (int i = 0; i < mInnerPanels.size(); i++) {
             LineInnerPanel innerPanel = mInnerPanels.get(i);

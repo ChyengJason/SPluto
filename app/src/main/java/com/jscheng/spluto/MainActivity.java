@@ -20,7 +20,12 @@ public class MainActivity extends AppCompatActivity {
             "> 你覅到書房\n" +
             "你回復撒o\n" +
             "===  \n" +
-            "nihfjksaf";
+            "```\n" +
+            "nihfjksaffdsafdsafdsa" +
+            "fdsafdsafsda\n" +
+            "   fdsafdsafsda\n" +
+            "   public main() {\n" +
+            "```\n";
     private MarkDownView mMarkView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -49,7 +49,7 @@ public class PictureLineInnerPanel extends LineInnerPanel {
         mSpanBuilder.append(descripe);
         setProperity(new ForegroundColorSpan(ColorResource.getImageFontColor()), 0, descripe.length());
         setProperity(new AbsoluteSizeSpan(FontResouce.getImageFontSize()), 0, descripe.length());
-        setProperity(new BackgroundColorSpan(getBackGroundColor()), 0, descripe.length());
+        setProperity(new BackgroundColorSpan(ColorResource.getImageFontBackgroudColor()), 0, descripe.length());
     }
 
     private void setProperity(Object properitySpan, int begin, int end) {

@@ -26,11 +26,15 @@ public class TextLineInnerPanel extends LineInnerPanel {
     private StaticLayout mStaticLayout;
     private SpannableStringBuilder mSpanBuilder;
     private TextPaint mTextPaint;
+    private int mBackGroundColor;
+    private int mFontColor;
 
     public TextLineInnerPanel() {
         super(LineInnerPanelType.TEXT_INNER_PANEL);
         mSpanBuilder = new SpannableStringBuilder();
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        mBackGroundColor = ColorResource.getDefaultBackgroundColor();
+        mFontColor = ColorResource.getTextFontColor();
     }
 
     public void addTextSpan(Span span) {
@@ -39,10 +43,10 @@ public class TextLineInnerPanel extends LineInnerPanel {
         mSpanBuilder.append(span.getText());
         int fontSize = FontResouce.getFontSize(span.getFontLevel());
         setProperity(new AbsoluteSizeSpan(fontSize), begin, end);
-        setProperity(new BackgroundColorSpan(getBackGroundColor()), begin, end);
+        setProperity(new BackgroundColorSpan(mBackGroundColor), begin, end);
 
         if (span.getSpanType() == SpanType.SPAN_TEXT) {
-            setProperity(new ForegroundColorSpan(ColorResource.getTextFontColor()), begin, end);
+            setProperity(new ForegroundColorSpan(mFontColor), begin, end);
         } else if (span.getSpanType() == SpanType.SPAN_CODE) {
             setProperity(new ForegroundColorSpan(ColorResource.getCodeFontColor()), begin, end);
         } else if (span.getSpanType() == SpanType.SPAN_IMAGE) {
@@ -65,6 +69,14 @@ public class TextLineInnerPanel extends LineInnerPanel {
 
     private void setProperity(Object properitySpan, int begin, int end) {
         mSpanBuilder.setSpan(properitySpan, begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+    }
+
+    public void setBackGroundColor(int mBackGroundColor) {
+        this.mBackGroundColor = mBackGroundColor;
+    }
+
+    public void setFontColor(int mFontColor) {
+        this.mFontColor = mFontColor;
     }
 
     @Override

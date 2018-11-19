@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.jscheng.spluto.view.resource.ColorResource;
-import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 
 /**
@@ -17,7 +16,8 @@ public class QuotePanel extends ListPanel {
 
     public QuotePanel() {
         this.mHeadPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.backgroudColor = ColorResource.getQuoteBackgroudColor();
+        this.mBackgroudColor = ColorResource.getQuoteBackgroudColor();
+        this.mFontColor = ColorResource.getQuoteFontColor();
         loadQuoteHead();
     }
 

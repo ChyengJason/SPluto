@@ -21,7 +21,7 @@ public class TodoListPanel extends ListPanel {
     private boolean isChecked;
 
     public TodoListPanel(boolean isChecked) {
-        this.mHeadPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        this.mHeadPaint = new Paint();
         this.isChecked = isChecked;
         loadCheckBoxBitmap();
     }

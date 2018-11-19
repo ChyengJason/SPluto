@@ -13,22 +13,13 @@ public abstract class LineInnerPanel extends Panel{
         TEXT_INNER_PANEL
     }
     private LineInnerPanelType mPanelType;
-    private int mBackGroundColor;
 
     public LineInnerPanel(LineInnerPanelType mPanelType) {
         this.mPanelType = mPanelType;
-        mBackGroundColor = ColorResource.getDefaultBackgroundColor();
     }
 
     public LineInnerPanelType getmPanelType() {
         return mPanelType;
     }
 
-    public int getBackGroundColor() {
-        return mBackGroundColor;
-    }
-
-    public void setBackGroundColor(int mBackGroundColor) {
-        this.mBackGroundColor = mBackGroundColor;
-    }
 }
