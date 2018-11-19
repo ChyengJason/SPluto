@@ -17,12 +17,11 @@ public class LinkSpan extends Span {
     private static final String TAG = "CJS";
     private String url;
     private String descripe;
-    private TextPaint paint;
 
     public LinkSpan(String url, String descripe) {
+        super(SpanType.SPAN_LINK);
         this.url = url;
         this.descripe = descripe;
-        this.paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
     }
 
     public void setUrl(String url) {
@@ -46,26 +45,4 @@ public class LinkSpan extends Span {
         return descripe;
     }
 
-    @Override
-    public void setSpannable(SpannableStringBuilder spanBuilder) {
-
-    }
-
-    private void loadPaint() {
-        int fontSize = FontResouce.getFontSize(getFontLevel());
-        Log.d(TAG, "LinkSpan: fontLevel: " + getFontLevel() + " fontsize: " + fontSize);
-        paint.setTextSize(fontSize);
-        paint.setLetterSpacing(0.0f);
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
-        if (isBold() || getFontLevel() > 0) {
-            paint.setFakeBoldText(true);
-        }
-        if (isItalic()) {
-            paint.setTextSkewX(-1);
-        }
-        if (isStrike()) {
-            paint.setStrikeThruText(true);
-        }
-    }
 }

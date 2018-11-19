@@ -13,6 +13,7 @@ public class ImageSpan extends Span {
     private String descripe;
 
     public ImageSpan(String url, String descripe) {
+        super(SpanType.SPAN_IMAGE);
         this.url = url;
         this.descripe = descripe;
     }
@@ -36,10 +37,5 @@ public class ImageSpan extends Span {
     @Override
     public String getText() {
         return descripe;
-    }
-
-    @Override
-    public void setSpannable(SpannableStringBuilder spanBuilder) {
-
     }
 }

@@ -3,6 +3,8 @@ package com.jscheng.spluto.view;
 import android.graphics.Canvas;
 import android.text.SpannableStringBuilder;
 
+import com.jscheng.spluto.view.span.SpanType;
+
 /**
  * Created by chengjunsen on 2018/11/15.
  */
@@ -12,6 +14,11 @@ public abstract class Span {
     private boolean italic;
     private boolean strike;
     private int fontLevel;
+    private SpanType spanType;
+
+    public Span(SpanType spanType) {
+        this.spanType = spanType;
+    }
 
     public void setBold(boolean bold) {
         this.bold = bold;
@@ -63,5 +70,7 @@ public abstract class Span {
 
     public abstract String getText();
 
-    public abstract void setSpannable(SpannableStringBuilder spanBuilder);
+    public SpanType getSpanType() {
+        return spanType;
+    }
 }

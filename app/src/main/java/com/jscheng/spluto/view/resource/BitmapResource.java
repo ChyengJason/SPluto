@@ -16,11 +16,14 @@ public class BitmapResource {
         mContext = new WeakReference<>(context);
     }
 
-    public static Bitmap loadDefaultBitmap() {
+    public static Bitmap loadDefaultBitmap(int sampleSize) {
         Bitmap bitmap = null;
         Context context = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = sampleSize;
         if ((context = mContext.get()) != null) {
-            bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher, options);
         }
         return bitmap;
     }

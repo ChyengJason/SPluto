@@ -14,6 +14,7 @@ public class CodeSpan extends Span {
     private String value;
 
     public CodeSpan(String value) {
+        super(SpanType.SPAN_CODE);
         this.value = value;
     }
 
@@ -30,8 +31,4 @@ public class CodeSpan extends Span {
         return value;
     }
 
-    @Override
-    public void setSpannable(SpannableStringBuilder spanBuilder) {
-
-    }
 }

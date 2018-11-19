@@ -27,33 +27,10 @@ import com.jscheng.spluto.view.resource.FontResouce;
 public class TextSpan extends Span {
     private static final String TAG = "CJS";
     private String value;
-    StaticLayout mStaticLayout;
 
     public TextSpan(String value) {
+        super(SpanType.SPAN_TEXT);
         this.value = value;
-        this.mStaticLayout = null;
-    }
-
-    @Override
-    public void setSpannable(SpannableStringBuilder spanBuilder) {
-        int begin = spanBuilder.length();
-        int end = spanBuilder.length() + value.length();
-        setBegin(begin);
-        setEnd(end);
-        spanBuilder.append(value);
-        int fontSize = FontResouce.getFontSize(getFontLevel());
-        spanBuilder.setSpan(new ForegroundColorSpan(Color.BLACK), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        spanBuilder.setSpan(new AbsoluteSizeSpan(fontSize), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-
-        if (isBold() || getFontLevel() > 0) {
-            spanBuilder.setSpan(new StyleSpan(Typeface.BOLD), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        }
-        if (isItalic()) {
-            spanBuilder.setSpan(new StyleSpan(Typeface.ITALIC), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        }
-        if (isStrike()) {
-            spanBuilder.setSpan(new StrikethroughSpan(), begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        }
     }
 
     public void setValue(String value) {

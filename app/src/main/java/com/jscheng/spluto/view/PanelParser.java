@@ -115,7 +115,9 @@ public class PanelParser {
         LinePanel panel = new LinePanel();
         int fontLevel = block.getFontLevel();
         panel.setLevel(level);
-        panel.setSpans(parserSpansImpl(block, fontLevel));
+        for (Span span : parserSpansImpl(block, fontLevel)) {
+            panel.addSpan(span);
+        }
         return Arrays.asList((Panel)panel);
     }
 
@@ -129,7 +131,9 @@ public class PanelParser {
     private static List<Panel> parserImpl(CommonTextBlock block, int level) {
         LinePanel panel = new LinePanel();
         panel.setLevel(level);
-        panel.setSpans(parserSpansImpl(block));
+        for (Span span : parserSpansImpl(block)) {
+            panel.addSpan(span);
+        }
         return Arrays.asList((Panel) panel);
     }
 
