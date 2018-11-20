@@ -6,12 +6,9 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 
-import com.jscheng.spluto.view.Span;
-import com.jscheng.spluto.view.panel.LineInnerPanel.LineInnerPanel;
 import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
-import com.jscheng.spluto.view.span.TextSpan;
 
 /**
  * Created by chengjunsen on 2018/11/15.

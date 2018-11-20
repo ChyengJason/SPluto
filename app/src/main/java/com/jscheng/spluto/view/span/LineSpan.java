@@ -1,8 +1,8 @@
-package com.jscheng.spluto.view.panel.LineInnerPanel;
+package com.jscheng.spluto.view.span;
 
 import com.jscheng.spluto.view.Panel;
 
-public abstract class LineInnerPanel extends Panel{
+public abstract class LineSpan extends Panel{
     public enum LineInnerPanelType {
         // 图片
         PICTURE_INNER_PANEL,
@@ -11,7 +11,7 @@ public abstract class LineInnerPanel extends Panel{
     }
     private LineInnerPanelType mPanelType;
 
-    public LineInnerPanel(LineInnerPanelType mPanelType) {
+    public LineSpan(LineInnerPanelType mPanelType) {
         this.mPanelType = mPanelType;
     }
 

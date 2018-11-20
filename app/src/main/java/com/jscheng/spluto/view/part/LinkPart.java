@@ -1,19 +1,17 @@
-package com.jscheng.spluto.view.span;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.text.SpannableStringBuilder;
+package com.jscheng.spluto.view.part;
 
-import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.Part;
 
 /**
  * Created by chengjunsen on 2018/11/15.
  */
-public class ImageSpan extends Span {
+public class LinkPart extends Part {
+    private static final String TAG = "CJS";
     private String url;
     private String descripe;
 
-    public ImageSpan(String url, String descripe) {
-        super(SpanType.SPAN_IMAGE);
+    public LinkPart(String url, String descripe) {
+        super(PartType.PART_LINK);
         this.url = url;
         this.descripe = descripe;
     }
@@ -38,4 +36,5 @@ public class ImageSpan extends Span {
     public String getText() {
         return descripe;
     }
+
 }

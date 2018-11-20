@@ -5,7 +5,7 @@ import android.util.Log;
 import com.jscheng.spluto.core.bean.*;
 import com.jscheng.spluto.core.parser.*;
 import com.jscheng.spluto.view.panel.*;
-import com.jscheng.spluto.view.span.*;
+import com.jscheng.spluto.view.part.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,12 +97,12 @@ public class PanelParser {
         }
         if (panel != null) {
             if (block.getType() == BlockType.HEADLINE) {
-                for (Span span : parserHeadLineSpansImpl((HeadLineBlock) block)) {
-                    panel.addSpan(span);
+                for (Part part : parserHeadLinePartsImpl((HeadLineBlock) block)) {
+                    panel.addPart(part);
                 }
             } else if (block.getType() == BlockType.ROW) {
-                for (Span span : parserCommonTextSpansImpl((CommonTextBlock) block)) {
-                    panel.addSpan(span);
+                for (Part part : parserCommonTextPartsImpl((CommonTextBlock) block)) {
+                    panel.addPart(part);
                 }
             }
         }
@@ -118,8 +118,8 @@ public class PanelParser {
 
     private static List<Panel> parserImpl(HeadLineBlock block) {
         TextPanel panel = new TextPanel();
-        for (Span span : parserHeadLineSpansImpl(block)) {
-            panel.addSpan(span);
+        for (Part part : parserHeadLinePartsImpl(block)) {
+            panel.addPart(part);
         }
         return Arrays.asList((Panel)panel);
     }
@@ -132,51 +132,51 @@ public class PanelParser {
 
     private static List<Panel> parserImpl(CommonTextBlock block) {
         TextPanel panel = new TextPanel();
-        for (Span span : parserCommonTextSpansImpl(block)) {
-            panel.addSpan(span);
+        for (Part part : parserCommonTextPartsImpl(block)) {
+            panel.addPart(part);
         }
         return Arrays.asList((Panel) panel);
     }
 
-    private static List<Span> parserCommonTextSpansImpl(CommonTextBlock block) {
-        List<Span> spans = new ArrayList<>();
+    private static List<Part> parserCommonTextPartsImpl(CommonTextBlock block) {
+        List<Part> parts = new ArrayList<>();
         for (ValuePart part : block.getValueParts()) {
-            spans.add(parserSpanImpl(part, 0));
+            parts.add(parserPartImpl(part, 0));
         }
-        return spans;
+        return parts;
     }
 
-    private static List<Span> parserHeadLineSpansImpl(HeadLineBlock block) {
-        List<Span> spans = new ArrayList<>();
+    private static List<Part> parserHeadLinePartsImpl(HeadLineBlock block) {
+        List<Part> parts = new ArrayList<>();
         for (ValuePart part : block.getValueParts()) {
-            spans.add(parserSpanImpl(part, block.getFontLevel()));
+            parts.add(parserPartImpl(part, block.getFontLevel()));
         }
-        return spans;
+        return parts;
     }
 
-    private static Span parserSpanImpl(ValuePart valuePart, int fontLevel) {
+    private static Part parserPartImpl(ValuePart valuePart, int fontLevel) {
         List<TextType> txtTypes = valuePart.getTypes();
-        Span span = null;
+        Part part = null;
         if (txtTypes.contains(TextType.IMG)) {
-            span = new ImageSpan(valuePart.getUrl(), valuePart.getTitle());
+            part = new ImagePart(valuePart.getUrl(), valuePart.getTitle());
         } else if (txtTypes.contains(TextType.LINK)) {
-            span = new LinkSpan(valuePart.getUrl(), valuePart.getTitle());
+            part = new LinkPart(valuePart.getUrl(), valuePart.getTitle());
         } else if (txtTypes.contains(TextType.CODE_WORD)){
-            span = new CodeSpan(valuePart.getValue());
+            part = new CodePart(valuePart.getValue());
         } else {
-            span = new TextSpan(valuePart.getValue());
+            part = new TextPart(valuePart.getValue());
         }
 
         if (txtTypes.contains(TextType.BOLD_WORD)) {
-            span.setBold(true);
+            part.setBold(true);
         }
         if (txtTypes.contains(TextType.ITALIC_WORD)) {
-            span.setItalic(true);
+            part.setItalic(true);
         }
         if (txtTypes.contains(TextType.STRIKE_WORD)) {
-            span.setStrike(true);
+            part.setStrike(true);
         }
-        span.setFontLevel(fontLevel);
-        return span;
+        part.setFontLevel(fontLevel);
+        return part;
     }
 }

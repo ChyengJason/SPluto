@@ -1,4 +1,4 @@
-package com.jscheng.spluto.view.panel.LineInnerPanel;
+package com.jscheng.spluto.view.span;
 
 
 import android.graphics.Bitmap;
@@ -22,7 +22,7 @@ import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 
-public class PictureLineInnerPanel extends LineInnerPanel {
+public class PictureLineSpan extends LineSpan {
     private static final String TAG = "CJS";
     private StaticLayout mStaticLayout;
     private SpannableStringBuilder mSpanBuilder;
@@ -34,7 +34,7 @@ public class PictureLineInnerPanel extends LineInnerPanel {
     private int imageWidth;
     private boolean isDefualtImage;
 
-    public PictureLineInnerPanel(String url, String descripe) {
+    public PictureLineSpan(String url, String descripe) {
         super(LineInnerPanelType.PICTURE_INNER_PANEL);
         this.url = url;
         this.descripe = descripe;

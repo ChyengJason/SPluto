@@ -1,23 +1,20 @@
 package com.jscheng.spluto.view;
 
-import android.graphics.Canvas;
-import android.text.SpannableStringBuilder;
-
-import com.jscheng.spluto.view.span.SpanType;
+import com.jscheng.spluto.view.part.PartType;
 
 /**
  * Created by chengjunsen on 2018/11/15.
  */
-public abstract class Span {
+public abstract class Part {
     private int begin, end;
     private boolean bold;
     private boolean italic;
     private boolean strike;
     private int fontLevel;
-    private SpanType spanType;
+    private PartType partType;
 
-    public Span(SpanType spanType) {
-        this.spanType = spanType;
+    public Part(PartType partType) {
+        this.partType = partType;
     }
 
     public void setBold(boolean bold) {
@@ -70,7 +67,7 @@ public abstract class Span {
 
     public abstract String getText();
 
-    public SpanType getSpanType() {
-        return spanType;
+    public PartType getPartType() {
+        return partType;
     }
 }

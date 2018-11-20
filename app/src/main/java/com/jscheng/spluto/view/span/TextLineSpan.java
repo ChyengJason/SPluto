@@ -1,4 +1,4 @@
-package com.jscheng.spluto.view.panel.LineInnerPanel;
+package com.jscheng.spluto.view.span;
 
 
 import android.graphics.Canvas;
@@ -16,20 +16,20 @@ import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 
-import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.Part;
 import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
-import com.jscheng.spluto.view.span.SpanType;
+import com.jscheng.spluto.view.part.PartType;
 
-public class TextLineInnerPanel extends LineInnerPanel {
+public class TextLineSpan extends LineSpan {
     private StaticLayout mStaticLayout;
     private SpannableStringBuilder mSpanBuilder;
     private TextPaint mTextPaint;
     private int mBackGroundColor;
     private int mFontColor;
 
-    public TextLineInnerPanel() {
+    public TextLineSpan() {
         super(LineInnerPanelType.TEXT_INNER_PANEL);
         mSpanBuilder = new SpannableStringBuilder();
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
@@ -37,32 +37,32 @@ public class TextLineInnerPanel extends LineInnerPanel {
         mFontColor = ColorResource.getTextFontColor();
     }
 
-    public void addTextSpan(Span span) {
+    public void addTextPart(Part part) {
         int begin = mSpanBuilder.length();
-        int end = mSpanBuilder.length() + span.getText().length();
-        mSpanBuilder.append(span.getText());
-        int fontSize = FontResouce.getFontSize(span.getFontLevel());
+        int end = mSpanBuilder.length() + part.getText().length();
+        mSpanBuilder.append(part.getText());
+        int fontSize = FontResouce.getFontSize(part.getFontLevel());
         setProperity(new AbsoluteSizeSpan(fontSize), begin, end);
         setProperity(new BackgroundColorSpan(mBackGroundColor), begin, end);
 
-        if (span.getSpanType() == SpanType.SPAN_TEXT) {
+        if (part.getPartType() == PartType.PART_TEXT) {
             setProperity(new ForegroundColorSpan(mFontColor), begin, end);
-        } else if (span.getSpanType() == SpanType.SPAN_CODE) {
+        } else if (part.getPartType() == PartType.PART_CODE) {
             setProperity(new ForegroundColorSpan(ColorResource.getCodeFontColor()), begin, end);
-        } else if (span.getSpanType() == SpanType.SPAN_IMAGE) {
+        } else if (part.getPartType() == PartType.PART_IMAGE) {
             setProperity(new ForegroundColorSpan(ColorResource.getImageFontColor()), begin, end);
-        } else if (span.getSpanType() == SpanType.SPAN_LINK) {
+        } else if (part.getPartType() == PartType.PART_LINK) {
             setProperity(new ForegroundColorSpan(ColorResource.getLinkFontColor()), begin, end);
             setProperity(new UnderlineSpan(), begin, end);
         }
 
-        if (span.isBold() || span.getFontLevel() > 0) {
+        if (part.isBold() || part.getFontLevel() > 0) {
             setProperity(new StyleSpan(Typeface.BOLD), begin, end);
         }
-        if (span.isItalic()) {
+        if (part.isItalic()) {
             setProperity(new StyleSpan(Typeface.ITALIC), begin, end);
         }
-        if (span.isStrike()) {
+        if (part.isStrike()) {
             setProperity(new StrikethroughSpan(), begin, end);
         }
     }

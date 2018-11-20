@@ -1,20 +1,16 @@
-package com.jscheng.spluto.view.span;
+package com.jscheng.spluto.view.part;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.text.SpannableStringBuilder;
-import android.text.TextPaint;
-
-import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.Part;
 
 /**
  * Created by chengjunsen on 2018/11/15.
  */
-public class CodeSpan extends Span {
+public class TextPart extends Part {
+    private static final String TAG = "CJS";
     private String value;
 
-    public CodeSpan(String value) {
-        super(SpanType.SPAN_CODE);
+    public TextPart(String value) {
+        super(PartType.PART_TEXT);
         this.value = value;
     }
 
