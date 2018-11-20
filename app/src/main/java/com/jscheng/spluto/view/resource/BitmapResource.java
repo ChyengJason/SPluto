@@ -3,13 +3,18 @@ package com.jscheng.spluto.view.resource;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.LruCache;
 import android.util.Size;
 import android.widget.ImageView;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.jakewharton.disklrucache.DiskLruCache;
@@ -74,6 +79,15 @@ public class BitmapResource  {
         }
     }
 
+    /**
+     * 获取Bitmap尺寸
+     * 1. 若在内存中，返回图片尺寸
+     * 2. 若在磁盘中，根据maxwidth计算压缩后的图片尺寸，并加载压缩图片到内存，返回图片尺寸
+     * 3. 若不存在，加入网络加载任务
+     * @param url
+     * @param maxWidth
+     * @return
+     */
     public static Size getBitmapSize(String url, int maxWidth) {
         if (instance != null) {
             return instance.getBitmapSizeImpl(url, maxWidth);
@@ -82,6 +96,14 @@ public class BitmapResource  {
         return new Size(0 , 0);
     }
 
+    /**
+     * 获取bitmap
+     * 1. 若在内存中，返回图片
+     * 2. 若在磁盘中，根据maxwidth计算压缩后的图片尺寸，并加载压缩图片到内存，返回图片
+     * 3. 若不存在，加入网络加载任务，返回null
+     * @param url
+     * @param maxWidth
+     */
     public static Bitmap getBitmap(String url, int maxWidth) {
         if (instance != null) {
             return instance.getBitmapImpl(url, maxWidth);
@@ -111,15 +133,6 @@ public class BitmapResource  {
         mRequestQueue = Volley.newRequestQueue(mContext);
     }
 
-    /**
-     * 获取Bitmap尺寸
-     * 1. 若在内存中，返回图片尺寸
-     * 2. 若在磁盘中，根据maxwidth计算压缩后的图片尺寸，并加载压缩图片到内存，返回图片尺寸
-     * 3. 若不存在，加入网络加载任务
-     * @param url
-     * @param maxWidth
-     * @return
-     */
     private Size getBitmapSizeImpl(String url, int maxWidth) {
         Log.e(TAG, "getBitmapSizeImpl: " );
         Bitmap bitmap = null;
@@ -134,14 +147,6 @@ public class BitmapResource  {
         return new Size(0, 0);
     }
 
-    /**
-     * 获取bitmap
-     * 1. 若在内存中，返回图片
-     * 2. 若在磁盘中，根据maxwidth计算压缩后的图片尺寸，并加载压缩图片到内存，返回图片
-     * 3. 若不存在，加入网络加载任务，返回null
-     * @param url
-     * @param maxWidth
-     */
     private Bitmap getBitmapImpl(String url, int maxWidth) {
         Log.e(TAG, "getBitmapImpl: " );
         Bitmap bitmap = null;
@@ -199,42 +204,22 @@ public class BitmapResource  {
         } else {
             Log.e(TAG, "createBitmapTask: key" + getKeyFromUrl(url) + " url: " + url );
             mRequestingUrls.add(url);
-            ImageRequest request = new ImageRequest(url, new Response.Listener<Bitmap>() {
+            BitmapRequest request = new BitmapRequest(url, new Response.Listener<Bitmap>() {
                 @Override
                 public void onResponse(Bitmap bitmap) {
-                    try {
-                        if (bitmap == null || bitmap.isRecycled()) {
-                            Log.e(TAG, "onResponse: bitmap is null or recycled");
-                            return;
-                        }
-                        String key = getKeyFromUrl(url);
-                        DiskLruCache.Editor editor = mDiskCache.edit(key);
-                        OutputStream outputStream = editor.newOutputStream(0);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                        outputStream.close();
-                        editor.commit();
-                        mDiskCache.flush();
-                        if (mListener != null) {
-                            mListener.taskBitmapFinish(url);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        if (mListener != null) {
-                            mListener.taksBitmapFailed(e.getMessage());
-                        }
-                    } finally {
-                        mRequestingUrls.remove(url);
+                    if (mListener != null) {
+                        mListener.taskBitmapFinish(url);
+                    }
+                    mRequestingUrls.remove(url);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (mListener != null) {
+                        mListener.taksBitmapFailed(error.getMessage());
                     }
                 }
-            }, 0, 0, ImageView.ScaleType.CENTER_INSIDE, Bitmap.Config.RGB_565,
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            if (mListener != null) {
-                                mListener.taksBitmapFailed(error.getMessage());
-                            }
-                        }
-                    });
+            });
             mRequestQueue.add(request);
         }
     }
@@ -252,5 +237,43 @@ public class BitmapResource  {
     public interface BitmapResourceListener {
         void taskBitmapFinish(String url);
         void taksBitmapFailed(String error);
+    }
+
+    private class BitmapRequest extends ImageRequest {
+        public BitmapRequest(String url, Response.Listener<Bitmap> listener, Response.ErrorListener errorListener) {
+            super(url, listener, 0, 0, ImageView.ScaleType.CENTER_INSIDE, Bitmap.Config.RGB_565, errorListener);
+        }
+
+        @Override
+        protected Response<Bitmap> parseNetworkResponse(NetworkResponse response) {
+            Log.e(TAG, "parseNetworkResponse: " + Thread.currentThread());
+            byte[] data = response.data;
+            try {
+                if (data == null || data.length <= 0) {
+                    Log.e(TAG, "parseNetworkResponse: data is null");
+                    return Response.error(new ParseError(response));
+                }
+                BitmapFactory.Options decodeOptions = new BitmapFactory.Options();
+                decodeOptions.inJustDecodeBounds = true;
+                BitmapFactory.decodeByteArray(data, 0, data.length, decodeOptions);
+                int actualWidth = decodeOptions.outWidth;
+                int actualHeight = decodeOptions.outHeight;
+                if (actualWidth <= 0 || actualHeight <= 0) {
+                    Log.e(TAG, "parseNetworkResponse: is not image");
+                    return Response.error(new ParseError(response));
+                }
+                String key = getKeyFromUrl(getUrl());
+                DiskLruCache.Editor editor = mDiskCache.edit(key);
+                OutputStream outputStream = editor.newOutputStream(0);
+                outputStream.write(data);
+                outputStream.close();
+                editor.commit();
+                mDiskCache.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return Response.error(new ParseError(response));
+            }
+            return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+        }
     }
 }

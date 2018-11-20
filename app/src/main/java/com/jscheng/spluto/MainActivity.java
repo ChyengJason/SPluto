@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
             "fdsafdsafsda\n" +
             "   fdsafdsafsda\n" +
             "   public main() {\n" +
-            "```\n";
+            "```\n" +
+            "![fadsfas](https://www.jianshu.com/fp/notice/now?utm_medium=index-banner&utm_source=desktop)\n" +
+            "![warning](https://upload-images.jianshu.io/upload_images/11897912-81c32ed00c9374c9?imageMogr2/auto-orient/strip%7CimageView2/2/w/640/format/webp)\n";
     private MarkDownView mMarkView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
