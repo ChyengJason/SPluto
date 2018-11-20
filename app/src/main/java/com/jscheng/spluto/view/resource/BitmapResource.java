@@ -14,6 +14,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.jakewharton.disklrucache.DiskLruCache;
 import com.jscheng.spluto.util.FileUtil;
+import com.jscheng.spluto.util.MdUtil;
 import com.jscheng.spluto.util.VersionUtil;
 import java.io.File;
 import java.io.FileInputStream;
@@ -245,11 +246,7 @@ public class BitmapResource  {
     }
 
     private String getKeyFromUrl(String url) {
-        String key = url.replaceAll("[^a-z0-9_-]", "");
-        if (key.length() > 64) {
-            key = key.substring(0, 64);
-        }
-        return key;
+        return MdUtil.encode(url);
     }
 
     public interface BitmapResourceListener {
