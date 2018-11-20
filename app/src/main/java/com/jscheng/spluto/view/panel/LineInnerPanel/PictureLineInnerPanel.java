@@ -15,6 +15,8 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.Size;
+
+import com.jscheng.spluto.view.resource.BitmapResource;
 import com.jscheng.spluto.view.resource.IconResource;
 import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.FontResouce;
@@ -30,7 +32,7 @@ public class PictureLineInnerPanel extends LineInnerPanel {
     private String descripe;
     private int imageHeight;
     private int imageWidth;
-    private int imageSamperSize;
+    private boolean isDefualtImage;
 
     public PictureLineInnerPanel(String url, String descripe) {
         super(LineInnerPanelType.PICTURE_INNER_PANEL);
@@ -41,6 +43,7 @@ public class PictureLineInnerPanel extends LineInnerPanel {
         this.imageHeight = 0;
         this.imageWidth = 0;
         this.mSpanBuilder = new SpannableStringBuilder();
+        this.isDefualtImage = false;
         initSpanBuilder();
     }
 
@@ -60,7 +63,7 @@ public class PictureLineInnerPanel extends LineInnerPanel {
         mStaticLayout = new StaticLayout(mSpanBuilder, mTextPaint, maxWidth, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
         loadBitmapSize(maxWidth, maxHeight);
         int width = mStaticLayout.getWidth();
-        int height = (int)(imageHeight + mStaticLayout.getHeight() + 3 * PaddingResouce.getPannelSpacingPx());
+        int height = imageHeight + mStaticLayout.getHeight() + 3 * PaddingResouce.getPannelSpacingPx();
         setWidth(width);
         setHeight(height);
     }
@@ -71,7 +74,7 @@ public class PictureLineInnerPanel extends LineInnerPanel {
         canvas.translate(getX(), getY() + PaddingResouce.getPannelSpacingPx());
         int left = (getWidth() - imageWidth)/2;
         int right = left + imageWidth;
-        Bitmap bitmap = loadBitmap();
+        Bitmap bitmap = loadBitmap(getWidth(), getHeight());
         if (bitmap != null) {
             Rect resRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
             Rect destrect = new Rect(left, 0, right, imageHeight);
@@ -88,21 +91,20 @@ public class PictureLineInnerPanel extends LineInnerPanel {
         setY(top);
     }
 
-    private Bitmap loadBitmap() {
-        return IconResource.loadDefualtLoadingBitmap();
+    private Bitmap loadBitmap(int maxWidth, int maxHeight) {
+        Bitmap bitmap = isDefualtImage ? IconResource.loadDefualtLoadingBitmap() : BitmapResource.getBitmap(url, maxWidth);
+        return bitmap;
     }
 
     private void loadBitmapSize(int maxWidth, int maxHeight) {
-        Size size = IconResource.loadDefaultBitmapSize();
-        if (size.getWidth() > maxWidth) {
-            imageSamperSize = (int)((float)imageWidth / (float)maxWidth);
-            imageWidth = maxWidth;
-            imageHeight = (int)((float)size.getHeight() / (float)imageSamperSize);
-        } else {
-            imageSamperSize = 1;
-            imageWidth = size.getWidth();
-            imageHeight = size.getHeight();
+        isDefualtImage = false;
+        Size size = BitmapResource.getBitmapSize(url, maxWidth);
+        if (size.getWidth() <= 0 || size.getHeight() <= 0 ){
+            isDefualtImage = true;
+            size = IconResource.loadDefaultBitmapSize();
         }
+        imageWidth = size.getWidth();
+        imageHeight = size.getHeight();
         Log.d(TAG, "loadBitmapSize: " + imageWidth + "x" + imageHeight);
     }
 }

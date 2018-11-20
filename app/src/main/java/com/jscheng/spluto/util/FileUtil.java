@@ -1,5 +1,8 @@
 package com.jscheng.spluto.util;
 
+import android.content.Context;
+import android.os.Environment;
+
 import java.io.*;
 
 /**
@@ -32,5 +35,16 @@ public class FileUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getDiskCachePath(Context context){
+        String cachePath;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir().getPath();
+        } else {
+            cachePath = context.getCacheDir().getPath();
+        }
+        return cachePath;
     }
 }

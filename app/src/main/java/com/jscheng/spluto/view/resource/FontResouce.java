@@ -49,6 +49,10 @@ public class FontResouce {
         FONT_PX_HEIGHT_4 = (int)FontUtil.getFontHeight(FONT_PX_LEVEL_4);
     }
 
+    public static void unRegister() {
+
+    }
+
     public static int getFontSize(int fontLevel) {
        if (fontLevel <= 0) {
            return FONT_PX_LEVEL_0;

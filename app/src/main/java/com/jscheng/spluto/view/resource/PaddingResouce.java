@@ -48,6 +48,10 @@ public class PaddingResouce {
         CODE_PANEL_TOP_BOTTOM_PADDING_PX = DipUtil.dp2px(context, CODE_PANEL_TOP_BOTTOM_PADDING_DP);
     }
 
+    public static void unRegister() {
+
+    }
+
     public static int getLeftPaddingPx() {
         return LEFT_PADDING_PX;
     }

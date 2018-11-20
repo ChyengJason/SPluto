@@ -10,6 +10,7 @@ import android.view.View;
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.PanelGroup;
 import com.jscheng.spluto.view.PanelParser;
+import com.jscheng.spluto.view.resource.BitmapResource;
 import com.jscheng.spluto.view.resource.IconResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Created By Chengjunsen on 2018/11/16
  */
-public class MarkDownView extends View {
+public class MarkDownView extends View implements BitmapResource.BitmapResourceListener {
     private static final String TAG = "CJS";
     private PanelGroup mPanelGroup;
     public MarkDownView(Context context) {
@@ -42,6 +43,17 @@ public class MarkDownView extends View {
         FontResouce.register(context);
         PaddingResouce.register(context);
         IconResource.register(context);
+        BitmapResource.register(context);
+        BitmapResource.setTaskListener(this);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        FontResouce.unRegister();
+        PaddingResouce.unRegister();
+        IconResource.unRegister();
+        BitmapResource.unRegister();
     }
 
     public void setMarkDownSource(String content) {
@@ -60,7 +72,6 @@ public class MarkDownView extends View {
         mPanelGroup.measure(width, height);
         width = Math.max(width, mPanelGroup.getWidth());
         height = mPanelGroup.getHeight();
-        //height = Math.max(height, mPanelGroup.getHeight());
         Log.d(TAG, "MarkDownView onMeasure: " + width + "x" + height);
         setMeasuredDimension(width, height);
     }
@@ -75,5 +86,16 @@ public class MarkDownView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mPanelGroup.draw(canvas);
+    }
+
+    @Override
+    public void taskBitmapFinish(String url) {
+        Log.e(TAG, "taskBitmapFinish: " + url);
+        requestLayout();
+    }
+
+    @Override
+    public void taksBitmapFailed(String error) {
+        Log.e(TAG, "taksBitmapFailed: " + error );
     }
 }

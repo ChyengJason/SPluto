@@ -49,6 +49,25 @@ public class IconResource {
         return DEFAULT_IMAGE_LOADING_BITMAP;
     }
 
+    public static void unRegister() {
+        if (DEFAULT_IMAGE_LOADING_BITMAP != null) {
+            DEFAULT_IMAGE_LOADING_BITMAP.recycle();
+            DEFAULT_IMAGE_LOADING_BITMAP = null;
+        }
+        if (DEFAULT_IMAGE_ERROR_BITMAP != null) {
+            DEFAULT_IMAGE_ERROR_BITMAP.recycle();
+            DEFAULT_IMAGE_ERROR_BITMAP = null;
+        }
+        if (DEFAULT_CHECKBOX_BITMAP != null) {
+            DEFAULT_CHECKBOX_BITMAP.recycle();
+            DEFAULT_CHECKBOX_BITMAP = null;
+        }
+        if (DEFAULT_UNCHECKBOX_BITMAP != null) {
+            DEFAULT_UNCHECKBOX_BITMAP.recycle();
+            DEFAULT_UNCHECKBOX_BITMAP = null;
+        }
+    }
+
     public static Bitmap loadDefualtErrorBitmap() {
         if (DEFAULT_IMAGE_ERROR_BITMAP != null) {
             return DEFAULT_IMAGE_ERROR_BITMAP;
@@ -81,4 +100,5 @@ public class IconResource {
         }
         return DEFAULT_UNCHECKBOX_BITMAP;
     }
+
 }
