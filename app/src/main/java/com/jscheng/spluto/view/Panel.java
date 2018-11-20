@@ -6,18 +6,9 @@ import android.graphics.Canvas;
  * Created by chengjunsen on 2018/11/15.
  */
 public abstract class Panel {
-    private int level;
     private int width;
     private int height;
     private int x, y;
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
 
     public int getWidth() {
         return width;

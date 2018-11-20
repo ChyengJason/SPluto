@@ -34,34 +34,34 @@ public class PanelParser {
     }
 
     public static List<Panel> parser(Block block) {
-        return parserImpl(block, 0);
+        return parserImpl(block);
     }
 
-    private static List<Panel> parserImpl(Block block, int level) {
+    private static List<Panel> parserImpl(Block block) {
         switch (block.getType()) {
             case HEADLINE:
-                return parserImpl((HeadLineBlock)block, level);
+                return parserImpl((HeadLineBlock)block);
             case CODE:
-                return parserImpl((CodeBlock)block, level);
+                return parserImpl((CodeBlock)block);
             case LIST:
-                return parserImpl((ListBlock)block, level);
+                return parserImpl((ListBlock)block);
             case TABLE:
-                return parserImpl((TableBlock)block, level);
+                return parserImpl((TableBlock)block);
             default:
-                return parserImpl((CommonTextBlock)block, level);
+                return parserImpl((CommonTextBlock)block);
         }
     }
 
-    private static List<Panel> parserImpl(ListBlock block, int level) {
+    private static List<Panel> parserImpl(ListBlock block) {
         List<Panel> panels = new ArrayList<>();
         List<ListBlock> listBlocks = block.getListData();
         for (int i = 0; i< listBlocks.size(); i++) {
-            panels.addAll(parserListData(listBlocks.get(i), null, level, i + 1));
+            panels.addAll(parserListData(listBlocks.get(i), null, i + 1));
         }
         return panels;
     }
 
-    private static List<Panel> parserListData(ListBlock block, ListType parentListType, int level, int index) {
+    private static List<Panel> parserListData(ListBlock block, ListType parentListType, int index) {
         List<Panel> panels = new ArrayList<>();
         List<ListBlock> listBlocks = block.getListData();
         ListType listType = block.getListType();
@@ -73,16 +73,16 @@ public class PanelParser {
 
         if (listBlocks != null) {
             for (int i = 0; i < listBlocks.size(); i++) {
-                panels.addAll(parserListData(listBlocks.get(i), listType,level + 1, i + 1));
+                panels.addAll(parserListData(listBlocks.get(i), listType, i + 1));
             }
         }
         if (lineData != null) {
-            panels.add(parserLineData(lineData, listType, level, index));
+            panels.add(parserLineData(lineData, listType, index));
         }
         return panels;
     }
 
-    private static ListPanel parserLineData(Block block, ListType listType, int level, int index) {
+    private static ListPanel parserLineData(Block block, ListType listType, int index) {
         ListPanel panel = null;
         if (listType == ListType.ORDERED_LIST) {
             panel = new OrderListPanel(index);
@@ -97,7 +97,7 @@ public class PanelParser {
         }
         if (panel != null) {
             if (block.getType() == BlockType.HEADLINE) {
-                for (Span span : parserHeadLineSpansImpl((HeadLineBlock) block, 0)) {
+                for (Span span : parserHeadLineSpansImpl((HeadLineBlock) block)) {
                     panel.addSpan(span);
                 }
             } else if (block.getType() == BlockType.ROW) {
@@ -105,39 +105,33 @@ public class PanelParser {
                     panel.addSpan(span);
                 }
             }
-            panel.setLevel(level);
         }
         return panel;
     }
 
-    private static List<Panel> parserImpl(CodeBlock block, int level) {
+    private static List<Panel> parserImpl(CodeBlock block) {
         CodePanel panel = new CodePanel();
         ValuePart valuePart = block.getValuePart();
         panel.setValue(valuePart.getValue());
-        panel.setLevel(level);
         return Arrays.asList((Panel)panel);
     }
 
-    private static List<Panel> parserImpl(HeadLineBlock block, int level) {
+    private static List<Panel> parserImpl(HeadLineBlock block) {
         TextPanel panel = new TextPanel();
-        int fontLevel = block.getFontLevel();
-        panel.setLevel(level);
-        for (Span span : parserHeadLineSpansImpl(block, fontLevel)) {
+        for (Span span : parserHeadLineSpansImpl(block)) {
             panel.addSpan(span);
         }
         return Arrays.asList((Panel)panel);
     }
 
-    private static List<Panel> parserImpl(TableBlock block, int level) {
+    private static List<Panel> parserImpl(TableBlock block) {
         TablePanel panel = new TablePanel();
-        panel.setLevel(level);
         // TODO: 解析table表格
         return Arrays.asList((Panel)panel);
     }
 
-    private static List<Panel> parserImpl(CommonTextBlock block, int level) {
+    private static List<Panel> parserImpl(CommonTextBlock block) {
         TextPanel panel = new TextPanel();
-        panel.setLevel(level);
         for (Span span : parserCommonTextSpansImpl(block)) {
             panel.addSpan(span);
         }
@@ -152,10 +146,10 @@ public class PanelParser {
         return spans;
     }
 
-    private static List<Span> parserHeadLineSpansImpl(HeadLineBlock block, int fontLevel) {
+    private static List<Span> parserHeadLineSpansImpl(HeadLineBlock block) {
         List<Span> spans = new ArrayList<>();
         for (ValuePart part : block.getValueParts()) {
-            spans.add(parserSpanImpl(part, fontLevel));
+            spans.add(parserSpanImpl(part, block.getFontLevel()));
         }
         return spans;
     }

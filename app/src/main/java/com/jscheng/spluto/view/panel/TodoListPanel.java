@@ -6,8 +6,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Size;
 
-import com.jscheng.spluto.view.panel.LineInnerPanel.LineInnerPanel;
-import com.jscheng.spluto.view.resource.BitmapResource;
+import com.jscheng.spluto.view.resource.IconResource;
+import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 
 /**
@@ -19,6 +19,7 @@ public class TodoListPanel extends ListPanel {
     private int checkboxWidth;
     private Bitmap checkboxBitmap;
     private boolean isChecked;
+    private int mLineHeight;
 
     public TodoListPanel(boolean isChecked) {
         this.mHeadPaint = new Paint();
@@ -27,18 +28,19 @@ public class TodoListPanel extends ListPanel {
     }
 
     private void loadCheckBoxBitmap() {
-        Size size = BitmapResource.loadDefaultCheckBoxSize();
+        Size size = IconResource.loadDefaultCheckBoxSize();
+        mLineHeight = FontResouce.getFontHeight(0);
         checkboxHeight = size.getHeight();
         checkboxWidth = size.getWidth();
-        checkboxBitmap = isChecked ? BitmapResource.loadCheckBoxBitmap() : BitmapResource.loadUnCheckBoxBitmap();
+        checkboxBitmap = isChecked ? IconResource.loadCheckBoxBitmap() : IconResource.loadUnCheckBoxBitmap();
     }
 
     @Override
     protected void drawHead(Canvas canvas) {
         canvas.save();
-        canvas.translate(getX(), getY());
+        canvas.translate(getX(), getY() + PaddingResouce.getPannelSpacingPx());
         if (checkboxBitmap != null) {
-            int destTop = (int)PaddingResouce.getCheckBoxTopPaddingPx();
+            int destTop = (mLineHeight - checkboxHeight) / 2;
             int destBottom = destTop + checkboxHeight;
             Rect resRect = new Rect(0, 0, checkboxBitmap.getWidth(), checkboxBitmap.getHeight());
             Rect destrect = new Rect(0, destTop, checkboxWidth, destBottom);

@@ -15,4 +15,10 @@ public class FontUtil {
         Paint.FontMetrics fm = paint.getFontMetrics();
         return fm.descent - fm.ascent;
     }
+
+    public static double getFontHeight(int textSize) {
+        Paint paint = new Paint();
+        paint.setTextSize(textSize);
+        return getFontHeight(paint);
+    }
 }

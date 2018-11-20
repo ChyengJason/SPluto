@@ -32,12 +32,10 @@ public class TextPanel extends Panel {
                 mInnerPanels.add(new TextLineInnerPanel());
             }
             TextLineInnerPanel textInnerPanel = (TextLineInnerPanel) mInnerPanels.get(mInnerPanels.size() - 1);
-            textInnerPanel.setLevel(getLevel());
             textInnerPanel.addTextSpan(span);
         } else {
             ImageSpan imageSpan = (ImageSpan) span;
             PictureLineInnerPanel pictureInnerPanel = new PictureLineInnerPanel(imageSpan.getUrl(), imageSpan.getDescripe());
-            pictureInnerPanel.setLevel(getLevel());
             mInnerPanels.add(pictureInnerPanel);
         }
     }

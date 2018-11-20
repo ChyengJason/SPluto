@@ -3,7 +3,6 @@ package com.jscheng.spluto.view.panel.LineInnerPanel;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.Layout;
@@ -16,7 +15,7 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.Size;
-import com.jscheng.spluto.view.resource.BitmapResource;
+import com.jscheng.spluto.view.resource.IconResource;
 import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
@@ -90,11 +89,11 @@ public class PictureLineInnerPanel extends LineInnerPanel {
     }
 
     private Bitmap loadBitmap() {
-        return BitmapResource.loadDefaultBitmap(1);
+        return IconResource.loadDefualtLoadingBitmap();
     }
 
     private void loadBitmapSize(int maxWidth, int maxHeight) {
-        Size size = BitmapResource.loadDefaultBitmapSize();
+        Size size = IconResource.loadDefaultBitmapSize();
         if (size.getWidth() > maxWidth) {
             imageSamperSize = (int)((float)imageWidth / (float)maxWidth);
             imageWidth = maxWidth;

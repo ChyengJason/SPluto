@@ -40,12 +40,10 @@ public abstract class ListPanel extends Panel {
             TextLineInnerPanel textInnerPanel = (TextLineInnerPanel) mInnerPanels.get(mInnerPanels.size() - 1);
             textInnerPanel.setBackGroundColor(mBackgroudColor);
             textInnerPanel.setFontColor(mFontColor);
-            textInnerPanel.setLevel(getLevel());
             textInnerPanel.addTextSpan(span);
         } else {
             ImageSpan imageSpan = (ImageSpan) span;
             PictureLineInnerPanel pictureInnerPanel = new PictureLineInnerPanel(imageSpan.getUrl(), imageSpan.getDescripe());
-            pictureInnerPanel.setLevel(getLevel());
             mInnerPanels.add(pictureInnerPanel);
         }
     }
