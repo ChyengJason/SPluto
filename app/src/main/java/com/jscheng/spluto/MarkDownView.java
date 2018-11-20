@@ -2,6 +2,7 @@ package com.jscheng.spluto;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -79,6 +80,7 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+        Log.e(TAG, "onLayout: "+ left + " , " + top );
         mPanelGroup.layout(left, top, right, bottom);
     }
 
@@ -86,6 +88,10 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mPanelGroup.draw(canvas);
+        Rect visibleRect = new Rect();
+        getLocalVisibleRect(visibleRect);
+        Log.e(TAG, "onDraw: left right: " + visibleRect.left + ", " + visibleRect. right);
+        Log.e(TAG, "onDraw: top bottom: " + visibleRect.top + ", " + visibleRect. bottom);
     }
 
     @Override

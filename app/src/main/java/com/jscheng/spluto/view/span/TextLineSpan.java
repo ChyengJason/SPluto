@@ -28,6 +28,10 @@ public class TextLineSpan extends LineSpan {
     private TextPaint mTextPaint;
     private int mBackGroundColor;
     private int mFontColor;
+    private boolean isBold;
+    private boolean isItalic;
+    private boolean isStrike;
+    private boolean isUnderLine;
 
     public TextLineSpan() {
         super(LineInnerPanelType.TEXT_INNER_PANEL);
@@ -35,6 +39,10 @@ public class TextLineSpan extends LineSpan {
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mBackGroundColor = ColorResource.getDefaultBackgroundColor();
         mFontColor = ColorResource.getTextFontColor();
+        isBold = false;
+        isItalic = false;
+        isStrike = false;
+        isUnderLine = false;
     }
 
     public void addTextPart(Part part) {
@@ -56,14 +64,17 @@ public class TextLineSpan extends LineSpan {
             setProperity(new UnderlineSpan(), begin, end);
         }
 
-        if (part.isBold() || part.getFontLevel() > 0) {
+        if (isBold || part.isBold() || part.getFontLevel() > 0) {
             setProperity(new StyleSpan(Typeface.BOLD), begin, end);
         }
-        if (part.isItalic()) {
+        if (isItalic || part.isItalic()) {
             setProperity(new StyleSpan(Typeface.ITALIC), begin, end);
         }
-        if (part.isStrike()) {
+        if (isStrike || part.isStrike()) {
             setProperity(new StrikethroughSpan(), begin, end);
+        }
+        if (isUnderLine || part.isUnderline() ) {
+            setProperity(new UnderlineSpan(), begin, end);
         }
     }
 
@@ -77,6 +88,22 @@ public class TextLineSpan extends LineSpan {
 
     public void setFontColor(int mFontColor) {
         this.mFontColor = mFontColor;
+    }
+
+    public void setBold(boolean bold) {
+        isBold = bold;
+    }
+
+    public void setItalic(boolean italic) {
+        isItalic = italic;
+    }
+
+    public void setStrike(boolean strike) {
+        isStrike = strike;
+    }
+
+    public void setUnderLine(boolean underLine) {
+        isUnderLine = underLine;
     }
 
     @Override

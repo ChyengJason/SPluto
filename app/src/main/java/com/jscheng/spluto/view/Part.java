@@ -11,6 +11,7 @@ public abstract class Part {
     private boolean italic;
     private boolean strike;
     private int fontLevel;
+    private boolean underline;
     private PartType partType;
 
     public Part(PartType partType) {
@@ -33,6 +34,10 @@ public abstract class Part {
         this.fontLevel = fontLevel;
     }
 
+    public void setUnderline(boolean underline) {
+        this.underline = underline;
+    }
+
     public boolean isBold() {
         return bold;
     }
@@ -43,6 +48,10 @@ public abstract class Part {
 
     public boolean isStrike() {
         return strike;
+    }
+
+    public boolean isUnderline() {
+        return underline;
     }
 
     public int getFontLevel() {
@@ -70,4 +79,5 @@ public abstract class Part {
     public PartType getPartType() {
         return partType;
     }
+
 }
