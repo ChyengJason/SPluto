@@ -39,7 +39,6 @@ public class MarkdownScrollView extends ScrollView{
     @Override
     protected void onScrollChanged(int x, int y, int oldx, int oldy) {
         super.onScrollChanged(x, y, oldx, oldy);
-//        mContentView.requestLayout();
-        mContentView.invalidate();
+        mContentView.scrollChanged(x, y, oldx, oldy);
     }
 }

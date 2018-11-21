@@ -23,6 +23,8 @@ import java.util.List;
 public class MarkDownView extends View implements BitmapResource.BitmapResourceListener {
     private static final String TAG = "CJS";
     private PanelGroup mPanelGroup;
+    private int lastActiveX;
+    private int lastActiveY;
 
     public MarkDownView(Context context) {
         super(context);
@@ -88,11 +90,7 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
         super.onDraw(canvas);
         Rect visibleRect = new Rect();
         getLocalVisibleRect(visibleRect);
-        int x1 = visibleRect.left;
-        int y1 = visibleRect.top;
-        int x2 = visibleRect.right;
-        int y2 = visibleRect.bottom;
-        mPanelGroup.draw(canvas, x1, y1, x2, y2);
+        mPanelGroup.draw(canvas, visibleRect.left, visibleRect.top,  visibleRect.right, visibleRect.bottom);
     }
 
     @Override
@@ -102,7 +100,18 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
     }
 
     @Override
-    public void taksBitmapFailed(String error, String url) {
+    public void taksBitmapFailed(String url, String error) {
         Log.e(TAG, "taksBitmapFailed: error: " + error + " url: " + url );
+    }
+
+    public void scrollChanged(int x, int y, int oldx, int oldy) {
+        Rect visibleRect = new Rect();
+        getLocalVisibleRect(visibleRect);
+        if (Math.abs(y - lastActiveY) >= visibleRect.height()/2) {
+            lastActiveX = x;
+            lastActiveY = y;
+            invalidate();
+            Log.e(TAG, "scrollChanged: invalidate");
+        }
     }
 }

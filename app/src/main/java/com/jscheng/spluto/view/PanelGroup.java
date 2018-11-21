@@ -70,13 +70,27 @@ public class PanelGroup {
         Log.e(TAG, "layout: "+ lastYEnd );
     }
 
+    /**
+     * 最多绘制三个可见区域的面积
+     * @param panel
+     * @param x1 可见区域 x1
+     * @param y1 可见区域 x2
+     * @param x2 可见区域 y1
+     * @param y2 可见区域 y2
+     * @return
+     */
     private boolean needToDraw(Panel panel, int x1, int y1, int x2, int y2) {
-        int left = panel.getX();
-        int right = panel.getX() + panel.getWidth();
-        int top = panel.getY();
-        int bottom = panel.getY() + panel.getHeight();
-        boolean includeX = (x1 >= right || x2 >= left);
-        boolean includeY = (y1 >= bottom || y2 >= top);
+        int visableHeight = y2 - y1;
+        int left = x1;
+        int right = x2;
+        int top = y1 - visableHeight > 0 ? y1 - visableHeight : 0;
+        int bottom = y2 + visableHeight < getHeight() ? y2 + visableHeight : getHeight();
+        int panelLeft = panel.getX();
+        int panelRight = panel.getX() + panel.getWidth();
+        int panelTop = panel.getY();
+        int panelBottom = panel.getY() + panel.getHeight();
+        boolean includeX = (left >= panelRight || right >= panelLeft);
+        boolean includeY = (top >= panelBottom || bottom >= panelTop);
         return includeX && includeY;
     }
 }

@@ -92,7 +92,6 @@ public class PictureLineSpan extends LineSpan {
     }
 
     private Bitmap loadBitmap(int maxWidth, int maxHeight) {
-        Log.e(TAG, "loadBitmap: "+ maxWidth );
         Bitmap bitmap = isDefualtImage ? IconResource.loadDefualtLoadingBitmap() : BitmapResource.getBitmap(url, maxWidth);
         return bitmap;
     }
