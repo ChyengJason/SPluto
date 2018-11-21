@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,18 +36,46 @@ public class BitmapResource  {
     private static final String TAG = "CJS";
     private static final String DiskLruCacheDirName = "bitmap";
     private static BitmapResource instance;
-    private LruCache<String, Bitmap> mMemoryCache;
-    private List<String> mRequestingUrls;
-    private DiskLruCache mDiskCache;
-    private int mMemoryCacheSize;
-    private int mDiskCacheSize;
     private Context mContext;
+    /**
+     * URL网络失败最大重试次数
+     */
+    private static final int MaxUrlFailedTime = 2;
+    /**
+     * 压缩过的图片尺寸缓存
+     */
+    private HashMap<String, Size> mSizeCache;
+    /**
+     * 内存图片缓存
+     */
+    private LruCache<String, Bitmap> mMemoryCache;
+    /**
+     * 磁盘图片缓存
+     */
+    private DiskLruCache mDiskCache;
+    /**
+     * 最大内存缓存空间
+     */
+    private int mMemoryCacheSize;
+    /**
+     * 最大磁盘缓存空间
+     */
+    private int mDiskCacheSize;
+    /**
+     * 正在请求下载的url集合
+     */
+    private List<String> mRequestingUrls;
+    /**
+     * 失败的URL的key和失败次数
+     */
+    private HashMap<String, Integer> mFailedUrls;
     private BitmapResourceListener mListener;
     private RequestQueue mRequestQueue;
 
     private BitmapResource(Context context) {
         this.mContext = context;
         this.mRequestingUrls = new ArrayList<>();
+        this.mFailedUrls = new HashMap<>();
         initCache();
         initVolley();
     }
@@ -81,8 +110,9 @@ public class BitmapResource  {
 
     /**
      * 获取Bitmap尺寸
-     * 1. 若在内存中，返回图片尺寸
-     * 2. 若在磁盘中，根据maxwidth计算压缩后的图片尺寸，并加载压缩图片到内存，返回图片尺寸
+     * 1. 若mSizeCache中，直接返回图片尺寸
+     * 2. 若图片在内存中，将尺寸加入mSizeCache，返回图片尺寸
+     * 2. 若图片在磁盘中，根据maxwidth计算压缩后的图片尺寸，将尺寸加入mSizeCache，返回图片尺寸
      * 3. 若不存在，加入网络加载任务
      * @param url
      * @param maxWidth
@@ -98,8 +128,8 @@ public class BitmapResource  {
 
     /**
      * 获取bitmap
-     * 1. 若在内存中，返回图片
-     * 2. 若在磁盘中，根据maxwidth计算压缩后的图片尺寸，并加载压缩图片到内存，返回图片
+     * 1. 若图片在内存中，返回图片
+     * 2. 若图片在磁盘中，根据maxwidth计算压缩后的图片尺寸，并加载压缩图片到内存，返回图片
      * 3. 若不存在，加入网络加载任务，返回null
      * @param url
      * @param maxWidth
@@ -113,6 +143,7 @@ public class BitmapResource  {
     }
 
     private void initCache() {
+        mSizeCache = new HashMap<>();
         mMemoryCacheSize = (int)Runtime.getRuntime().maxMemory() / 8;
         mMemoryCache = new LruCache<String, Bitmap>(mMemoryCacheSize) {
             @Override
@@ -134,43 +165,51 @@ public class BitmapResource  {
     }
 
     private Size getBitmapSizeImpl(String url, int maxWidth) {
-        Log.e(TAG, "getBitmapSizeImpl: " );
-        Bitmap bitmap = null;
-        if ((bitmap = getMemoryCacheBitmap(url)) != null) {
+        String key = getKeyFromUrl(url);
+        if (mSizeCache.containsKey(key)) {
+            return mSizeCache.get(key);
+        }
+
+        Bitmap bitmap = getMemoryCacheBitmap(key);
+        if (bitmap != null) {
+            Size size = new Size(bitmap.getWidth(), bitmap.getHeight());
+            mSizeCache.put(key, size);
+            return size;
+        }
+
+        bitmap = getDiskCacheBitmap(key, maxWidth);
+        if (bitmap != null) {
+            Size size = new Size(bitmap.getWidth(), bitmap.getHeight());
+            mSizeCache.put(key, size);
             return new Size(bitmap.getWidth(), bitmap.getHeight());
         }
-        if ((bitmap = getDiskCacheBitmap(url, maxWidth)) != null) {
-            mMemoryCache.put(url, bitmap);
-            return new Size(bitmap.getWidth(), bitmap.getHeight());
-        }
-        createBitmapTask(url, maxWidth);
+
+        createBitmapTask(url, key, maxWidth);
         return new Size(0, 0);
     }
 
     private Bitmap getBitmapImpl(String url, int maxWidth) {
-        Log.e(TAG, "getBitmapImpl: " );
-        Bitmap bitmap = null;
-        if ((bitmap = getMemoryCacheBitmap(url)) != null) {
+        String key = getKeyFromUrl(url);
+        Bitmap bitmap = getMemoryCacheBitmap(key);
+        if (bitmap != null) {
             return bitmap;
         }
-        if ((bitmap = getDiskCacheBitmap(url, maxWidth)) != null) {
-            mMemoryCache.put(url, bitmap);
+        bitmap = getDiskCacheBitmap(key, maxWidth);
+        if (bitmap != null) {
+            mMemoryCache.put(key, bitmap);
+            mSizeCache.put(key, new Size(bitmap.getWidth(), bitmap.getHeight()));
             return bitmap;
         }
-        createBitmapTask(url, maxWidth);
+        createBitmapTask(url, key, maxWidth);
         return null;
     }
 
-    private Bitmap getMemoryCacheBitmap(String url) {
-        Log.e(TAG, "getMemoryCacheBitmap: ");
-        String key = getKeyFromUrl(url);
+    private Bitmap getMemoryCacheBitmap(String key) {
         return mMemoryCache.get(key);
     }
 
-    private Bitmap getDiskCacheBitmap(String url, int maxWidth) {
-        Log.e(TAG, "getDiskCacheBitmap: ");
+    private Bitmap getDiskCacheBitmap(String key, int maxWidth) {
         try {
-            String key = getKeyFromUrl(url);
             DiskLruCache.Snapshot snapshot = mDiskCache.get(key);
             if (snapshot != null) {
                 FileInputStream inputStream = (FileInputStream) snapshot.getInputStream(0);
@@ -178,10 +217,11 @@ public class BitmapResource  {
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeStream(inputStream, null, options);
                 inputStream.close();
+                int bitmapWidth = options.outWidth;
 
                 snapshot = mDiskCache.get(key);
                 inputStream = (FileInputStream) snapshot.getInputStream(0);
-                options.inSampleSize = options.outWidth > maxWidth ? Math.round((float)options.outWidth/(float)maxWidth) : 1;
+                options.inSampleSize = bitmapWidth > maxWidth ? Math.round((float)bitmapWidth/(float)maxWidth) : 1;
                 options.inPreferredConfig = Bitmap.Config.RGB_565;
                 options.inJustDecodeBounds = false;
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
@@ -198,13 +238,15 @@ public class BitmapResource  {
         return null;
     }
 
-    private void createBitmapTask(final String url, int maxWidth) {
+    private void createBitmapTask(final String url, final String key, int maxWidth) {
         if (mRequestingUrls.contains(url)) {
             Log.e(TAG, "createBitmapTask: is requesting");
+        } else if (mFailedUrls.containsKey(key) && mFailedUrls.get(key) >= MaxUrlFailedTime) {
+            Log.e(TAG, "createBitmapTask: is max failed time");
         } else {
-            Log.e(TAG, "createBitmapTask: key" + getKeyFromUrl(url) + " url: " + url );
+            Log.e(TAG, "createBitmapTask: key" + key + " url: " + url );
             mRequestingUrls.add(url);
-            BitmapRequest request = new BitmapRequest(url, new Response.Listener<Bitmap>() {
+            BitmapRequest request = new BitmapRequest(url, key, new Response.Listener<Bitmap>() {
                 @Override
                 public void onResponse(Bitmap bitmap) {
                     if (mListener != null) {
@@ -215,8 +257,14 @@ public class BitmapResource  {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    if (!mFailedUrls.containsKey(key)) {
+                        mFailedUrls.put(key, 1);
+                    } else {
+                        int failedTime = mFailedUrls.get(key);
+                        mFailedUrls.put(key, failedTime + 1);
+                    }
                     if (mListener != null) {
-                        mListener.taksBitmapFailed(error.getMessage());
+                        mListener.taksBitmapFailed(url, error.getMessage());
                     }
                 }
             });
@@ -236,12 +284,14 @@ public class BitmapResource  {
 
     public interface BitmapResourceListener {
         void taskBitmapFinish(String url);
-        void taksBitmapFailed(String error);
+        void taksBitmapFailed(String url, String error);
     }
 
     private class BitmapRequest extends ImageRequest {
-        public BitmapRequest(String url, Response.Listener<Bitmap> listener, Response.ErrorListener errorListener) {
+        private String key;
+        public BitmapRequest(String url, String key, Response.Listener<Bitmap> listener, Response.ErrorListener errorListener) {
             super(url, listener, 0, 0, ImageView.ScaleType.CENTER_INSIDE, Bitmap.Config.RGB_565, errorListener);
+            this.key = key;
         }
 
         @Override
@@ -262,7 +312,6 @@ public class BitmapResource  {
                     Log.e(TAG, "parseNetworkResponse: is not image");
                     return Response.error(new ParseError(response));
                 }
-                String key = getKeyFromUrl(getUrl());
                 DiskLruCache.Editor editor = mDiskCache.edit(key);
                 OutputStream outputStream = editor.newOutputStream(0);
                 outputStream.write(data);

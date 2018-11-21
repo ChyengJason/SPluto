@@ -15,7 +15,6 @@ import com.jscheng.spluto.view.resource.BitmapResource;
 import com.jscheng.spluto.view.resource.IconResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
-
 import java.util.List;
 
 /**
@@ -24,6 +23,7 @@ import java.util.List;
 public class MarkDownView extends View implements BitmapResource.BitmapResourceListener {
     private static final String TAG = "CJS";
     private PanelGroup mPanelGroup;
+
     public MarkDownView(Context context) {
         super(context);
         init(context);
@@ -80,18 +80,19 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        Log.e(TAG, "onLayout: "+ left + " , " + top );
-        mPanelGroup.layout(left, top, right, bottom);
+        mPanelGroup.layout();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mPanelGroup.draw(canvas);
         Rect visibleRect = new Rect();
         getLocalVisibleRect(visibleRect);
-        Log.e(TAG, "onDraw: left right: " + visibleRect.left + ", " + visibleRect. right);
-        Log.e(TAG, "onDraw: top bottom: " + visibleRect.top + ", " + visibleRect. bottom);
+        int x1 = visibleRect.left;
+        int y1 = visibleRect.top;
+        int x2 = visibleRect.right;
+        int y2 = visibleRect.bottom;
+        mPanelGroup.draw(canvas, x1, y1, x2, y2);
     }
 
     @Override
@@ -101,7 +102,7 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
     }
 
     @Override
-    public void taksBitmapFailed(String error) {
-        Log.e(TAG, "taksBitmapFailed: " + error );
+    public void taksBitmapFailed(String error, String url) {
+        Log.e(TAG, "taksBitmapFailed: error: " + error + " url: " + url );
     }
 }

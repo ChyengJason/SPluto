@@ -61,7 +61,7 @@ public class PictureLineSpan extends LineSpan {
     @Override
     public void measure(int maxWidth, int maxHeight) {
         mStaticLayout = new StaticLayout(mSpanBuilder, mTextPaint, maxWidth, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
-        loadBitmapSize(maxWidth, maxHeight);
+        loadBitmapSize(maxWidth);
         int width = mStaticLayout.getWidth();
         int height = imageHeight + mStaticLayout.getHeight() + 3 * PaddingResouce.getPannelSpacingPx();
         setWidth(width);
@@ -92,19 +92,25 @@ public class PictureLineSpan extends LineSpan {
     }
 
     private Bitmap loadBitmap(int maxWidth, int maxHeight) {
+        Log.e(TAG, "loadBitmap: "+ maxWidth );
         Bitmap bitmap = isDefualtImage ? IconResource.loadDefualtLoadingBitmap() : BitmapResource.getBitmap(url, maxWidth);
         return bitmap;
     }
 
-    private void loadBitmapSize(int maxWidth, int maxHeight) {
+    private void loadBitmapSize(int maxWidth) {
         isDefualtImage = false;
         Size size = BitmapResource.getBitmapSize(url, maxWidth);
         if (size.getWidth() <= 0 || size.getHeight() <= 0 ){
             isDefualtImage = true;
             size = IconResource.loadDefaultBitmapSize();
         }
-        imageWidth = size.getWidth();
-        imageHeight = size.getHeight();
+        if (size.getWidth() > maxWidth) {
+            imageWidth = maxWidth;
+            imageHeight = size.getHeight() * imageWidth / size.getWidth();
+        } else {
+            imageWidth = size.getWidth();
+            imageHeight = size.getHeight();
+        }
         Log.d(TAG, "loadBitmapSize: " + imageWidth + "x" + imageHeight);
     }
 }

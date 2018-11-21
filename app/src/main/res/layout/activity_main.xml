@@ -3,19 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/holo_blue_light">
+    android:background="@android:color/white">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="@string/app_name"/>
-    <ScrollView
+        android:layout_height="wrap_content"
+        android:text="@string/app_name">
+    </TextView>
+
+    <com.jscheng.spluto.MarkdownScrollView
+        android:id="@+id/main_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.jscheng.spluto.MarkDownView
-            android:id="@+id/main_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white">
-        </com.jscheng.spluto.MarkDownView>
-    </ScrollView>
+    </com.jscheng.spluto.MarkdownScrollView>
+
 </LinearLayout>

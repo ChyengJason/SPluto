@@ -2,6 +2,7 @@ package com.jscheng.spluto.util;
 
 import android.content.Context;
 import android.os.Environment;
+import android.support.annotation.IdRes;
 
 import java.io.*;
 
@@ -9,6 +10,22 @@ import java.io.*;
  * Created by chengjunsen on 2018/10/30.
  */
 public class FileUtil {
+    public static String readAsset(Context context, String fileName) {
+        StringBuilder content = new StringBuilder();
+        BufferedReader reader = null;
+        try {
+            InputStream inputStream = context.getResources().getAssets().open(fileName);
+            String line;
+            InputStreamReader bufferReader = new InputStreamReader(inputStream);
+            reader = new BufferedReader(bufferReader);
+            while ((line = reader.readLine()) != null) {
+                content.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content.toString();
+    }
 
     public static String readFile(String path) {
         BufferedReader reader = null;
