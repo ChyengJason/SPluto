@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.PanelGroup;
-import com.jscheng.spluto.view.PanelParser;
+import com.jscheng.spluto.view.PanelBuilder;
 import com.jscheng.spluto.view.resource.BitmapResource;
 import com.jscheng.spluto.view.resource.IconResource;
 import com.jscheng.spluto.view.resource.FontResouce;
@@ -60,7 +60,7 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
     }
 
     public void setMarkDownSource(String content) {
-        List<Panel> panels = PanelParser.parser(content);
+        List<Panel> panels = new PanelBuilder().build(content);
         mPanelGroup.setPanels(panels);
         postInvalidate();
     }

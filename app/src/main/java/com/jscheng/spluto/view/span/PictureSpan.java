@@ -16,13 +16,14 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.Size;
 
+import com.jscheng.spluto.view.Span;
 import com.jscheng.spluto.view.resource.BitmapResource;
 import com.jscheng.spluto.view.resource.IconResource;
 import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 
-public class PictureLineSpan extends LineSpan {
+public class PictureSpan extends Span {
     private static final String TAG = "CJS";
     private StaticLayout mStaticLayout;
     private SpannableStringBuilder mSpanBuilder;
@@ -34,8 +35,8 @@ public class PictureLineSpan extends LineSpan {
     private int imageWidth;
     private boolean isDefualtImage;
 
-    public PictureLineSpan(String url, String descripe) {
-        super(LineInnerPanelType.PICTURE_INNER_PANEL);
+    public PictureSpan(String url, String descripe) {
+        super(SpanType.PICTURE_INNER_PANEL);
         this.url = url;
         this.descripe = descripe;
         this.mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);

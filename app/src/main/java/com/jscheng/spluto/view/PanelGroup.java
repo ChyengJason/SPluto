@@ -3,7 +3,6 @@ package com.jscheng.spluto.view;
 import android.graphics.Canvas;
 import android.util.Log;
 
-import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 
 import java.util.ArrayList;

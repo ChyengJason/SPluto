@@ -2,13 +2,13 @@ package com.jscheng.spluto.view.panel;
 import android.graphics.Canvas;
 
 import com.jscheng.spluto.view.Panel;
-import com.jscheng.spluto.view.Part;
-import com.jscheng.spluto.view.span.LineSpan;
-import com.jscheng.spluto.view.span.PictureLineSpan;
-import com.jscheng.spluto.view.span.TextLineSpan;
+import com.jscheng.spluto.view.part.Part;
+import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.span.PictureSpan;
+import com.jscheng.spluto.view.span.SpanType;
+import com.jscheng.spluto.view.span.TextSpan;
 import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.PaddingResouce;
-import com.jscheng.spluto.view.part.ImagePart;
 import com.jscheng.spluto.view.part.PartType;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public abstract class ListPanel extends Panel {
     protected List<Part> mParts;
-    protected List<LineSpan> mInnerPanels;
+    protected List<Span> mInnerPanels;
     protected int mBackgroudColor;
     protected int mFontColor;
 
@@ -34,16 +34,15 @@ public abstract class ListPanel extends Panel {
         this.mParts.add(part);
         mParts.add(part);
         if (part.getPartType() != PartType.PART_IMAGE) {
-            if (mInnerPanels.isEmpty() || mInnerPanels.get(mInnerPanels.size() - 1).getmPanelType() != LineSpan.LineInnerPanelType.TEXT_INNER_PANEL) {
-                mInnerPanels.add(new TextLineSpan());
+            if (mInnerPanels.isEmpty() || mInnerPanels.get(mInnerPanels.size() - 1).getmPanelType() != SpanType.TEXT_INNER_PANEL) {
+                mInnerPanels.add(new TextSpan());
             }
-            TextLineSpan textInnerPanel = (TextLineSpan) mInnerPanels.get(mInnerPanels.size() - 1);
+            TextSpan textInnerPanel = (TextSpan) mInnerPanels.get(mInnerPanels.size() - 1);
             textInnerPanel.setBackGroundColor(mBackgroudColor);
             textInnerPanel.setFontColor(mFontColor);
             textInnerPanel.addTextPart(part);
         } else {
-            ImagePart imagePart = (ImagePart) part;
-            PictureLineSpan pictureInnerPanel = new PictureLineSpan(imagePart.getUrl(), imagePart.getDescripe());
+            PictureSpan pictureInnerPanel = new PictureSpan(part.getUrl(), part.getDescripe());
             mInnerPanels.add(pictureInnerPanel);
         }
     }
@@ -53,7 +52,7 @@ public abstract class ListPanel extends Panel {
         int width = defaultWidth - getHeadWidth() - PaddingResouce.getListMiddleSpacingPx();
         int height = 0;
         for (int i = 0; i < mInnerPanels.size(); i++) {
-            LineSpan innerPanel = mInnerPanels.get(i);
+            Span innerPanel = mInnerPanels.get(i);
             innerPanel.measure(width, defaultHeight);
             height += innerPanel.getHeight();
         }
@@ -66,7 +65,7 @@ public abstract class ListPanel extends Panel {
         int x = left + getHeadWidth() + PaddingResouce.getListMiddleSpacingPx();
         int y = top;
         for (int i = 0; i < mInnerPanels.size(); i++) {
-            LineSpan innerPanel = mInnerPanels.get(i);
+            Span innerPanel = mInnerPanels.get(i);
             innerPanel.layout(x, y, right, bottom);
             y += innerPanel.getHeight();
         }
@@ -78,7 +77,7 @@ public abstract class ListPanel extends Panel {
     public void draw(Canvas canvas) {
         drawHead(canvas);
         for (int i = 0; i < mInnerPanels.size(); i++) {
-            LineSpan innerPanel = mInnerPanels.get(i);
+            Span innerPanel = mInnerPanels.get(i);
             innerPanel.draw(canvas);
         }
     }

@@ -16,13 +16,14 @@ import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 
-import com.jscheng.spluto.view.Part;
+import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.part.Part;
 import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 import com.jscheng.spluto.view.part.PartType;
 
-public class TextLineSpan extends LineSpan {
+public class TextSpan extends Span {
     private StaticLayout mStaticLayout;
     private SpannableStringBuilder mSpanBuilder;
     private TextPaint mTextPaint;
@@ -33,8 +34,8 @@ public class TextLineSpan extends LineSpan {
     private boolean isStrike;
     private boolean isUnderLine;
 
-    public TextLineSpan() {
-        super(LineInnerPanelType.TEXT_INNER_PANEL);
+    public TextSpan() {
+        super(SpanType.TEXT_INNER_PANEL);
         mSpanBuilder = new SpannableStringBuilder();
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mBackGroundColor = ColorResource.getDefaultBackgroundColor();
