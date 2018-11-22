@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.part.Part;
 import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.resource.PaddingResouce;
 import com.jscheng.spluto.view.span.PictureSpan;
 import com.jscheng.spluto.view.span.SpanType;
 import com.jscheng.spluto.view.span.TextSpan;
@@ -18,11 +19,11 @@ import java.util.List;
 public class TextPanel extends Panel {
     private static final String TAG = "CJS";
     private List<Part> mParts;
-    private List<Span> mInnerPanels;
+    private List<Span> mSpans;
 
     public TextPanel() {
         mParts = new ArrayList<>();
-        mInnerPanels = new ArrayList<>();
+        mSpans = new ArrayList<>();
     }
 
     @Override
@@ -30,14 +31,15 @@ public class TextPanel extends Panel {
         for (Part part : list) {
             mParts.add(part);
             if (part.getPartType() != PartType.PART_IMAGE) {
-                if (mInnerPanels.isEmpty() || mInnerPanels.get(mInnerPanels.size() - 1).getmPanelType() != SpanType.TEXT_INNER_PANEL) {
-                    mInnerPanels.add(new TextSpan());
+                if (mSpans.isEmpty() || mSpans.get(mSpans.size() - 1).getSpanType() != SpanType.TEXT_SPAN) {
+                    mSpans.add(new TextSpan());
                 }
-                TextSpan textInnerPanel = (TextSpan) mInnerPanels.get(mInnerPanels.size() - 1);
-                textInnerPanel.addTextPart(part);
+                TextSpan textSpan = (TextSpan) mSpans.get(mSpans.size() - 1);
+                textSpan.addPart(part);
             } else {
-                PictureSpan pictureInnerPanel = new PictureSpan(part.getUrl(), part.getDescripe());
-                mInnerPanels.add(pictureInnerPanel);
+                PictureSpan picSpan = new PictureSpan();
+                picSpan.setPart(part);
+                mSpans.add(picSpan);
             }
         }
     }
@@ -45,11 +47,11 @@ public class TextPanel extends Panel {
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
         int width = defaultWidth;
-        int height = 0;
-        for (int i = 0; i < mInnerPanels.size(); i++) {
-            Span innerPanel = mInnerPanels.get(i);
-            innerPanel.measure(defaultWidth, defaultHeight);
-            height += innerPanel.getHeight();
+        int height = PaddingResouce.getPannelSpacingPx() * 2;
+        for (int i = 0; i < mSpans.size(); i++) {
+            Span span = mSpans.get(i);
+            span.measure(defaultWidth, defaultHeight);
+            height += span.getHeight();
         }
         setWidth(width);
         setHeight(height);
@@ -58,11 +60,11 @@ public class TextPanel extends Panel {
     @Override
     public void layout(int left, int top, int right, int bottom) {
         int x = left;
-        int y = top;
-        for (int i = 0; i < mInnerPanels.size(); i++) {
-            Span innerPanel = mInnerPanels.get(i);
-            innerPanel.layout(x, y, right, bottom);
-            y += innerPanel.getHeight();
+        int y = top + PaddingResouce.getPannelSpacingPx();
+        for (int i = 0; i < mSpans.size(); i++) {
+            Span span = mSpans.get(i);
+            span.layout(x, y, right, bottom);
+            y += span.getHeight();
         }
         setX(left);
         setY(top);
@@ -70,9 +72,9 @@ public class TextPanel extends Panel {
 
     @Override
     public void draw(Canvas canvas) {
-        for (int i = 0; i < mInnerPanels.size(); i++) {
-            Span innerPanel = mInnerPanels.get(i);
-            innerPanel.draw(canvas);
+        for (int i = 0; i < mSpans.size(); i++) {
+            Span span = mSpans.get(i);
+            span.draw(canvas);
         }
     }
 }

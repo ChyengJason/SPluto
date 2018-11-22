@@ -31,7 +31,7 @@ public class PanelGroup {
         height = PaddingResouce.getTopPaddingPx();
         for (int i = 0; i < mPanels.size(); i++) {
             Panel panel = mPanels.get(i);
-            panel.measure(width, 0);
+            panel.measure(width, windowHeight);
             height += panel.getHeight();
         }
         height += PaddingResouce.getBottomPaddingPx();

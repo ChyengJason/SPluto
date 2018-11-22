@@ -34,7 +34,7 @@ public class ColorResource {
     }
 
     public static int getDefaultBackgroundColor() {
-        return 0xFFFFFFFF;
+        return 0x00FFFFFF;
     }
 
     public static int getQuoteBackgroudColor() {

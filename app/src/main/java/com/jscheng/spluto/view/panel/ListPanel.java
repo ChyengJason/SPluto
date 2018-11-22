@@ -1,15 +1,21 @@
 package com.jscheng.spluto.view.panel;
 import android.graphics.Canvas;
+import android.widget.RatingBar;
 
+import com.jscheng.spluto.core.parser.ListType;
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.part.Part;
 import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.span.OrderHeadSpan;
 import com.jscheng.spluto.view.span.PictureSpan;
+import com.jscheng.spluto.view.span.QuoteHeadSpan;
 import com.jscheng.spluto.view.span.SpanType;
 import com.jscheng.spluto.view.span.TextSpan;
 import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 import com.jscheng.spluto.view.part.PartType;
+import com.jscheng.spluto.view.span.TodoHeadSpan;
+import com.jscheng.spluto.view.span.UnorderHeadSpan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,45 +23,80 @@ import java.util.List;
 /**
  * Created by chengjunsen on 2018/11/15.
  */
-public abstract class ListPanel extends Panel {
-    protected List<Part> mParts;
-    protected List<Span> mInnerPanels;
-    protected int mBackgroudColor;
-    protected int mFontColor;
+public class ListPanel extends Panel {
+    private ListType mListType;
+    private List<Part> mParts;
+    private List<Span> mSpans;
+    private Span mHeadSpan;
+    private int mBackgroudColor;
+    private int mFontColor;
+    private boolean isStrike;
 
-    public ListPanel() {
-        this.mInnerPanels = new ArrayList<>();
-        this.mBackgroudColor = ColorResource.getDefaultBackgroundColor();
-        this.mFontColor = ColorResource.getTextFontColor();
+    public ListPanel(ListType mListType, int orderNum) {
+        this.mListType = mListType;
+        this.mSpans = new ArrayList<>();
+        this.mHeadSpan = createHeadSpan(orderNum);
+        initProperity();
+    }
+
+    private void initProperity() {
+        this.mFontColor = mListType == ListType.QUOTE ? ColorResource.getQuoteFontColor() : ColorResource.getTextFontColor();
+        this.mBackgroudColor = mListType == ListType.QUOTE ? ColorResource.getQuoteBackgroudColor() : ColorResource.getDefaultBackgroundColor();
+        this.isStrike = mListType == ListType.TODO_LIST;
+    }
+
+    private Span createHeadSpan(int orderNum) {
+        switch (mListType) {
+            case UNTODO_LIST:
+                return new TodoHeadSpan(false);
+            case TODO_LIST:
+                return new TodoHeadSpan(true);
+            case ORDERED_LIST:
+                return new OrderHeadSpan(orderNum);
+            case QUOTE:
+                return new QuoteHeadSpan();
+            case UNORDERED_LIST:
+                return new UnorderHeadSpan();
+            default:
+                return new UnorderHeadSpan();
+        }
     }
 
     @Override
     public void setParts(List<Part> parts) {
-        mParts = parts;
+        this.mParts = parts;
         for (Part part : parts) {
             if (part.getPartType() != PartType.PART_IMAGE) {
-                if (mInnerPanels.isEmpty() || mInnerPanels.get(mInnerPanels.size() - 1).getmPanelType() != SpanType.TEXT_INNER_PANEL) {
-                    mInnerPanels.add(new TextSpan());
+                if (mSpans.isEmpty() || mSpans.get(mSpans.size() - 1).getSpanType() != SpanType.TEXT_SPAN) {
+                    mSpans.add(new TextSpan());
                 }
-                TextSpan textInnerPanel = (TextSpan) mInnerPanels.get(mInnerPanels.size() - 1);
-                textInnerPanel.setBackGroundColor(mBackgroudColor);
-                textInnerPanel.setFontColor(mFontColor);
-                textInnerPanel.addTextPart(part);
+                TextSpan textSpan = (TextSpan) mSpans.get(mSpans.size() - 1);
+                textSpan.setBackGroundColor(mBackgroudColor);
+                textSpan.setFontColor(mFontColor);
+                textSpan.setStrike(isStrike);
+                textSpan.addPart(part);
             } else {
-                PictureSpan pictureInnerPanel = new PictureSpan(part.getUrl(), part.getDescripe());
-                mInnerPanels.add(pictureInnerPanel);
+                PictureSpan picSpan = new PictureSpan();
+                picSpan.setPart(part);
+                mSpans.add(picSpan);
             }
         }
     }
 
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
-        int width = defaultWidth - getHeadWidth() - PaddingResouce.getListMiddleSpacingPx();
+        int width =  defaultWidth - PaddingResouce.getListMiddleSpacingPx();
+        mHeadSpan.measure(defaultWidth, 0);
+        width -= mHeadSpan.getWidth();
         int height = 0;
-        for (int i = 0; i < mInnerPanels.size(); i++) {
-            Span innerPanel = mInnerPanels.get(i);
-            innerPanel.measure(width, defaultHeight);
-            height += innerPanel.getHeight();
+        for (int i = 0; i < mSpans.size(); i++) {
+            Span span = mSpans.get(i);
+            span.measure(width, defaultHeight);
+            height += span.getHeight();
+        }
+        height += PaddingResouce.getPannelSpacingPx() * 2;
+        if (mListType == ListType.QUOTE) {
+            mHeadSpan.measure(mHeadSpan.getWidth(), height);
         }
         setWidth(defaultWidth);
         setHeight(height);
@@ -63,12 +104,17 @@ public abstract class ListPanel extends Panel {
 
     @Override
     public void layout(int left, int top, int right, int bottom) {
-        int x = left + getHeadWidth() + PaddingResouce.getListMiddleSpacingPx();
-        int y = top;
-        for (int i = 0; i < mInnerPanels.size(); i++) {
-            Span innerPanel = mInnerPanels.get(i);
-            innerPanel.layout(x, y, right, bottom);
-            y += innerPanel.getHeight();
+        int y = top + PaddingResouce.getPannelSpacingPx();
+        if (mListType == ListType.QUOTE) {
+            mHeadSpan.layout(left, top, right, bottom);
+        } else {
+            mHeadSpan.layout(left, y, right, bottom);
+        }
+        int x = left + mHeadSpan.getWidth() + PaddingResouce.getListMiddleSpacingPx();
+        for (int i = 0; i < mSpans.size(); i++) {
+            Span span = mSpans.get(i);
+            span.layout(x, y, right, bottom);
+            y += span.getHeight();
         }
         setX(left);
         setY(top);
@@ -76,14 +122,10 @@ public abstract class ListPanel extends Panel {
 
     @Override
     public void draw(Canvas canvas) {
-        drawHead(canvas);
-        for (int i = 0; i < mInnerPanels.size(); i++) {
-            Span innerPanel = mInnerPanels.get(i);
-            innerPanel.draw(canvas);
+        mHeadSpan.draw(canvas);
+        for (int i = 0; i < mSpans.size(); i++) {
+            Span span = mSpans.get(i);
+            span.draw(canvas);
         }
     }
-
-    protected abstract void drawHead(Canvas canvas);
-
-    protected abstract int getHeadWidth();
 }

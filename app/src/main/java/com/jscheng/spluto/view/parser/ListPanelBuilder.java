@@ -7,12 +7,7 @@ import com.jscheng.spluto.core.bean.ListBlock;
 import com.jscheng.spluto.core.parser.BlockType;
 import com.jscheng.spluto.core.parser.ListType;
 import com.jscheng.spluto.view.panel.ListPanel;
-import com.jscheng.spluto.view.panel.OrderListPanel;
 import com.jscheng.spluto.view.Panel;
-import com.jscheng.spluto.view.panel.QuotePanel;
-import com.jscheng.spluto.view.panel.TodoListPanel;
-import com.jscheng.spluto.view.panel.UnorderListPanel;
-import com.jscheng.spluto.view.part.Part;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,18 +47,7 @@ public class ListPanelBuilder implements IPanelBuilder {
     }
 
     private static ListPanel parseLineData(Block block, ListType listType, int index) {
-        ListPanel panel = null;
-        if (listType == ListType.ORDERED_LIST) {
-            panel = new OrderListPanel(index);
-        } else if (listType == ListType.UNORDERED_LIST) {
-            panel = new UnorderListPanel();
-        } else if (listType == ListType.TODO_LIST) {
-            panel = new TodoListPanel(true);
-        } else if (listType == ListType.UNTODO_LIST) {
-            panel = new TodoListPanel(false);
-        } else if (listType == ListType.QUOTE) {
-            panel = new QuotePanel();
-        }
+        ListPanel panel = new ListPanel(listType, index);
         if (panel != null) {
             if (block.getType() == BlockType.HEADLINE) {
                 panel.setParts(PartBuilder.buildParts((HeadLineBlock) block));

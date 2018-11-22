@@ -15,45 +15,48 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 
 import com.jscheng.spluto.view.Span;
 import com.jscheng.spluto.view.part.Part;
 import com.jscheng.spluto.view.resource.ColorResource;
-import com.jscheng.spluto.view.resource.FontResouce;
-import com.jscheng.spluto.view.resource.PaddingResouce;
+import com.jscheng.spluto.view.resource.FontResource;
 import com.jscheng.spluto.view.part.PartType;
+import com.jscheng.spluto.view.resource.PaddingResouce;
 
 public class TextSpan extends Span {
     private StaticLayout mStaticLayout;
     private SpannableStringBuilder mSpanBuilder;
     private TextPaint mTextPaint;
-    private int mBackGroundColor;
-    private int mFontColor;
-    private boolean isBold;
-    private boolean isItalic;
-    private boolean isStrike;
-    private boolean isUnderLine;
 
     public TextSpan() {
-        super(SpanType.TEXT_INNER_PANEL);
-        mSpanBuilder = new SpannableStringBuilder();
-        mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        mBackGroundColor = ColorResource.getDefaultBackgroundColor();
-        mFontColor = ColorResource.getTextFontColor();
-        isBold = false;
-        isItalic = false;
-        isStrike = false;
-        isUnderLine = false;
+        super(SpanType.TEXT_SPAN);
+        this.mSpanBuilder = new SpannableStringBuilder();
+        this.mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
     }
 
-    public void addTextPart(Part part) {
+    public void addPart(Part part) {
+        Log.e("CJS", "addPart: " + part.getText());
         int begin = mSpanBuilder.length();
         int end = mSpanBuilder.length() + part.getText().length();
         mSpanBuilder.append(part.getText());
-        int fontSize = FontResouce.getFontSize(part.getFontLevel());
-        setProperity(new AbsoluteSizeSpan(fontSize), begin, end);
-        setProperity(new BackgroundColorSpan(mBackGroundColor), begin, end);
 
+        setFontSize(part, begin, end);
+        setBackgroundColor(part, begin, end);
+        setFontColor(part, begin, end);
+        setStyle(part, begin, end);
+    }
+
+    private void setFontSize(Part part, int begin, int end) {
+        if (isSetFontSize) {
+            setProperity(new AbsoluteSizeSpan(mFontSize), begin, end);
+        } else {
+            int fontSize = FontResource.getFontSize(part.getFontLevel());
+            setProperity(new AbsoluteSizeSpan(fontSize), begin, end);
+        }
+    }
+
+    private void setFontColor(Part part, int begin, int end) {
         if (part.getPartType() == PartType.PART_TEXT) {
             setProperity(new ForegroundColorSpan(mFontColor), begin, end);
         } else if (part.getPartType() == PartType.PART_CODE) {
@@ -64,7 +67,13 @@ public class TextSpan extends Span {
             setProperity(new ForegroundColorSpan(ColorResource.getLinkFontColor()), begin, end);
             setProperity(new UnderlineSpan(), begin, end);
         }
+    }
 
+    private void setBackgroundColor(Part part, int begin, int end) {
+        setProperity(new BackgroundColorSpan(mBackGroundColor), begin, end);
+    }
+
+    private void setStyle(Part part, int begin, int end) {
         if (isBold || part.isBold() || part.getFontLevel() > 0) {
             setProperity(new StyleSpan(Typeface.BOLD), begin, end);
         }
@@ -83,35 +92,11 @@ public class TextSpan extends Span {
         mSpanBuilder.setSpan(properitySpan, begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
     }
 
-    public void setBackGroundColor(int mBackGroundColor) {
-        this.mBackGroundColor = mBackGroundColor;
-    }
-
-    public void setFontColor(int mFontColor) {
-        this.mFontColor = mFontColor;
-    }
-
-    public void setBold(boolean bold) {
-        isBold = bold;
-    }
-
-    public void setItalic(boolean italic) {
-        isItalic = italic;
-    }
-
-    public void setStrike(boolean strike) {
-        isStrike = strike;
-    }
-
-    public void setUnderLine(boolean underLine) {
-        isUnderLine = underLine;
-    }
-
     @Override
     public void measure(int maxWidth, int maxHeight) {
         mStaticLayout = new StaticLayout(mSpanBuilder, mTextPaint, maxWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f, PaddingResouce.getLineSpacingPx(), false);
         int width = mStaticLayout.getWidth();
-        int height = (int)(mStaticLayout.getHeight() + 2 * PaddingResouce.getPannelSpacingPx());
+        int height = mStaticLayout.getHeight();
         setWidth(width);
         setHeight(height);
     }
@@ -119,7 +104,7 @@ public class TextSpan extends Span {
     @Override
     public void draw(Canvas canvas) {
         canvas.save();
-        canvas.translate(getX(), getY() + (int)PaddingResouce.getPannelSpacingPx());
+        canvas.translate(getX(), getY());
         mStaticLayout.draw(canvas);
         canvas.restore();
     }
@@ -129,4 +114,5 @@ public class TextSpan extends Span {
         setX(left);
         setY(top);
     }
+
 }

@@ -29,8 +29,9 @@ public class CodePanelBuilder implements IPanelBuilder{
         CodePanel panel = new CodePanel();
         ValuePart valuePart = codeBlock.getValuePart();
         Part part = new Part.Builder().
-                setType(PartType.PART_TEXT).
+                setType(PartType.PART_CODE).
                 setValue(valuePart.getValue()).
+                setFontLevel(0).
                 build();
         panel.setParts(Arrays.asList(part));
         return Arrays.asList((Panel)panel);

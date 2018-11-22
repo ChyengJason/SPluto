@@ -7,7 +7,7 @@ import android.support.annotation.ColorInt;
 import com.jscheng.spluto.util.DipUtil;
 import com.jscheng.spluto.util.FontUtil;
 
-public class FontResouce {
+public class FontResource {
     private static final int FONT_DP_IMAGE = 15;
     private static int FONT_PX_IMAGE;
 

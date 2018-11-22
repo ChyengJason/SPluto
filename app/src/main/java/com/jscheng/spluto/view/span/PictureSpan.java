@@ -1,6 +1,5 @@
 package com.jscheng.spluto.view.span;
 
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -15,12 +14,12 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.Size;
-
 import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.part.Part;
 import com.jscheng.spluto.view.resource.BitmapResource;
 import com.jscheng.spluto.view.resource.IconResource;
 import com.jscheng.spluto.view.resource.ColorResource;
-import com.jscheng.spluto.view.resource.FontResouce;
+import com.jscheng.spluto.view.resource.FontResource;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 
 public class PictureSpan extends Span {
@@ -35,28 +34,20 @@ public class PictureSpan extends Span {
     private int imageWidth;
     private boolean isDefualtImage;
 
-    public PictureSpan(String url, String descripe) {
-        super(SpanType.PICTURE_INNER_PANEL);
-        this.url = url;
-        this.descripe = descripe;
+    public PictureSpan() {
+        super(SpanType.PICTURE_SPAN);
         this.mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         this.mImagePaint = new Paint();
         this.imageHeight = 0;
         this.imageWidth = 0;
         this.mSpanBuilder = new SpannableStringBuilder();
         this.isDefualtImage = false;
+    }
+
+    public void setPart(Part part) {
+        this.url = part.getUrl();
+        this.descripe = part.getDescripe();
         initSpanBuilder();
-    }
-
-    private void initSpanBuilder() {
-        mSpanBuilder.append(descripe);
-        setProperity(new ForegroundColorSpan(ColorResource.getImageFontColor()), 0, descripe.length());
-        setProperity(new AbsoluteSizeSpan(FontResouce.getImageFontSize()), 0, descripe.length());
-        setProperity(new BackgroundColorSpan(ColorResource.getImageFontBackgroudColor()), 0, descripe.length());
-    }
-
-    private void setProperity(Object properitySpan, int begin, int end) {
-        mSpanBuilder.setSpan(properitySpan, begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
     }
 
     @Override
@@ -64,7 +55,7 @@ public class PictureSpan extends Span {
         mStaticLayout = new StaticLayout(mSpanBuilder, mTextPaint, maxWidth, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
         loadBitmapSize(maxWidth);
         int width = mStaticLayout.getWidth();
-        int height = imageHeight + mStaticLayout.getHeight() + 3 * PaddingResouce.getPannelSpacingPx();
+        int height = imageHeight + mStaticLayout.getHeight() + PaddingResouce.getPannelSpacingPx();
         setWidth(width);
         setHeight(height);
     }
@@ -72,7 +63,7 @@ public class PictureSpan extends Span {
     @Override
     public void draw(Canvas canvas) {
         canvas.save();
-        canvas.translate(getX(), getY() + PaddingResouce.getPannelSpacingPx());
+        canvas.translate(getX(), getY());
         int left = (getWidth() - imageWidth)/2;
         int right = left + imageWidth;
         Bitmap bitmap = loadBitmap(getWidth(), getHeight());
@@ -90,6 +81,18 @@ public class PictureSpan extends Span {
     public void layout(int left, int top, int right, int bottom) {
         setX(left);
         setY(top);
+    }
+
+    private void initSpanBuilder() {
+        mSpanBuilder.clearSpans();
+        mSpanBuilder.append(descripe);
+        setProperity(new ForegroundColorSpan(ColorResource.getImageFontColor()), 0, descripe.length());
+        setProperity(new AbsoluteSizeSpan(FontResource.getImageFontSize()), 0, descripe.length());
+        setProperity(new BackgroundColorSpan(ColorResource.getImageFontBackgroudColor()), 0, descripe.length());
+    }
+
+    private void setProperity(Object properitySpan, int begin, int end) {
+        mSpanBuilder.setSpan(properitySpan, begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
     }
 
     private Bitmap loadBitmap(int maxWidth, int maxHeight) {

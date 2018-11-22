@@ -4,16 +4,14 @@ package com.jscheng.spluto.view.panel;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
+import android.util.Log;
 
 import com.jscheng.spluto.view.Panel;
-import com.jscheng.spluto.view.Span;
 import com.jscheng.spluto.view.part.Part;
 import com.jscheng.spluto.view.resource.ColorResource;
-import com.jscheng.spluto.view.resource.FontResouce;
+import com.jscheng.spluto.view.resource.FontResource;
 import com.jscheng.spluto.view.resource.PaddingResouce;
+import com.jscheng.spluto.view.span.TextSpan;
 
 import java.util.List;
 
@@ -21,31 +19,33 @@ import java.util.List;
  * Created by chengjunsen on 2018/11/15.
  */
 public class CodePanel extends Panel {
-    private List<Part> mParts;
-    private StaticLayout mStaticLayout;
-    private TextPaint mTextPaint;
+    private Part mPart;
     private Paint mBackgroundPaint;
-    private String mCodeText;
+    private TextSpan mSpan;
 
     public CodePanel() {
-        mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        this.mSpan = new TextSpan();
         mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setColor(ColorResource.getCodePannelFontColor());
-        mTextPaint.setTextSize(FontResouce.getCodePanelFontSize());
         mBackgroundPaint.setColor(ColorResource.getCodePanelBackgroundColor());
     }
 
     @Override
     public void setParts(List<Part> list) {
-        this.mParts = list;
-        this.mCodeText = !mParts.isEmpty() ? mParts.get(0).getValue() : "";
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+        this.mPart = list.get(0);
+        this.mSpan.setFontColor(ColorResource.getCodePannelFontColor());
+        this.mSpan.setFontSize(FontResource.getCodePanelFontSize());
+        this.mSpan.addPart(mPart);
     }
 
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
         int width = defaultWidth - 2 * PaddingResouce.getCodePanelLeftRightPadding();
-        mStaticLayout = new StaticLayout(mCodeText, mTextPaint, width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0, false);
-        int height = mStaticLayout.getHeight() + 2 * PaddingResouce.getPannelSpacingPx();
+        mSpan.measure(width, defaultHeight);
+        int height = mSpan.getHeight() + 2 * PaddingResouce.getPannelSpacingPx() +  PaddingResouce.getCodePanelTopBottomPadding();
+        Log.e("CJS", "code measure:  " +  mSpan.getHeight());
         setWidth(defaultWidth);
         setHeight(height);
     }
@@ -54,16 +54,17 @@ public class CodePanel extends Panel {
     public void draw(Canvas canvas) {
         canvas.save();
         canvas.translate(getX(), getY() + PaddingResouce.getPannelSpacingPx());
-        Rect backgroundRect = new Rect(0, 0, getWidth(), getHeight() - PaddingResouce.getPannelSpacingPx());
+        Rect backgroundRect = new Rect(0, 0, getWidth(), mSpan.getHeight() + PaddingResouce.getCodePanelTopBottomPadding());
         canvas.drawRect(backgroundRect, mBackgroundPaint);
-
-        canvas.translate(PaddingResouce.getCodePanelLeftRightPadding(), PaddingResouce.getCodePanelTopBottomPadding());
-        mStaticLayout.draw(canvas);
         canvas.restore();
+        mSpan.draw(canvas);
     }
 
     @Override
     public void layout(int left, int top, int right, int bottom) {
+        int x = left + PaddingResouce.getCodePanelLeftRightPadding();
+        int y = top + PaddingResouce.getPannelSpacingPx() + PaddingResouce.getCodePanelTopBottomPadding();
+        mSpan.layout(x, y, right, bottom);
         setX(left);
         setY(top);
     }

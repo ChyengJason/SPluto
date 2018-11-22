@@ -1,4 +1,4 @@
-package com.jscheng.spluto.view.panel;
+package com.jscheng.spluto.view.span;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -6,14 +6,14 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Size;
 
+import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.resource.FontResource;
 import com.jscheng.spluto.view.resource.IconResource;
-import com.jscheng.spluto.view.resource.FontResouce;
-import com.jscheng.spluto.view.resource.PaddingResouce;
 
 /**
- * Created by chengjunsen on 2018/11/15.
+ * Created By Chengjunsen on 2018/11/22
  */
-public class TodoListPanel extends ListPanel {
+public class TodoHeadSpan extends Span {
     private Paint mHeadPaint;
     private int checkboxHeight;
     private int checkboxWidth;
@@ -21,7 +21,8 @@ public class TodoListPanel extends ListPanel {
     private boolean isChecked;
     private int mLineHeight;
 
-    public TodoListPanel(boolean isChecked) {
+    public TodoHeadSpan(boolean isChecked) {
+        super(SpanType.HEAD_SPAN);
         this.mHeadPaint = new Paint();
         this.isChecked = isChecked;
         loadCheckBoxBitmap();
@@ -29,16 +30,22 @@ public class TodoListPanel extends ListPanel {
 
     private void loadCheckBoxBitmap() {
         Size size = IconResource.loadDefaultCheckBoxSize();
-        mLineHeight = FontResouce.getFontHeight(0);
+        mLineHeight = FontResource.getFontHeight(0);
         checkboxHeight = size.getHeight();
         checkboxWidth = size.getWidth();
         checkboxBitmap = isChecked ? IconResource.loadCheckBoxBitmap() : IconResource.loadUnCheckBoxBitmap();
     }
 
     @Override
-    protected void drawHead(Canvas canvas) {
+    public void measure(int maxWidth, int maxHeight) {
+        setWidth(checkboxWidth);
+        setHeight(checkboxHeight);
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
         canvas.save();
-        canvas.translate(getX(), getY() + PaddingResouce.getPannelSpacingPx());
+        canvas.translate(getX(), getY());
         if (checkboxBitmap != null) {
             int destTop = (mLineHeight - checkboxHeight) / 2;
             int destBottom = destTop + checkboxHeight;
@@ -50,7 +57,8 @@ public class TodoListPanel extends ListPanel {
     }
 
     @Override
-    protected int getHeadWidth() {
-        return checkboxWidth;
+    public void layout(int left, int top, int right, int bottom) {
+        setX(left);
+        setY(top);
     }
 }

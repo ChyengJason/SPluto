@@ -20,7 +20,7 @@ public class PaddingResouce {
     private static final int PANNEL_SPACING_DP = 6;
     private static int LINE_SPACING_PX;
 
-    private static final int LINE_SPACING_DP = 8;
+    private static final int LINE_SPACING_DP = 6;
     private static int PANNEL_SPACING_PX;
 
     private static final int LIST_MIDDLE_SPACING_DP = 6;
@@ -29,7 +29,7 @@ public class PaddingResouce {
     private static final int QUOTELIST_HEAD_WIDTH_DP = 4;
     private static int QUOTELIST_HEAD_WIDTH_PX;
 
-    private static final int CODE_PANEL_LEFT_RIGHT_PADDING_DP = 5;
+    private static final int CODE_PANEL_LEFT_RIGHT_PADDING_DP = 10;
     private static int CODE_PANEL_LEFT_RIGHT_PADDING_PX;
 
     private static final int CODE_PANEL_TOP_BOTTOM_PADDING_DP = 10;

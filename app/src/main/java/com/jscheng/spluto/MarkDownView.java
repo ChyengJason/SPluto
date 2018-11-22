@@ -13,7 +13,7 @@ import com.jscheng.spluto.view.PanelGroup;
 import com.jscheng.spluto.view.PanelBuilder;
 import com.jscheng.spluto.view.resource.BitmapResource;
 import com.jscheng.spluto.view.resource.IconResource;
-import com.jscheng.spluto.view.resource.FontResouce;
+import com.jscheng.spluto.view.resource.FontResource;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
 
     private void init(Context context) {
         this.mPanelGroup = new PanelGroup();
-        FontResouce.register(context);
+        FontResource.register(context);
         PaddingResouce.register(context);
         IconResource.register(context);
         BitmapResource.register(context);
@@ -53,7 +53,7 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        FontResouce.unRegister();
+        FontResource.unRegister();
         PaddingResouce.unRegister();
         IconResource.unRegister();
         BitmapResource.unRegister();

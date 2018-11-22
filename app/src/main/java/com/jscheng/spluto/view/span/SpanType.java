@@ -5,7 +5,9 @@ package com.jscheng.spluto.view.span;
  */
 public enum SpanType {
     // 图片
-    PICTURE_INNER_PANEL,
+    PICTURE_SPAN,
     // 文本
-    TEXT_INNER_PANEL
+    TEXT_SPAN,
+    // 头部
+    HEAD_SPAN
 }
