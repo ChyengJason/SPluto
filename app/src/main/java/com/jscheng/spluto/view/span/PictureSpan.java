@@ -55,7 +55,7 @@ public class PictureSpan extends Span {
         mStaticLayout = new StaticLayout(mSpanBuilder, mTextPaint, maxWidth, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
         loadBitmapSize(maxWidth);
         int width = mStaticLayout.getWidth();
-        int height = imageHeight + mStaticLayout.getHeight() + PaddingResouce.getPannelSpacingPx();
+        int height = imageHeight + mStaticLayout.getHeight() + 3 * PaddingResouce.getPannelSpacingPx();
         setWidth(width);
         setHeight(height);
     }
@@ -66,7 +66,7 @@ public class PictureSpan extends Span {
         canvas.translate(getX(), getY());
         int left = (getWidth() - imageWidth)/2;
         int right = left + imageWidth;
-        Bitmap bitmap = loadBitmap(getWidth(), getHeight());
+        Bitmap bitmap = loadBitmap(imageWidth, imageHeight);
         if (bitmap != null) {
             Rect resRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
             Rect destrect = new Rect(left, 0, right, imageHeight);

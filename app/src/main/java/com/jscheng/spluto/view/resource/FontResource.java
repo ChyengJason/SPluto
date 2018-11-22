@@ -8,29 +8,29 @@ import com.jscheng.spluto.util.DipUtil;
 import com.jscheng.spluto.util.FontUtil;
 
 public class FontResource {
-    private static final int FONT_DP_IMAGE = 15;
+    private static final int FONT_DP_IMAGE = 14;
     private static int FONT_PX_IMAGE;
 
-    private static final int FONT_DP_CODE_PANEL = 15;
+    private static final int FONT_DP_CODE_PANEL = 14;
     private static int FONT_PX_CODE_PANEL;
 
-    private static final int FONT_DP_LEVEL_0 = 18;
+    private static final int FONT_DP_LEVEL_0 = 19;
     private static int FONT_PX_LEVEL_0;
     private static int FONT_PX_HEIGHT_0;
 
-    private static final int FONT_DP_LEVEL_1 = 22;
+    private static final int FONT_DP_LEVEL_1 = 18;
     private static int FONT_PX_LEVEL_1;
     private static int FONT_PX_HEIGHT_1;
 
-    private static final int FONT_DP_LEVEL_2 = 21;
+    private static final int FONT_DP_LEVEL_2 = 17;
     private static int FONT_PX_LEVEL_2;
     private static int FONT_PX_HEIGHT_2;
 
-    private static final int FONT_DP_LEVEL_3 = 20;
+    private static final int FONT_DP_LEVEL_3 = 16;
     private static int FONT_PX_LEVEL_3;
     private static int FONT_PX_HEIGHT_3;
 
-    private static final int FONT_DP_LEVEL_4 = 19;
+    private static final int FONT_DP_LEVEL_4 = 15;
     private static int FONT_PX_LEVEL_4;
     private static int FONT_PX_HEIGHT_4;
 
