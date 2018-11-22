@@ -66,13 +66,9 @@ public class ListPanelBuilder implements IPanelBuilder {
         }
         if (panel != null) {
             if (block.getType() == BlockType.HEADLINE) {
-                for (Part part : PartBuilder.buildParts((HeadLineBlock) block)) {
-                    panel.addPart(part);
-                }
+                panel.setParts(PartBuilder.buildParts((HeadLineBlock) block));
             } else if (block.getType() == BlockType.ROW) {
-                for (Part part : PartBuilder.buildParts((CommonTextBlock) block)) {
-                    panel.addPart(part);
-                }
+                panel.setParts(PartBuilder.buildParts((CommonTextBlock) block));
             }
         }
         return panel;

@@ -6,6 +6,8 @@ import com.jscheng.spluto.core.bean.ValuePart;
 import com.jscheng.spluto.core.parser.BlockType;
 import com.jscheng.spluto.view.panel.CodePanel;
 import com.jscheng.spluto.view.Panel;
+import com.jscheng.spluto.view.part.Part;
+import com.jscheng.spluto.view.part.PartType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +28,11 @@ public class CodePanelBuilder implements IPanelBuilder{
     private List<Panel> parseCodeBlock(CodeBlock codeBlock) {
         CodePanel panel = new CodePanel();
         ValuePart valuePart = codeBlock.getValuePart();
-        panel.setValue(valuePart.getValue());
+        Part part = new Part.Builder().
+                setType(PartType.PART_TEXT).
+                setValue(valuePart.getValue()).
+                build();
+        panel.setParts(Arrays.asList(part));
         return Arrays.asList((Panel)panel);
     }
 }

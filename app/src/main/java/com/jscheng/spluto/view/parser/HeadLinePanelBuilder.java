@@ -25,9 +25,7 @@ public class HeadLinePanelBuilder implements IPanelBuilder {
 
     private List<Panel> parseHeadLineBlock(HeadLineBlock headLineBlock) {
         TextPanel panel = new TextPanel();
-        for (Part part : PartBuilder.buildParts(headLineBlock)) {
-            panel.addPart(part);
-        }
+        panel.setParts(PartBuilder.buildParts(headLineBlock));
         return Arrays.asList((Panel)panel);
     }
 }

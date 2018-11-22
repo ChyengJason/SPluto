@@ -4,11 +4,20 @@ package com.jscheng.spluto.view.panel;
 import android.graphics.Canvas;
 
 import com.jscheng.spluto.view.Panel;
+import com.jscheng.spluto.view.part.Part;
+
+import java.util.List;
 
 /**
  * Created by chengjunsen on 2018/11/15.
  */
 public class TablePanel extends Panel {
+
+    @Override
+    public void setParts(List<Part> list) {
+
+    }
+
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
 

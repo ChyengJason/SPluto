@@ -24,26 +24,27 @@ public abstract class ListPanel extends Panel {
     protected int mFontColor;
 
     public ListPanel() {
-        this.mParts = new ArrayList<>();
         this.mInnerPanels = new ArrayList<>();
         this.mBackgroudColor = ColorResource.getDefaultBackgroundColor();
         this.mFontColor = ColorResource.getTextFontColor();
     }
 
-    public void addPart(Part part) {
-        this.mParts.add(part);
-        mParts.add(part);
-        if (part.getPartType() != PartType.PART_IMAGE) {
-            if (mInnerPanels.isEmpty() || mInnerPanels.get(mInnerPanels.size() - 1).getmPanelType() != SpanType.TEXT_INNER_PANEL) {
-                mInnerPanels.add(new TextSpan());
+    @Override
+    public void setParts(List<Part> parts) {
+        mParts = parts;
+        for (Part part : parts) {
+            if (part.getPartType() != PartType.PART_IMAGE) {
+                if (mInnerPanels.isEmpty() || mInnerPanels.get(mInnerPanels.size() - 1).getmPanelType() != SpanType.TEXT_INNER_PANEL) {
+                    mInnerPanels.add(new TextSpan());
+                }
+                TextSpan textInnerPanel = (TextSpan) mInnerPanels.get(mInnerPanels.size() - 1);
+                textInnerPanel.setBackGroundColor(mBackgroudColor);
+                textInnerPanel.setFontColor(mFontColor);
+                textInnerPanel.addTextPart(part);
+            } else {
+                PictureSpan pictureInnerPanel = new PictureSpan(part.getUrl(), part.getDescripe());
+                mInnerPanels.add(pictureInnerPanel);
             }
-            TextSpan textInnerPanel = (TextSpan) mInnerPanels.get(mInnerPanels.size() - 1);
-            textInnerPanel.setBackGroundColor(mBackgroudColor);
-            textInnerPanel.setFontColor(mFontColor);
-            textInnerPanel.addTextPart(part);
-        } else {
-            PictureSpan pictureInnerPanel = new PictureSpan(part.getUrl(), part.getDescripe());
-            mInnerPanels.add(pictureInnerPanel);
         }
     }
 

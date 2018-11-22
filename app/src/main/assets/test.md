@@ -13,6 +13,7 @@ haofdsfdsaonin
 > fdsafdsafdsafsafdsafsdafdsafdsafdsafdsafdsafsdafsdafsdafsda
 > ### 你覅到書房
 你回復撒o
+![美图](https://img2.520730.com/file/yulequan/bagua/20171224/1f9172bc02f7f230000c9c43174f6505.jpg)
 ===
 ```
 nihfjksaffdsafdsafdsa
@@ -26,4 +27,5 @@ fdsafdsafsda
 
 ![warning](https://upload-images.jianshu.io/upload_images/11897912-81c32ed00c9374c9?imageMogr2/auto-orient/strip%7CimageView2/2/w/640/format/webp)
 ![](https://upload-images.jianshu.io/upload_images/7049333-a61624add148eaeb?imageMogr2/auto-orient/strip%7CimageView2/2/w/640/format/webp)
+![image.png](https://upload-images.jianshu.io/upload_images/1698563-02f021cde7a52edb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ![](https://upload-images.jianshu.io/upload_images/7049333-a61624add148eaeb?imageMogr2/auto-orient/strip%7CimageView2/2/w/640/format/webp)

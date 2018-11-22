@@ -26,9 +26,7 @@ public class CommonTextBuilder implements IPanelBuilder {
 
     private List<Panel> parseTextBlock(CommonTextBlock textBlock) {
         TextPanel panel = new TextPanel();
-        for (Part part : PartBuilder.buildParts(textBlock)) {
-            panel.addPart(part);
-        }
+        panel.setParts(PartBuilder.buildParts(textBlock));
         return Arrays.asList((Panel) panel);
     }
 }

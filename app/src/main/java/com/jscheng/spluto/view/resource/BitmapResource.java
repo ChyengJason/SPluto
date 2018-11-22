@@ -35,8 +35,9 @@ import java.util.List;
 public class BitmapResource  {
     private static final String TAG = "CJS";
     private static final String DiskLruCacheDirName = "bitmap";
-    private static BitmapResource instance;
+    private final static BitmapResource instance = new BitmapResource();
     private Context mContext;
+    private Boolean isRegister;
     /**
      * URL网络失败最大重试次数
      */
@@ -72,20 +73,22 @@ public class BitmapResource  {
     private BitmapResourceListener mListener;
     private RequestQueue mRequestQueue;
 
-    private BitmapResource(Context context) {
-        this.mContext = context;
-        this.mRequestingUrls = new ArrayList<>();
-        this.mFailedUrls = new HashMap<>();
-        initCache();
-        initVolley();
+    private BitmapResource() {
+        this.isRegister = false;
     }
 
     public static void register(Context context) {
-        instance = new BitmapResource(context);
+        instance.mContext = context;
+        instance.mRequestingUrls = new ArrayList<>();
+        instance.mFailedUrls = new HashMap<>();
+        instance.initCache();
+        instance.initVolley();
+        instance.isRegister = true;
     }
 
     public static void unRegister() {
         try {
+            instance.isRegister = false;
             instance.mContext = null;
             if (instance.mRequestQueue != null) {
                 instance.mRequestQueue.cancelAll(null);
@@ -93,19 +96,22 @@ public class BitmapResource  {
             }
             if (instance.mDiskCache != null && !instance.mDiskCache.isClosed()) {
                 instance.mDiskCache.close();
+                instance.mDiskCacheSize = 0;
+                instance.mDiskCache = null;
             }
-            instance = null;
+            instance.mSizeCache = null;
+            instance.mMemoryCache = null;
+            instance.mMemoryCacheSize = 0;
+            instance.mFailedUrls = null;
+            instance.mRequestingUrls = null;
+            instance.mListener = null;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void setTaskListener(BitmapResourceListener listener) {
-        if (instance != null) {
-            instance.mListener = listener;
-        } else {
-            Log.e(TAG, "setTaskListener: instance is not registered");
-        }
+        instance.mListener = listener;
     }
 
     /**
@@ -119,7 +125,7 @@ public class BitmapResource  {
      * @return
      */
     public static Size getBitmapSize(String url, int maxWidth) {
-        if (instance != null) {
+        if (instance.isRegister) {
             return instance.getBitmapSizeImpl(url, maxWidth);
         }
         Log.e(TAG, "getBitmapSize: instance is not registered");
@@ -135,7 +141,7 @@ public class BitmapResource  {
      * @param maxWidth
      */
     public static Bitmap getBitmap(String url, int maxWidth) {
-        if (instance != null) {
+        if (instance.isRegister) {
             return instance.getBitmapImpl(url, maxWidth);
         }
         Log.e(TAG, "getBitmap: instance is not registered");

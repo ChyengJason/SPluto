@@ -2,6 +2,10 @@ package com.jscheng.spluto.view;
 
 import android.graphics.Canvas;
 
+import com.jscheng.spluto.view.part.Part;
+
+import java.util.List;
+
 /**
  * Created by chengjunsen on 2018/11/15.
  */
@@ -41,6 +45,8 @@ public abstract class Panel {
     public void setY(int y) {
         this.y = y;
     }
+
+    public abstract void setParts(List<Part> list);
 
     public abstract void measure(int maxWidth, int maxHeight);
 

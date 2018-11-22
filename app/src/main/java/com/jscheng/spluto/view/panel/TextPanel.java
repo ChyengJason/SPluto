@@ -25,17 +25,20 @@ public class TextPanel extends Panel {
         mInnerPanels = new ArrayList<>();
     }
 
-    public void addPart(Part part) {
-        mParts.add(part);
-        if (part.getPartType() != PartType.PART_IMAGE) {
-            if (mInnerPanels.isEmpty() || mInnerPanels.get(mInnerPanels.size() - 1).getmPanelType() != SpanType.TEXT_INNER_PANEL) {
-                mInnerPanels.add(new TextSpan());
+    @Override
+    public void setParts(List<Part> list) {
+        for (Part part : list) {
+            mParts.add(part);
+            if (part.getPartType() != PartType.PART_IMAGE) {
+                if (mInnerPanels.isEmpty() || mInnerPanels.get(mInnerPanels.size() - 1).getmPanelType() != SpanType.TEXT_INNER_PANEL) {
+                    mInnerPanels.add(new TextSpan());
+                }
+                TextSpan textInnerPanel = (TextSpan) mInnerPanels.get(mInnerPanels.size() - 1);
+                textInnerPanel.addTextPart(part);
+            } else {
+                PictureSpan pictureInnerPanel = new PictureSpan(part.getUrl(), part.getDescripe());
+                mInnerPanels.add(pictureInnerPanel);
             }
-            TextSpan textInnerPanel = (TextSpan) mInnerPanels.get(mInnerPanels.size() - 1);
-            textInnerPanel.addTextPart(part);
-        } else {
-            PictureSpan pictureInnerPanel = new PictureSpan(part.getUrl(), part.getDescripe());
-            mInnerPanels.add(pictureInnerPanel);
         }
     }
 

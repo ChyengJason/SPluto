@@ -9,18 +9,23 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 
 import com.jscheng.spluto.view.Panel;
+import com.jscheng.spluto.view.Span;
+import com.jscheng.spluto.view.part.Part;
 import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.FontResouce;
 import com.jscheng.spluto.view.resource.PaddingResouce;
+
+import java.util.List;
 
 /**
  * Created by chengjunsen on 2018/11/15.
  */
 public class CodePanel extends Panel {
-    private String value;
+    private List<Part> mParts;
     private StaticLayout mStaticLayout;
     private TextPaint mTextPaint;
     private Paint mBackgroundPaint;
+    private String mCodeText;
 
     public CodePanel() {
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
@@ -30,18 +35,16 @@ public class CodePanel extends Panel {
         mBackgroundPaint.setColor(ColorResource.getCodePanelBackgroundColor());
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
+    @Override
+    public void setParts(List<Part> list) {
+        this.mParts = list;
+        this.mCodeText = !mParts.isEmpty() ? mParts.get(0).getValue() : "";
     }
 
     @Override
     public void measure(int defaultWidth, int defaultHeight) {
         int width = defaultWidth - 2 * PaddingResouce.getCodePanelLeftRightPadding();
-        mStaticLayout = new StaticLayout(value, mTextPaint, width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0, false);
+        mStaticLayout = new StaticLayout(mCodeText, mTextPaint, width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0, false);
         int height = mStaticLayout.getHeight() + 2 * PaddingResouce.getPannelSpacingPx();
         setWidth(defaultWidth);
         setHeight(height);

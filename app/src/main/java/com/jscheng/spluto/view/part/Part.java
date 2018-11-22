@@ -1,5 +1,7 @@
 package com.jscheng.spluto.view.part;
 
+import android.widget.Button;
+
 import com.jscheng.spluto.view.part.PartType;
 
 /**
@@ -15,25 +17,19 @@ public class Part {
     private String value;
     private String url;
     private String descripe;
+    private int begin;
+    private int end;
 
-    public void setBold(boolean bold) {
-        this.bold = bold;
-    }
-
-    public void setItalic(boolean italic) {
-        this.italic = italic;
-    }
-
-    public void setStrike(boolean strike) {
-        this.strike = strike;
-    }
-
-    public void setFontLevel(int fontLevel) {
-        this.fontLevel = fontLevel;
-    }
-
-    public void setUnderline(boolean underline) {
-        this.underline = underline;
+    private Part(Builder builder) {
+        this.partType = builder.partType;
+        this.bold = builder.bold;
+        this.italic = builder.italic;
+        this.strike = builder.strike;
+        this.fontLevel = builder.fontLevel;
+        this.underline = builder.underline;
+        this.value = builder.value;
+        this.url = builder.url;
+        this.descripe = builder.descripe;
     }
 
     public boolean isBold() {
@@ -56,16 +52,8 @@ public class Part {
         return fontLevel;
     }
 
-    public void setPartType(PartType partType) {
-        this.partType = partType;
-    }
-
     public PartType getPartType() {
         return partType;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 
     public String getValue() {
@@ -76,16 +64,24 @@ public class Part {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getDescripe() {
         return descripe;
     }
 
-    public void setDescripe(String descripe) {
-        this.descripe = descripe;
+    public int getBegin() {
+        return begin;
+    }
+
+    public void setBegin(int begin) {
+        this.begin = begin;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
     }
 
     public String getText(){
@@ -100,6 +96,67 @@ public class Part {
                 return value;
             default:
                 return value;
+        }
+    }
+
+    public static class Builder {
+        private PartType partType;
+        private boolean bold;
+        private boolean italic;
+        private boolean strike;
+        private int fontLevel;
+        private boolean underline;
+        private String value;
+        private String url;
+        private String descripe;
+
+        public Builder setBold(boolean bold) {
+            this.bold = bold;
+            return this;
+        }
+
+        public Builder setItalic(boolean italic) {
+            this.italic = italic;
+            return this;
+        }
+
+        public Builder setStrike(boolean strike) {
+            this.strike = strike;
+            return this;
+        }
+
+        public Builder setFontLevel(int fontLevel) {
+            this.fontLevel = fontLevel;
+            return this;
+        }
+
+        public Builder setDescripe(String descripe) {
+            this.descripe = descripe;
+            return this;
+        }
+
+        public Builder setUnderline(boolean underline) {
+            this.underline = underline;
+            return this;
+        }
+
+        public Builder setUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public Builder setValue(String value) {
+            this.value = value;
+            return this;
+        }
+
+        public Builder setType(PartType partType) {
+            this.partType = partType;
+            return this;
+        }
+
+        public Part build() {
+            return new Part(this);
         }
     }
 }

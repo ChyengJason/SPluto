@@ -33,38 +33,38 @@ public class PartBuilder {
 
     private static Part parserPartImpl(ValuePart valuePart, int fontLevel) {
         List<TextType> txtTypes = valuePart.getTypes();
-        Part part = new Part();
+        Part.Builder builder = new Part.Builder();
+        builder = builder.setFontLevel(fontLevel);
+
         if (txtTypes.contains(TextType.IMG)) {
-            part.setPartType(PartType.PART_IMAGE);
-            part.setDescripe(valuePart.getTitle());
-            part.setUrl(valuePart.getUrl());
+            builder = builder.setType(PartType.PART_IMAGE);
+            builder = builder.setDescripe(valuePart.getTitle());
+            builder = builder.setUrl(valuePart.getUrl());
 
         } else if (txtTypes.contains(TextType.LINK)) {
-            part.setPartType(PartType.PART_LINK);
-            part.setDescripe(valuePart.getTitle());
-            part.setUrl(valuePart.getUrl());
+            builder = builder.setType(PartType.PART_LINK);
+            builder = builder.setDescripe(valuePart.getTitle());
+            builder = builder.setUrl(valuePart.getUrl());
 
         } else if (txtTypes.contains(TextType.CODE_WORD)){
-            part.setPartType(PartType.PART_CODE);
-            part.setValue(valuePart.getValue());
+            builder = builder.setType(PartType.PART_CODE);
+            builder = builder.setValue(valuePart.getValue());
 
         } else {
-            part.setPartType(PartType.PART_TEXT);
-            part.setValue(valuePart.getValue());
+            builder = builder.setType(PartType.PART_TEXT);
+            builder = builder.setValue(valuePart.getValue());
 
         }
-
-        part.setFontLevel(fontLevel);
-
         if (txtTypes.contains(TextType.BOLD_WORD)) {
-            part.setBold(true);
+            builder = builder.setBold(true);
         }
         if (txtTypes.contains(TextType.ITALIC_WORD)) {
-            part.setItalic(true);
+            builder = builder.setItalic(true);
         }
         if (txtTypes.contains(TextType.STRIKE_WORD)) {
-            part.setStrike(true);
+            builder = builder.setStrike(true);
         }
-        return part;
+
+        return builder.build();
     }
 }
