@@ -148,6 +148,10 @@ public class BitmapResource  {
         return null;
     }
 
+    public static String getBitmapPath(String url) {
+        return instance.isRegister ? instance.getFilePath(url) : "";
+    }
+
     private void initCache() {
         mSizeCache = new HashMap<>();
         mMemoryCacheSize = (int)Runtime.getRuntime().maxMemory() / 8;
@@ -231,6 +235,7 @@ public class BitmapResource  {
                 options.inPreferredConfig = Bitmap.Config.RGB_565;
                 options.inJustDecodeBounds = false;
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+                inputStream.close();
                 if (bitmap != null) {
                     mMemoryCache.put(key, bitmap);
                 }
@@ -330,5 +335,10 @@ public class BitmapResource  {
             }
             return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
         }
+    }
+
+    public String getFilePath(String url) {
+        String key = getKeyFromUrl(url);
+        return mDiskCache.getDirectory().getAbsolutePath() + File.separator + key + ".0";
     }
 }

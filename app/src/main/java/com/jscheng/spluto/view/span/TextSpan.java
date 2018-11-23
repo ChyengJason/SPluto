@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TextSpan extends Span {
+    private static final String TAG = "CJS";
     private StaticLayout mStaticLayout;
     private SpannableStringBuilder mSpanBuilder;
     private TextPaint mTextPaint;
@@ -134,7 +135,7 @@ public class TextSpan extends Span {
                 int begin = wordCount;
                 int end = wordCount + part.getText().length() - 1;
                 if (num >= begin && num <= end) {
-                    Log.e("CJS", "getPart: " + part.getText().toCharArray()[num - begin]);
+                    Log.e(TAG, "getPart: " + part.getText().toCharArray()[num - begin]);
                     return part;
                 }
             }

@@ -20,6 +20,7 @@ import java.util.List;
  * Created by chengjunsen on 2018/11/15.
  */
 public class CodePanel extends Panel {
+    private static final String TAG = "CJS";
     private Part mPart;
     private Paint mBackgroundPaint;
     private TextSpan mSpan;
@@ -51,7 +52,7 @@ public class CodePanel extends Panel {
         int width = defaultWidth - 2 * PaddingResouce.getCodePanelLeftRightPadding();
         mSpan.measure(width, defaultHeight);
         int height = mSpan.getHeight() + 2 * PaddingResouce.getPannelSpacingPx() +  PaddingResouce.getCodePanelTopBottomPadding();
-        Log.e("CJS", "code measure:  " +  mSpan.getHeight());
+        Log.e(TAG, "code measure:  " +  mSpan.getHeight());
         setWidth(defaultWidth);
         setHeight(height);
     }

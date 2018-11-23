@@ -1,19 +1,24 @@
 package com.jscheng.spluto;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.PanelGroup;
 import com.jscheng.spluto.view.PanelBuilder;
 import com.jscheng.spluto.view.part.Part;
+import com.jscheng.spluto.view.part.PartType;
 import com.jscheng.spluto.view.resource.BitmapResource;
 import com.jscheng.spluto.view.resource.IconResource;
 import com.jscheng.spluto.view.resource.FontResource;
@@ -138,9 +143,11 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        Part part = mPanelGroup.getPart(e.getX() - getX(), e.getY() - getY());
+        float x = e.getX() - getX();
+        float y = e.getY() - getY();
+        Part part = mPanelGroup.getPart(x, y);
         if (part != null) {
-            Log.e(TAG, "onSingleTapUp: " + part.getPartType() + " -> " + part.getText());
+            onClick(part);
         }
         return true;
     }
@@ -158,5 +165,52 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         return false;
+    }
+
+    /**
+     * 外部统一处理点击事件，可以抛出到Activity处理
+     * @param part
+     */
+    private void onClick(Part part) {
+        Log.e(TAG, "onSingleTapUp: " + part.getPartType() + " -> " + part.getText());
+        PartType type = part.getPartType();
+        switch (part.getPartType()) {
+            case PART_IMAGE:
+                checkJumpPicture(part.getDescripe(), part.getUrl());
+                break;
+            case PART_LINK:
+                checkJumpUrl(part.getDescripe(), part.getUrl());
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void checkJumpPicture(String descripe, String url) {
+        String path = BitmapResource.getBitmapPath(url);
+        Intent intent = new Intent(getContext(), ImageActivity.class);
+        intent.putExtra("path", path);
+        getContext().startActivity(intent);
+    }
+
+    private void checkJumpUrl(String descripe, final String url) {
+        new AlertDialog.Builder(getContext()).setTitle("提示")
+                .setMessage("确定打开" + descripe + "?")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String mUrl = url;
+                        if (!mUrl.startsWith("http://") && !mUrl.startsWith("https://")) {
+                            mUrl = ("http://") + mUrl;
+                        }
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+                        getContext().startActivity(intent);
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                }).show();
     }
 }
