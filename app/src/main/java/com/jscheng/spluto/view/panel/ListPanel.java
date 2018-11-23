@@ -84,6 +84,11 @@ public class ListPanel extends Panel {
     }
 
     @Override
+    public List<Part> getParts() {
+        return mParts;
+    }
+
+    @Override
     public void measure(int defaultWidth, int defaultHeight) {
         int width =  defaultWidth - PaddingResouce.getListMiddleSpacingPx();
         mHeadSpan.measure(defaultWidth, 0);
@@ -118,6 +123,23 @@ public class ListPanel extends Panel {
         }
         setX(left);
         setY(top);
+    }
+
+    @Override
+    public Part getPart(float x, float y) {
+        for (Span span : mSpans) {
+            boolean includeX = x >= span.getX() && x <= span.getX() + span.getWidth();
+            boolean includeY = y >= span.getY() && y <= span.getY() + span.getHeight();
+            if (!includeX || !includeY) {
+                return null;
+            }
+            if (span.getSpanType() == SpanType.TEXT_SPAN) {
+                return ((TextSpan)span).getPart((int)x, (int)y);
+            } else {
+                return ((PictureSpan)span).getPart((int)x, (int)y);
+            }
+        }
+        return null;
     }
 
     @Override

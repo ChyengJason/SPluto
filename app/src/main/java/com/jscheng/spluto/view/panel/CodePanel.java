@@ -13,6 +13,7 @@ import com.jscheng.spluto.view.resource.FontResource;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 import com.jscheng.spluto.view.span.TextSpan;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,6 +39,11 @@ public class CodePanel extends Panel {
         this.mSpan.setFontColor(ColorResource.getCodePannelFontColor());
         this.mSpan.setFontSize(FontResource.getCodePanelFontSize());
         this.mSpan.addPart(mPart);
+    }
+
+    @Override
+    public List<Part> getParts() {
+        return Arrays.asList(mPart);
     }
 
     @Override
@@ -67,5 +73,13 @@ public class CodePanel extends Panel {
         mSpan.layout(x, y, right, bottom);
         setX(left);
         setY(top);
+    }
+
+    @Override
+    public Part getPart(float x, float y) {
+        if (x >= getX() && x <= getX() + getWidth() && y >= getY() && y <= getY() + getHeight()) {
+            return mPart;
+        }
+        return null;
     }
 }

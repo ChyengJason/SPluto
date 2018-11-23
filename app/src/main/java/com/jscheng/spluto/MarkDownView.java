@@ -6,11 +6,14 @@ import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.PanelGroup;
 import com.jscheng.spluto.view.PanelBuilder;
+import com.jscheng.spluto.view.part.Part;
 import com.jscheng.spluto.view.resource.BitmapResource;
 import com.jscheng.spluto.view.resource.IconResource;
 import com.jscheng.spluto.view.resource.FontResource;
@@ -20,9 +23,10 @@ import java.util.List;
 /**
  * Created By Chengjunsen on 2018/11/16
  */
-public class MarkDownView extends View implements BitmapResource.BitmapResourceListener {
+public class MarkDownView extends View implements BitmapResource.BitmapResourceListener, GestureDetector.OnGestureListener {
     private static final String TAG = "CJS";
     private PanelGroup mPanelGroup;
+    private GestureDetector mGestureDetector;
     private int lastActiveX;
     private int lastActiveY;
 
@@ -43,6 +47,8 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
 
     private void init(Context context) {
         this.mPanelGroup = new PanelGroup();
+        this.setClickable(true);
+        this.mGestureDetector = new GestureDetector(this.getContext(), this);
         FontResource.register(context);
         PaddingResouce.register(context);
         IconResource.register(context);
@@ -113,5 +119,44 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
             invalidate();
             Log.e(TAG, "scrollChanged: invalidate");
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mGestureDetector.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return true;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        Part part = mPanelGroup.getPart(e.getX() - getX(), e.getY() - getY());
+        if (part != null) {
+            Log.e(TAG, "onSingleTapUp: " + part.getPartType() + " -> " + part.getText());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return false;
     }
 }

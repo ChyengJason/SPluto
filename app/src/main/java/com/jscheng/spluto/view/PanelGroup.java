@@ -3,6 +3,7 @@ package com.jscheng.spluto.view;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import com.jscheng.spluto.view.part.Part;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 
 import java.util.ArrayList;
@@ -91,5 +92,16 @@ public class PanelGroup {
         boolean includeX = (left >= panelRight || right >= panelLeft);
         boolean includeY = (top >= panelBottom || bottom >= panelTop);
         return includeX && includeY;
+    }
+
+    public Part getPart(float x, float y) {
+        for (Panel panel : mPanels) {
+            boolean includeX = (x >= panel.getX() && x <= panel.getX() + panel.getWidth());
+            boolean includeY = (y >= panel.getY() && y <= panel.getY() + panel.getHeight());
+            if (includeX && includeY) {
+                return panel.getPart(x, y);
+            }
+        }
+        return null;
     }
 }

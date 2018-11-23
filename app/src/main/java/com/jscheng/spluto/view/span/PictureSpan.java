@@ -33,6 +33,8 @@ public class PictureSpan extends Span {
     private int imageHeight;
     private int imageWidth;
     private boolean isDefualtImage;
+    private Part mPart;
+    private int leftPos, rightPos;
 
     public PictureSpan() {
         super(SpanType.PICTURE_SPAN);
@@ -45,6 +47,7 @@ public class PictureSpan extends Span {
     }
 
     public void setPart(Part part) {
+        this.mPart = part;
         this.url = part.getUrl();
         this.descripe = part.getDescripe();
         initSpanBuilder();
@@ -56,6 +59,8 @@ public class PictureSpan extends Span {
         loadBitmapSize(maxWidth);
         int width = mStaticLayout.getWidth();
         int height = imageHeight + mStaticLayout.getHeight() + 3 * PaddingResouce.getPannelSpacingPx();
+        leftPos = (width - imageWidth)/2;
+        rightPos = leftPos + imageWidth;
         setWidth(width);
         setHeight(height);
     }
@@ -64,12 +69,10 @@ public class PictureSpan extends Span {
     public void draw(Canvas canvas) {
         canvas.save();
         canvas.translate(getX(), getY());
-        int left = (getWidth() - imageWidth)/2;
-        int right = left + imageWidth;
         Bitmap bitmap = loadBitmap(imageWidth, imageHeight);
         if (bitmap != null) {
             Rect resRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-            Rect destrect = new Rect(left, 0, right, imageHeight);
+            Rect destrect = new Rect(leftPos, 0, rightPos, imageHeight);
             canvas.drawBitmap(bitmap, resRect, destrect, mImagePaint);
         }
         canvas.translate(0, PaddingResouce.getPannelSpacingPx() + imageHeight);
@@ -115,5 +118,14 @@ public class PictureSpan extends Span {
             imageHeight = size.getHeight();
         }
         Log.d(TAG, "loadBitmapSize: " + imageWidth + "x" + imageHeight);
+    }
+
+    public Part getPart(int x, int y) {
+        x = x - getX();
+        y = y - getY();
+        if (x >= leftPos && x <= rightPos && y >= 0 && y <= imageHeight) {
+            return mPart;
+        }
+        return null;
     }
 }

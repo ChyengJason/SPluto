@@ -11,12 +11,15 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.View;
 
+import com.jscheng.spluto.util.FontUtil;
 import com.jscheng.spluto.view.Span;
 import com.jscheng.spluto.view.part.Part;
 import com.jscheng.spluto.view.resource.ColorResource;
@@ -24,19 +27,24 @@ import com.jscheng.spluto.view.resource.FontResource;
 import com.jscheng.spluto.view.part.PartType;
 import com.jscheng.spluto.view.resource.PaddingResouce;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TextSpan extends Span {
     private StaticLayout mStaticLayout;
     private SpannableStringBuilder mSpanBuilder;
     private TextPaint mTextPaint;
+    private List<Part> mParts;
 
     public TextSpan() {
         super(SpanType.TEXT_SPAN);
         this.mSpanBuilder = new SpannableStringBuilder();
         this.mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        this.mParts = new ArrayList<>();
     }
 
     public void addPart(Part part) {
-        Log.e("CJS", "addPart: " + part.getText());
+        mParts.add(part);
         int begin = mSpanBuilder.length();
         int end = mSpanBuilder.length() + part.getText().length();
         mSpanBuilder.append(part.getText());
@@ -89,7 +97,7 @@ public class TextSpan extends Span {
     }
 
     private void setProperity(Object properitySpan, int begin, int end) {
-        mSpanBuilder.setSpan(properitySpan, begin, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        mSpanBuilder.setSpan(properitySpan, begin, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     @Override
@@ -115,4 +123,44 @@ public class TextSpan extends Span {
         setY(top);
     }
 
+    public Part getPart(int x, int y) {
+        if (mStaticLayout == null) {
+            return null;
+        }
+        int num = getWordNum(x, y);
+        if (num >= 0 && num < mSpanBuilder.length()) {
+            int wordCount = 0;
+            for (Part part : mParts) {
+                int begin = wordCount;
+                int end = wordCount + part.getText().length() - 1;
+                if (num >= begin && num <= end) {
+                    Log.e("CJS", "getPart: " + part.getText().toCharArray()[num - begin]);
+                    return part;
+                }
+            }
+        }
+        return null;
+    }
+
+    private int getWordNum(int x, int y) {
+        x = x - getX();
+        y = y - getY();
+        for (int line = 0; line < mStaticLayout.getLineCount(); line++) {
+            int topY = mStaticLayout.getLineTop(line);
+            int bottomY = mStaticLayout.getLineBottom(line);
+            int startNum = mStaticLayout.getLineStart(line);
+            int endNum = mStaticLayout.getLineEnd(line);
+            if (y < topY || y > bottomY) {
+                continue;
+            }
+            for (int i = startNum; i < endNum; i++) {
+                float charLeft = mStaticLayout.getPrimaryHorizontal(i);
+                float charRight = i < endNum ? mStaticLayout.getPrimaryHorizontal(i + 1) : mStaticLayout.getLineWidth(i);
+                if (x >= charLeft && x <= charRight) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 }

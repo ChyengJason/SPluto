@@ -1,6 +1,7 @@
 package com.jscheng.spluto.view.panel;
 
 import android.graphics.Canvas;
+import android.text.style.ImageSpan;
 
 import com.jscheng.spluto.view.Panel;
 import com.jscheng.spluto.view.part.Part;
@@ -30,18 +31,39 @@ public class TextPanel extends Panel {
     public void setParts(List<Part> list) {
         for (Part part : list) {
             mParts.add(part);
-            if (part.getPartType() != PartType.PART_IMAGE) {
+            if (part.getPartType() == PartType.PART_IMAGE) {
+                PictureSpan picSpan = new PictureSpan();
+                picSpan.setPart(part);
+                mSpans.add(picSpan);
+            } else {
                 if (mSpans.isEmpty() || mSpans.get(mSpans.size() - 1).getSpanType() != SpanType.TEXT_SPAN) {
                     mSpans.add(new TextSpan());
                 }
                 TextSpan textSpan = (TextSpan) mSpans.get(mSpans.size() - 1);
                 textSpan.addPart(part);
-            } else {
-                PictureSpan picSpan = new PictureSpan();
-                picSpan.setPart(part);
-                mSpans.add(picSpan);
             }
         }
+    }
+
+    @Override
+    public List<Part> getParts() {
+        return mParts;
+    }
+
+    @Override
+    public Part getPart(float x, float y) {
+        for (Span span : mSpans) {
+            boolean includeX = x >= span.getX() && x <= span.getX() + span.getWidth();
+            boolean includeY = y >= span.getY() && y <= span.getY() + span.getHeight();
+            if (includeX && includeY) {
+                if (span.getSpanType() == SpanType.TEXT_SPAN) {
+                    return ((TextSpan)span).getPart((int)x, (int)y);
+                } else {
+                    return ((PictureSpan)span).getPart((int)x, (int)y);
+                }
+            }
+        }
+        return null;
     }
 
     @Override

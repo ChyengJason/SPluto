@@ -48,10 +48,13 @@ public abstract class Panel {
 
     public abstract void setParts(List<Part> list);
 
+    public abstract List<Part> getParts();
+
     public abstract void measure(int maxWidth, int maxHeight);
 
     public abstract void draw(Canvas canvas);
 
     public abstract void layout(int left, int top, int right, int bottom);
 
+    public abstract Part getPart(float x, float y);
 }

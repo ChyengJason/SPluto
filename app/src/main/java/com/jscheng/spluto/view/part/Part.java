@@ -17,8 +17,6 @@ public class Part {
     private String value;
     private String url;
     private String descripe;
-    private int begin;
-    private int end;
 
     private Part(Builder builder) {
         this.partType = builder.partType;
@@ -66,22 +64,6 @@ public class Part {
 
     public String getDescripe() {
         return descripe;
-    }
-
-    public int getBegin() {
-        return begin;
-    }
-
-    public void setBegin(int begin) {
-        this.begin = begin;
-    }
-
-    public int getEnd() {
-        return end;
-    }
-
-    public void setEnd(int end) {
-        this.end = end;
     }
 
     public String getText(){

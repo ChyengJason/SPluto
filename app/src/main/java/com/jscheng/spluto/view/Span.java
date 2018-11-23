@@ -2,6 +2,7 @@ package com.jscheng.spluto.view;
 
 import android.graphics.Canvas;
 
+import com.jscheng.spluto.view.part.Part;
 import com.jscheng.spluto.view.resource.ColorResource;
 import com.jscheng.spluto.view.resource.FontResource;
 import com.jscheng.spluto.view.span.SpanType;
