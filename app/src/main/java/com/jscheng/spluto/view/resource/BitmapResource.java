@@ -119,7 +119,7 @@ public class BitmapResource  {
      * 1. 若mSizeCache中，直接返回图片尺寸
      * 2. 若图片在内存中，将尺寸加入mSizeCache，返回图片尺寸
      * 2. 若图片在磁盘中，根据maxwidth计算压缩后的图片尺寸，将尺寸加入mSizeCache，返回图片尺寸
-     * 3. 若不存在，加入网络加载任务
+     * 3. 若不存在，加入网络加载任务，返回（0，0）
      * @param url
      * @param maxWidth
      * @return
@@ -148,8 +148,23 @@ public class BitmapResource  {
         return null;
     }
 
+    /**
+     * 获取bitmap在本地的路径
+     * @param url
+     * @return
+     */
     public static String getBitmapPath(String url) {
         return instance.isRegister ? instance.getFilePath(url) : "";
+    }
+
+    /**
+     * 判断url是否获取失败
+     * @param url
+     * @return
+     */
+    public static boolean isFailedBitmap(String url) {
+        String key = instance.getKeyFromUrl(url);
+        return instance.isRegister && instance.mFailedUrls.containsKey(key);
     }
 
     private void initCache() {

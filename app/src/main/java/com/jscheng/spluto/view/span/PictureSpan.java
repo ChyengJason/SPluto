@@ -32,7 +32,8 @@ public class PictureSpan extends Span {
     private String descripe;
     private int imageHeight;
     private int imageWidth;
-    private boolean isDefualtImage;
+    private boolean isDefaultImage;
+    private boolean isErrorImage;
     private Part mPart;
     private int leftPos, rightPos;
 
@@ -43,7 +44,8 @@ public class PictureSpan extends Span {
         this.imageHeight = 0;
         this.imageWidth = 0;
         this.mSpanBuilder = new SpannableStringBuilder();
-        this.isDefualtImage = false;
+        this.isDefaultImage = false;
+        this.isErrorImage = false;
     }
 
     public void setPart(Part part) {
@@ -99,15 +101,27 @@ public class PictureSpan extends Span {
     }
 
     private Bitmap loadBitmap(int maxWidth, int maxHeight) {
-        Bitmap bitmap = isDefualtImage ? IconResource.loadDefualtLoadingBitmap() : BitmapResource.getBitmap(url, maxWidth);
+        Bitmap bitmap;
+        if (isDefaultImage) {
+            bitmap = IconResource.loadDefualtLoadingBitmap();
+        } else if (isErrorImage) {
+            bitmap = IconResource.loadDefualtErrorBitmap();
+        } else {
+            bitmap = BitmapResource.getBitmap(url, maxWidth);
+        }
         return bitmap;
     }
 
     private void loadBitmapSize(int maxWidth) {
-        isDefualtImage = false;
+        isDefaultImage = false;
+        isErrorImage = false;
         Size size = BitmapResource.getBitmapSize(url, maxWidth);
-        if (size.getWidth() <= 0 || size.getHeight() <= 0 ){
-            isDefualtImage = true;
+        if (size.getWidth() <= 0 || size.getHeight() <= 0) {
+            if (BitmapResource.isFailedBitmap(url)) {
+                isErrorImage = true;
+            } else {
+                isDefaultImage = true;
+            }
             size = IconResource.loadDefaultBitmapSize();
         }
         if (size.getWidth() > maxWidth) {

@@ -195,7 +195,7 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
 
     private void checkJumpUrl(String descripe, final String url) {
         new AlertDialog.Builder(getContext()).setTitle("提示")
-                .setMessage("确定打开" + descripe + "?")
+                .setMessage("确定打开" + url + "?")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
