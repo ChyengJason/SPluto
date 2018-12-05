@@ -24,6 +24,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ImageActivity"></activity>
+        <provider
+            android:authorities="com.jscheng.spluto.markdownprovider"
+            android:name=".MarkDownProvider">
+        </provider>
     </application>
 
 </manifest>

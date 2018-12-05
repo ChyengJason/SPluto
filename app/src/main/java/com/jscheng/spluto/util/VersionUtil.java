@@ -1,7 +1,6 @@
 package com.jscheng.spluto.util;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 /**

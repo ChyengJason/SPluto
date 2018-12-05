@@ -3,6 +3,7 @@ package com.jscheng.spluto;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.jscheng.spluto.markdown.MarkdownScrollView;
 import com.jscheng.spluto.util.FileUtil;
 
 public class MainActivity extends AppCompatActivity {

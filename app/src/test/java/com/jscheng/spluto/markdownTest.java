@@ -1,7 +1,7 @@
 package com.jscheng.spluto;
 
-import com.jscheng.spluto.core.bean.Block;
-import com.jscheng.spluto.core.parser.Analyzer;
+import com.jscheng.spluto.markdown.core.bean.Block;
+import com.jscheng.spluto.markdown.core.parser.Analyzer;
 
 import org.junit.Test;
 

@@ -2,7 +2,6 @@ package com.jscheng.spluto.util;
 
 import android.content.Context;
 import android.os.Environment;
-import android.support.annotation.IdRes;
 
 import java.io.*;
 
