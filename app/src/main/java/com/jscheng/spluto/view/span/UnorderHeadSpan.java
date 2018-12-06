@@ -22,7 +22,7 @@ public class UnorderHeadSpan extends Span {
     public UnorderHeadSpan() {
         super(SpanType.HEAD_SPAN);
         this.mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        this.mHeadText = "你好"; //"• ";
+        this.mHeadText = "• ";
         loadUnOrderHead();
     }
 
