@@ -25,23 +25,44 @@ public class MarkdownTextDao {
         return contentValues;
     }
 
-    public void add(MarkdownTextInfo info) {
+    public long add(MarkdownTextInfo info) {
         SQLiteDatabase database = mDBOpenHelper.getWritableDatabase();
-        database.insert(DBOpenHelper.MarkDownTextTable, null, getContentValues(info));
+        return database.insert(DBOpenHelper.MarkDownTextTable, null, getContentValues(info));
     }
 
-    public void delete(int id) {
+    public long add(ContentValues contentValues) {
         SQLiteDatabase database = mDBOpenHelper.getWritableDatabase();
-        database.delete(DBOpenHelper.MarkDownTextTable, "id=?", new String[]{ String.valueOf(id) });
+        return database.insert(DBOpenHelper.MarkDownTextTable, null, contentValues);
     }
 
-    public void update(MarkdownTextInfo info) {
+    public int delete(int id) {
+        SQLiteDatabase database = mDBOpenHelper.getWritableDatabase();
+        return database.delete(DBOpenHelper.MarkDownTextTable, "id=?", new String[]{ String.valueOf(id) });
+    }
+
+    public int delete(String selection, String[] selectionArgs) {
+        SQLiteDatabase database = mDBOpenHelper.getWritableDatabase();
+        return database.delete(DBOpenHelper.MarkDownTextTable, selection, selectionArgs);
+    }
+
+    public int update(MarkdownTextInfo info) {
         String idString = String.valueOf(info.getId());
         SQLiteDatabase database = mDBOpenHelper.getWritableDatabase();
-        database.update(DBOpenHelper.MarkDownTextTable, getContentValues(info), "id=?", new String[]{ idString });
+        return database.update(DBOpenHelper.MarkDownTextTable, getContentValues(info), "id=?", new String[]{ idString });
     }
 
-    public MarkdownTextInfo find(Integer id) {
+    public int update(String selection, String[] selectionArgs, ContentValues values) {
+        SQLiteDatabase database = mDBOpenHelper.getWritableDatabase();
+        return database.update(DBOpenHelper.MarkDownTextTable, values, selection, selectionArgs);
+    }
+
+    public int update(Integer id, ContentValues contentValues) {
+        String idString = String.valueOf(id);
+        SQLiteDatabase database = mDBOpenHelper.getWritableDatabase();
+        return database.update(DBOpenHelper.MarkDownTextTable, contentValues, "id=?", new String[]{ idString });
+    }
+
+    public MarkdownTextInfo find(int id) {
         SQLiteDatabase database = mDBOpenHelper.getReadableDatabase();
         String[] selectionArgs = { String.valueOf(id) };
         Cursor cursor = database.query(DBOpenHelper.MarkDownTextTable,
@@ -61,9 +82,26 @@ public class MarkdownTextDao {
         return info;
     }
 
+    public Cursor query(int id, String orderSort) {
+        SQLiteDatabase database = mDBOpenHelper.getReadableDatabase();
+        String[] selectionArgs = { String.valueOf(id) };
+        Cursor cursor = database.query(DBOpenHelper.MarkDownTextTable,
+                null, "id=?", selectionArgs,
+                null, null, orderSort, null);
+        return cursor;
+    }
+
+    public Cursor query(String selection, String[] selectionArgs, String orderSort) {
+        SQLiteDatabase database = mDBOpenHelper.getReadableDatabase();
+        Cursor cursor = database.query(DBOpenHelper.MarkDownTextTable,
+                null, selection, selectionArgs,
+                null, null, orderSort, null);
+        return cursor;
+    }
+
     public int getCount() {
         SQLiteDatabase database = mDBOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query(mDBOpenHelper.MarkDownTextTable,
+        Cursor cursor = database.query(DBOpenHelper.MarkDownTextTable,
                 null, null, null,
                 null, null, null, null);
         return cursor.getCount();
@@ -72,7 +110,7 @@ public class MarkdownTextDao {
     public List<MarkdownTextInfo> getOffetsData(int offset, int limit) {
         SQLiteDatabase database = mDBOpenHelper.getReadableDatabase();
         String limitString = String.valueOf(offset) + "," + String.valueOf(limit);
-        Cursor cursor = database.query(mDBOpenHelper.MarkDownTextTable,
+        Cursor cursor = database.query(DBOpenHelper.MarkDownTextTable,
                 null, null, null,
                 null, null, null, limitString);
         List<MarkdownTextInfo> list = new ArrayList<>(cursor.getCount());
@@ -87,4 +125,5 @@ public class MarkdownTextDao {
         }
         return list;
     }
+
 }

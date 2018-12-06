@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBOpenHelper extends SQLiteOpenHelper {
     public static final String DataBaseName = "SPluto.db";
     public static final int DataBaseVersion = 1;
-    public static final String MarkDownTextTable = "markdownText";
+    public static final String MarkDownTextTable = "markdown";
 
     private static final String MarkDownTextCreateTableSQL = "create table " + MarkDownTextTable + " (" +
             "id integer primary key autoincrement," +

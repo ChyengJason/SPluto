@@ -25,7 +25,7 @@
         </activity>
         <activity android:name=".ImageActivity"></activity>
         <provider
-            android:authorities="com.jscheng.spluto.markdownprovider"
+            android:authorities="com.jscheng.spluto"
             android:name=".MarkDownProvider">
         </provider>
     </application>
