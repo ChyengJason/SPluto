@@ -12,7 +12,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
+import android.widget.Scroller;
 
 import com.jscheng.spluto.ImageActivity;
 import com.jscheng.spluto.markdown.view.Panel;
@@ -29,12 +32,13 @@ import java.util.List;
 /**
  * Created By Chengjunsen on 2018/11/16
  */
-public class MarkDownView extends View implements BitmapResource.BitmapResourceListener, GestureDetector.OnGestureListener {
+public class MarkDownView extends View implements BitmapResource.BitmapResourceListener{
     private static final String TAG = "CJS";
     private PanelGroup mPanelGroup;
-    private GestureDetector mGestureDetector;
-    private int lastActiveX;
-    private int lastActiveY;
+    private VelocityTracker mVelocityTracker;
+    private Scroller mScroller;
+    private ViewConfiguration mViewConfiguration;
+    private Rect mVisibleRect;
 
     public MarkDownView(Context context) {
         super(context);
@@ -53,8 +57,11 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
 
     private void init(Context context) {
         this.mPanelGroup = new PanelGroup();
+        this.mVelocityTracker = VelocityTracker.obtain();
+        this.mScroller = new Scroller(context);
+        this.mViewConfiguration = ViewConfiguration.get(context);
+        this.mVisibleRect = new Rect();
         this.setClickable(true);
-        this.mGestureDetector = new GestureDetector(this.getContext(), this);
         FontResource.register(context);
         PaddingResouce.register(context);
         IconResource.register(context);
@@ -95,14 +102,15 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         mPanelGroup.layout();
+        getLocalVisibleRect(mVisibleRect);
+        Log.e(TAG, "onLayout: " + mVisibleRect.width() + " " + mVisibleRect.height());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Rect visibleRect = new Rect();
-        getLocalVisibleRect(visibleRect);
-        mPanelGroup.draw(canvas, visibleRect.left, visibleRect.top,  visibleRect.right, visibleRect.bottom);
+        getLocalVisibleRect(mVisibleRect);
+        mPanelGroup.draw(canvas, mVisibleRect.left, mVisibleRect.top, mVisibleRect.right, mVisibleRect.bottom);
     }
 
     @Override
@@ -116,56 +124,69 @@ public class MarkDownView extends View implements BitmapResource.BitmapResourceL
         Log.e(TAG, "taksBitmapFailed: error: " + error + " url: " + url );
     }
 
-    public void scrollChanged(int x, int y, int oldx, int oldy) {
-        Rect visibleRect = new Rect();
-        getLocalVisibleRect(visibleRect);
-        if (Math.abs(y - lastActiveY) >= visibleRect.height()/2) {
-            lastActiveX = x;
-            lastActiveY = y;
-            invalidate();
-            Log.e(TAG, "scrollChanged: invalidate");
-        }
-    }
-
+    private float lastY;
+    private float currentY;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return mGestureDetector.onTouchEvent(event);
+        mVelocityTracker.addMovement(event);
+        currentY = event.getY();
+        int deltaY = 0;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (!mScroller.isFinished()) {
+                    mScroller.abortAnimation();
+                }
+                lastY = currentY;
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                deltaY = (int)(lastY - currentY);
+                int resultY = getScrollY() + deltaY;
+                // 滑动到顶部 mScrollY == 0
+                if (resultY < 0) {
+                    resultY = 0;
+                }
+                // 滑动到底部 mScrollY + 可见高度 == 总的height
+                else if (resultY > getHeight() - mVisibleRect.height()) {
+                    resultY = getHeight() - mVisibleRect.height();
+                }
+                scrollTo(getScrollX(), resultY);
+                lastY = currentY;
+                invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                mVelocityTracker.computeCurrentVelocity(1000);
+                int yVelocity = (int) mVelocityTracker.getYVelocity();
+                deltaY = (int)(lastY - currentY);
+                if (Math.abs(yVelocity) > mViewConfiguration.getScaledMinimumFlingVelocity()) {
+                    mScroller.fling(0, getScrollY(), 0, -yVelocity, 0, 0, 0, getHeight() - mVisibleRect.height());
+                    invalidate();
+                } else if ( Math.abs(deltaY) < mViewConfiguration.getScaledTouchSlop()) {
+                    tapUp(event);
+                }
+                lastY = currentY;
+            default:
+                break;
+        }
+        return super.onTouchEvent(event);
     }
 
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return true;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        float x = e.getX() - getX();
-        float y = e.getY() - getY();
+    private void tapUp(MotionEvent e) {
+        float x = e.getX() + getScrollX();
+        float y = e.getY() + getScrollY();
+        Log.e(TAG, "tapUp: x: " + x + " y: " + y);
         Part part = mPanelGroup.getPart(x, y);
         if (part != null) {
             onClick(part);
         }
-        return true;
     }
 
     @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        return false;
+    public void computeScroll() {
+        super.computeScroll();
+        if (mScroller.computeScrollOffset()) {
+            scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+            invalidate();
+        }
     }
 
     /**
